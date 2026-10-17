@@ -1,0 +1,34 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-013 
+Purchase date:   22/08/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Penne Pasta 500G   £0.75   -   £0.75 
+1   Tesco Fruit & Nut Crunchy Granola 850G   £2.85   -   £2.85 
+2   Tesco Ripe & Ready Mango Each   £0.69   -   £1.38 
+1   Tesco Salted Butter 250g   £2.15   -   £2.15 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+2   Tesco Unsmoked Back Bacon 300G   £2.50   -   £5.00 
+2   McVitie's Milk Chocolate Digestive Biscuits 
+266G 
+£2.25   -   £4.50 
+2   Tesco Salmon Fillets 2 Pack 240G   £4.50   -   £9.00 
+1   Tesco Orange Juice Smooth 1 Litre   £1.70   -   £1.70 
+1   Tesco Brown Onions Loose   £0.80   -   £0.46 
+1   Tesco Tenderstem Broccoli 200G   £0.79   -   £0.79 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £1.55 
+1   Tesco Cherry Tomatoes 330G   £1.09   -   £1.09 
+1   Tesco Baby Spinach 240G   £1.50   -   £1.50 
+1   Tesco British Chicken Thigh Fillets 500G   £4.75   -   £4.75 
+2   Tesco Extra Mature Cheddar 700G   £5.75   -   £11.50 
+Payment summary 
+Subtotal:   £51.07 
+Including savings of:   £0.00 
+Delivery:   + £0.00 
+Total:   £51.07 
+Other details 
+Clubcard points earned: 51 points 

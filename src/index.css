@@ -1,0 +1,199 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* Tokens. Components use these through the Tailwind colour names below, never raw hex. */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f4f6fb;
+  --bg-2: #e9eef8;
+  --surface: #ffffff;
+  --surface-2: #f6f8fc;
+  --line: #e2e7f0;
+  --ink: #0b1220;
+  --muted: #5b6478;
+  --faint: #8a93a6;
+  --brand: #2a78d6;
+  --brand-ink: #1c5cab;
+  --aqua: #1baf7a;
+  --violet: #6250d6;
+  --offer: #ffd60a;
+  --offer-ink: #1a1400;
+  --up: #c62828;
+  --up-soft: #fdecec;
+  --down: #127a12;
+  --down-soft: #e6f5e6;
+  --warn: #9a6200;
+  --warn-soft: #fff4d6;
+  --glow-a: rgba(59, 130, 246, 0.22);
+  --glow-b: rgba(34, 211, 238, 0.18);
+  --glow-c: rgba(167, 139, 250, 0.2);
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -8px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #070b14;
+  --bg-2: #0b1220;
+  --surface: #0f1729;
+  --surface-2: #131d33;
+  --line: #1f2a44;
+  --ink: #e8eefc;
+  --muted: #95a2bd;
+  --faint: #6b7792;
+  --brand: #3987e5;
+  --brand-ink: #86b6ef;
+  --aqua: #199e70;
+  --violet: #9085e9;
+  --offer: #facc15;
+  --offer-ink: #1a1400;
+  --up: #ff7b7b;
+  --up-soft: rgba(255, 99, 99, 0.12);
+  --down: #4ade80;
+  --down-soft: rgba(74, 222, 128, 0.12);
+  --warn: #fbbf24;
+  --warn-soft: rgba(251, 191, 36, 0.1);
+  --glow-a: rgba(59, 130, 246, 0.28);
+  --glow-b: rgba(34, 211, 238, 0.16);
+  --glow-c: rgba(167, 139, 250, 0.22);
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 32px -12px rgba(0, 0, 0, 0.6);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-aqua: var(--aqua);
+  --color-violet: var(--violet);
+  --color-offer: var(--offer);
+  --color-offer-ink: var(--offer-ink);
+  --color-up: var(--up);
+  --color-up-soft: var(--up-soft);
+  --color-down: var(--down);
+  --color-down-soft: var(--down-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --shadow-card: var(--shadow);
+}
+
+html {
+  background: var(--bg);
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+body {
+  @apply bg-bg text-ink font-sans antialiased;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* Ambient background: soft colour glows plus a faint dot grid. */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 10% -10%, var(--glow-a), transparent 60%),
+    radial-gradient(50rem 36rem at 95% 5%, var(--glow-c), transparent 60%),
+    radial-gradient(40rem 30rem at 50% 110%, var(--glow-b), transparent 60%);
+}
+.ambient::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(to bottom, black, transparent 70%);
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, #3b82f6 0%, #22d3ee 45%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.bg-gradient-brand {
+  background: linear-gradient(110deg, #2563eb 0%, #0ea5e9 50%, #7c3aed 100%);
+}
+
+.card {
+  @apply bg-surface border border-line rounded-3xl shadow-card;
+}
+.glass {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* Animated gradient border for the hero cards. */
+.ring-glow {
+  position: relative;
+  isolation: isolate;
+}
+.ring-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--angle, 0deg), #3b82f6, #22d3ee, #a78bfa, #3b82f6);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin-angle 8s linear infinite;
+  z-index: -1;
+}
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin-angle {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Scrollbars that don't shout */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

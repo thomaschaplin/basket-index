@@ -1,0 +1,36 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-014 
+Purchase date:   01/09/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Baby Spinach 240G   £1.50   -   £1.50 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Courgettes Loose   £0.60   -   £0.30 
+1   Tesco Everyday Moisturising Shower Gel With 
+Coconut Scent 500Ml 
+£1.10   -   £1.10 
+1   Tesco British Turkey Breast Mince 500G   £4.75   -   £4.75 
+2   Tesco Large Free Range Eggs 6 Pack   £3.50   -   £7.00 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £1.55 
+1   Tesco Peshwari Naan 2 Pack   £1.05   -   £1.05 
+2   Tesco Fruit & Nut Crunchy Granola 850G   £2.85   -   £5.70 
+2   Tesco Chopped Tomatoes 400G   £0.45   -   £0.90 
+1   Walkers Ready Salted Multipack Crisps 6x25g   £2.25   £0.50   £1.75 
+1   Tesco Easy Peelers 600G   £1.75   -   £1.75 
+1   Tesco Margherita Pizza 345G   £1.90   -   £1.90 
+1   Plenty Kitchen Roll 3 Roll   £1.75   -   £1.75 
+1   Tesco Blackberries 150G   £1.75   -   £1.75 
+1   Yorkshire Tea Teabags 160 Pack   £6.00   -   £6.00 
+1   Tesco Honey Nut Cornflakes 500G   £1.65   -   £1.65 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+1   Tesco Ripe & Ready Mango Each   £0.69   -   £0.69 
+Payment summary 
+Subtotal:   £43.49 
+Including savings of:   £0.20 
+Delivery:   + £0.00 
+Total:   £43.49 
+Other details 
+Clubcard points earned: 43 points 

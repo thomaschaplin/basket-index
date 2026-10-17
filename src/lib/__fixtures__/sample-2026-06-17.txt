@@ -1,0 +1,39 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-006 
+Purchase date:   17/06/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+1   Tesco Large Free Range Eggs 6 Pack   £3.30   -   £3.30 
+1   Yorkshire Tea Teabags 160 Pack   £6.00   -   £6.00 
+1   Heinz Baked Beanz 4 x 415G   £1.55   -   £1.55 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+2   Tesco Easy Peelers 600G   £1.75   -   £3.50 
+1   Tesco Brown Onions Loose   £0.80   -   £0.28 
+1   Tesco Salted Butter 250g   £2.15   -   £2.15 
+1   Tesco Greek Style Natural Yogurt 500G   £1.15   -   £1.15 
+1   Tesco Extra Mature Cheddar 350G   £3.30   -   £3.30 
+2   Tesco Everyday Moisturising Shower Gel With 
+Coconut Scent 500Ml 
+£1.10   -   £2.20 
+1   Tesco Baby Spinach 240G   £1.50   -   £1.50 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+1   Tesco British Chicken Thigh Fillets 500G   £4.50   -   £4.50 
+1   McVitie's Milk Chocolate Digestive Biscuits 
+266G 
+£2.25   £0.50   £1.75 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+2   Tesco Finest Belgian Milk Chocolate Bar 200G   £2.00   -   £4.00 
+1   Tesco Kids Apple & Pear Fruit Pouches 4 x 90g   £1.60   £0.35   £1.25 
+1   Tesco Ripe & Ready Mango Each   £0.75   -   £0.75 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+Payment summary 
+Subtotal:   £43.13 
+Including savings of:   £0.34 
+Delivery:   + £0.00 
+Total:   £43.13 
+Other details 
+Clubcard points earned: 43 points 

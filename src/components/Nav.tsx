@@ -1,0 +1,49 @@
+import { Download, Moon, RotateCcw, Sun } from 'lucide-react';
+import type { Theme } from '../hooks/useTheme';
+
+const LINKS = [
+  ['overview', 'Overview'],
+  ['prices', 'Prices'],
+  ['packs', 'Pack sizes'],
+  ['staples', 'Staples'],
+  ['products', 'Products'],
+  ['receipts', 'Receipts'],
+];
+
+export function Logo() {
+  return (
+    <span className="flex items-center gap-2.5">
+      <img src="/favicon.svg" alt="" className="size-8 rounded-xl shadow-md shadow-brand/30" />
+      <span className="font-display text-xl font-extrabold tracking-tight">Basket Index</span>
+    </span>
+  );
+}
+
+export function Nav({ theme, onTheme, hasData, onExport, onReset }: { theme: Theme; onTheme: () => void; hasData: boolean; onExport: () => void; onReset: () => void }) {
+  const icon = 'grid size-10 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink';
+  return (
+    <nav className="glass sticky top-0 z-30 border-b border-line/70">
+      <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
+        <a href="#top" aria-label="Basket Index, back to top"><Logo /></a>
+        {hasData && (
+          <div className="mx-auto hidden items-center gap-1 lg:flex">
+            {LINKS.map(([id, label]) => (
+              <a key={id} href={`#${id}`} className="rounded-full px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:bg-surface-2 hover:text-ink">{label}</a>
+            ))}
+          </div>
+        )}
+        <div className="ml-auto flex items-center gap-1 lg:ml-0">
+          {hasData && (
+            <>
+              <button onClick={onExport} className={icon} aria-label="Download all items as CSV" title="Download CSV"><Download className="size-5" /></button>
+              <button onClick={onReset} className={icon} aria-label="Start over" title="Start over"><RotateCcw className="size-5" /></button>
+            </>
+          )}
+          <button onClick={onTheme} className={icon} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} title="Toggle theme">
+            {theme === 'dark' ? <Sun className="size-5" /> : <Moon className="size-5" />}
+          </button>
+        </div>
+      </div>
+    </nav>
+  );
+}

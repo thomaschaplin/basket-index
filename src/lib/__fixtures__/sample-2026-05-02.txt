@@ -1,0 +1,43 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-001 
+Purchase date:   02/05/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Finest Belgian Milk Chocolate Bar 200G   £2.00   -   £2.00 
+1   Tesco Courgettes Loose   £0.60   -   £0.24 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+1   Tesco Ripe & Ready Mango Each   £0.75   -   £0.75 
+1   Tesco Crunchy Peanut Butter 340G   £1.35   -   £1.35 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco British Chicken Thigh Fillets 500G   £4.50   £0.50   £4.00 
+1   Tesco Kiwi Fruit Loose   £0.94   -   £1.13 
+1   McVitie's Milk Chocolate Digestive Biscuits 
+266G 
+£2.25   -   £2.25 
+1   Walkers Ready Salted Multipack Crisps 6x25g   £2.25   -   £2.25 
+2   Tesco Frozen Garden Peas 1Kg   £1.60   -   £3.20 
+1   Tesco Fruit & Nut Crunchy Granola 1Kg   £3.00   -   £3.00 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+1   Tesco Brown Onions Loose   £0.80   -   £0.49 
+3   Tesco Chopped Tomatoes 400G   £0.45   -   £1.35 
+2   Tesco Easy Peelers 600G   £1.75   £0.70   £2.80 
+1   Tesco British Turkey Breast Mince 500G   £4.50   -   £4.50 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+1   Tesco Baby Spinach 240G   £1.50   -   £1.50 
+2   Tesco Salted Butter 250g   £1.99   -   £3.98 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+1   Tesco Extra Mature Cheddar 350G   £3.30   -   £3.30 
+1   Tesco Non Bio Washing Powder 40 Washes 2Kg   £5.00   -   £5.00 
+1   Tesco Extra Mature Cheddar 700G   £5.75   -   £5.75 
+2   Tesco Gala Apples 6 Pack   £1.60   £0.50   £2.70 
+1   Tesco Tenderstem Broccoli 200G   £0.79   -   £0.79 
+Payment summary 
+Subtotal:   £58.28 
+Including savings of:   £0.68 
+Delivery:   + £0.00 
+Total:   £58.28 
+Other details 
+Clubcard points earned: 58 points 
