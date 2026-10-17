@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc -b --noEmit",
-    "sample": "vite-node scripts/generate-sample.ts"
+    "sample": "vite-node scripts/generate-sample.ts",
+    "og": "node scripts/render-og.mjs"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",

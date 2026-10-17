@@ -1,0 +1,68 @@
+<!doctype html>
+<!-- Source for public/og.png (1200x630). Regenerate with `npm run og`. -->
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      @font-face { font-family: 'Bricolage'; src: url('../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2') format('woff2'); font-weight: 200 800; }
+      @font-face { font-family: 'Inter'; src: url('../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
+      @font-face { font-family: 'Mono'; src: url('../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2'); font-weight: 100 800; }
+      * { box-sizing: border-box; margin: 0; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+      body {
+        background: #070b14;
+        color: #e8eefc;
+        font-family: 'Inter', sans-serif;
+        position: relative;
+        padding: 72px 80px;
+        background-image:
+          radial-gradient(600px 420px at 8% 0%, rgba(59, 130, 246, 0.32), transparent 70%),
+          radial-gradient(520px 380px at 100% 100%, rgba(167, 139, 250, 0.26), transparent 70%),
+          radial-gradient(420px 320px at 70% 10%, rgba(34, 211, 238, 0.16), transparent 70%);
+      }
+      .brand { display: flex; align-items: center; gap: 18px; font-family: 'Bricolage'; font-weight: 700; font-size: 34px; letter-spacing: -0.01em; }
+      .brand svg { width: 60px; height: 60px; }
+      h1 { margin-top: 48px; font-family: 'Bricolage'; font-weight: 800; font-size: 72px; line-height: 1.02; letter-spacing: -0.03em; max-width: 640px; }
+      h1 span { background: linear-gradient(90deg, #3b82f6, #22d3ee 55%, #a78bfa); -webkit-background-clip: text; color: transparent; }
+      p { margin-top: 24px; font-size: 24px; line-height: 1.4; color: #95a2bd; max-width: 600px; }
+      .pill { position: absolute; left: 80px; bottom: 56px; display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border: 1px solid #1f2a44; border-radius: 999px; background: #0f1729; font-size: 20px; color: #95a2bd; }
+      .pill b { color: #4ade80; font-weight: 600; }
+      .card { position: absolute; right: 80px; top: 110px; width: 360px; padding: 26px 28px; border: 1px solid #1f2a44; border-radius: 24px; background: #0f1729; transform: rotate(2deg); box-shadow: 0 30px 80px -20px rgba(57, 135, 229, 0.35); }
+      .card .label { font-size: 18px; color: #95a2bd; }
+      .card .big { margin-top: 6px; font-family: 'Bricolage'; font-weight: 800; font-size: 84px; letter-spacing: -0.03em; color: #ff7b7b; }
+      .card .sub { font-family: 'Mono'; font-size: 16px; color: #6b7792; }
+      .card svg { margin-top: 18px; width: 100%; height: 90px; }
+      .tag { position: absolute; right: 290px; top: 400px; width: 250px; padding: 16px 18px; border: 1px solid #1f2a44; border-radius: 20px; background: #131d33; transform: rotate(-5deg); box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5); }
+      .tag .n { font-size: 16px; font-weight: 600; }
+      .tag .p { margin-top: 4px; display: flex; align-items: baseline; gap: 10px; }
+      .tag .p b { font-family: 'Bricolage'; font-size: 34px; font-weight: 700; }
+      .tag .p s { font-family: 'Mono'; font-size: 16px; color: #6b7792; }
+      .tag .chip { margin-top: 6px; display: inline-block; padding: 3px 10px; border-radius: 999px; background: rgba(255, 99, 99, 0.12); color: #ff7b7b; font-family: 'Mono'; font-size: 13px; font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <div class="brand">
+      <svg viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset=".55" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><path d="M14 44 26 31l8 7 16-18" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="20" r="4.5" fill="#fff"/></svg>
+      Basket Index
+    </div>
+    <h1>Your Tesco receipts, <span>decoded.</span></h1>
+    <p>Your personal inflation rate, price rises and shrinkflation, from your own shopping.</p>
+    <div class="pill">🔒 <b>Private by design</b> · parsed in your browser, never uploaded</div>
+
+    <div class="card">
+      <div class="label">Your basket inflation</div>
+      <div class="big">+4.7%</div>
+      <div class="sub">annualised · example data</div>
+      <svg viewBox="0 0 300 90" preserveAspectRatio="none">
+        <defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3987e5" stop-opacity=".45"/><stop offset="1" stop-color="#3987e5" stop-opacity="0"/></linearGradient></defs>
+        <path d="M0 78 L30 74 L60 76 L90 66 L120 62 L150 64 L180 50 L210 44 L240 38 L270 26 L300 18 L300 90 L0 90 Z" fill="url(#a)"/>
+        <path d="M0 78 L30 74 L60 76 L90 66 L120 62 L150 64 L180 50 L210 44 L240 38 L270 26 L300 18" fill="none" stroke="#3987e5" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="tag">
+      <div class="n">Belgian Choc Bar · £2.00</div>
+      <div class="p"><b>180g</b><s>200g</s></div>
+      <span class="chip">▲ shrinkflation</span>
+    </div>
+  </body>
+</html>

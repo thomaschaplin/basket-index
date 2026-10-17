@@ -1,9 +1,34 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig, type Plugin } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
+// Absolute origin for canonical, Open Graph and sitemap URLs. Set SITE_URL for a custom domain;
+// on Vercel it falls back to the project's production domain, so previews still point at production.
+const siteUrl = (
+  process.env.SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:5173')
+).replace(/\/+$/, '');
+
+// Fills %SITE_URL% in index.html and emits robots.txt + sitemap.xml. Vercel previews are kept out of search.
+function seo(): Plugin {
+  const indexable = process.env.VERCEL_ENV !== 'preview';
+  return {
+    name: 'basket-index-seo',
+    transformIndexHtml: (html) => html.replaceAll('%SITE_URL%', siteUrl),
+    generateBundle() {
+      const robots = indexable ? `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n` : 'User-agent: *\nDisallow: /\n';
+      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: robots });
+      this.emitFile({
+        type: 'asset',
+        fileName: 'sitemap.xml',
+        source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${siteUrl}/</loc></url>\n</urlset>\n`,
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), seo()],
   build: {
     rollupOptions: {
       output: {

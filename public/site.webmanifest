@@ -1,0 +1,14 @@
+{
+  "name": "Basket Index",
+  "short_name": "Basket Index",
+  "description": "Cost-of-living insights from your own Tesco receipts. Parsed in the browser, never uploaded.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070b14",
+  "theme_color": "#070b14",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}
