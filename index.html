@@ -5,10 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Basket Index · Your Tesco receipts, decoded</title>
     <meta name="description" content="Drop in your Tesco receipts and see your personal inflation rate, price rises, shrinkflation and where your money goes. Everything runs in your browser." />
+    <link rel="canonical" href="%SITE_URL%/" />
     <meta name="theme-color" content="#070b14" />
-    <meta property="og:title" content="Basket Index" />
-    <meta property="og:description" content="Your personal inflation rate, from your own Tesco receipts. Private by design." />
+    <meta name="color-scheme" content="dark light" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Social share cards -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Basket Index" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:title" content="Basket Index · Your Tesco receipts, decoded" />
+    <meta property="og:description" content="Your personal inflation rate, price rises and shrinkflation, from your own Tesco receipts. Private by design: parsed in your browser, never uploaded." />
+    <meta property="og:image" content="%SITE_URL%/og.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Basket Index: your Tesco receipts, decoded. A basket inflation card showing +4.7% and a shrinkflation price tag." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Basket Index · Your Tesco receipts, decoded" />
+    <meta name="twitter:description" content="Your personal inflation rate, price rises and shrinkflation, from your own Tesco receipts. Private by design." />
+    <meta name="twitter:image" content="%SITE_URL%/og.png" />
+    <meta name="twitter:image:alt" content="Basket Index: your Tesco receipts, decoded." />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Basket Index",
+        "url": "%SITE_URL%/",
+        "description": "Cost-of-living insights from your own Tesco receipts. Parsed in the browser, never uploaded.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript",
+        "image": "%SITE_URL%/og.png",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" }
+      }
+    </script>
     <script>
       // Set the theme before first paint so there's no flash.
       try {
