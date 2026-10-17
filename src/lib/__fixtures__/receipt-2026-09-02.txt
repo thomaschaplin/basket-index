@@ -1,0 +1,81 @@
+Receipt 
+Customer details [redacted] Seller details Tesco [redacted] Order information 
+Order ID:   1000-0000-006 
+Purchase date:   02/09/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Expert For Men Anti Perspirant Refreshing 250Ml   £1.35   -   £1.35 
+1   Tesco Pink Lady Apples 5 Pack   £2.90   -   £2.90 
+1   Tesco Mango Chutney 230G   £1.20   -   £1.20 
+1   Tesco Red Peppers Each   £0.70   -   £0.70 
+1   Tresemmé Professional Hydra Molecular Moisture 
+Shampoo 400ml 
+£5.25   £1.75   £3.50 
+1   Tesco Green Seedless Grapes Pack 500G   £2.00   -   £2.00 
+1   Tesco British Soured Cream 150Ml   £0.85   -   £0.85 
+1   Tesco Plain White Tortilla Wraps 8 Pack   £1.40   £0.25   £1.15 
+1   Tesco British Plum Punnet 400G   £1.40   £0.40   £1.00 
+1   Comfort Fabric Conditioner Blue Skies 80 Washes 
+2400ml 
+£5.25   £0.55   £4.70 
+1   Tesco Fajita Seasoning 30G   £1.00   -   £1.00 
+1   Yeo Valley Organic Little Yeos Fruity Favourites Kids 
+Yogurt 4x85g 
+£2.15   £0.41   £1.74 
+1   Mini Babybel Original Cheese Snacks 6 x 20g   £2.45   £1.23   £1.22 
+5   Robinsons Fruit & Barley with Vitamins Summer 
+Fruits Squash 1L 
+£2.20   -   £11.00 
+1   Tesco Kitchen Foil 30M   £3.49   -   £3.49 
+1   Tesco Butter Chicken Cooking Sauce 500G   £0.89   -   £0.89 
+1   Tesco White English Muffins 4 Pack   £0.65   -   £0.65 
+1   Tesco Conference Pears Pack 610G   £1.60   £0.30   £1.30 
+1   Tesco Plain Naans 2 Pack 260G   £0.69   -   £0.69 
+1   Tesco Finest 10 Ristretto Espresso Capsules 54G   £3.25   £1.08   £2.17 
+1   Tesco White Toastie Bread Thick Sliced 800g   £0.75   -   £0.75 
+1   Tesco Whole Cucumber Each   £0.99   -   £0.99 
+1   Tesco Red Onions 3Pack Minimum   £0.95   -   £0.95 
+1   Tesco Finest Raspberry Conserve 340G   £2.55   £0.55   £2.00 
+1   Tesco Light Soy Sauce 150Ml   £0.55   -   £0.55 
+1   Tesco Celery   £0.75   £0.10   £0.65 
+1   Philadelphia Original Soft Cream Cheese 165G   £2.25   £1.23   £1.02 
+4   Radox Chamomile & Oat Feel Moisturised Shower 
+Gel Body Wash 225ml 
+£1.00   £1.37   £2.63 
+1   Childs Farm S/Berry & Mint Cond 250ml   £6.00   -   £6.00 
+1   L'Oreal Paris Revitalift Clinical Anti-UV Fluid 
+SPF50+ 50ml 
+£20.00   £10.00   £10.00 
+1   Tesco Plain Poppadoms 8 Pack 64G   £1.09   -   £1.09 
+1   Tesco Mature Cheddar 400G   £3.25   -   £3.25 
+1   Tesco Medium Free Range Eggs 12 Pack   £2.85   -   £2.85 
+1   F&F Home Reed Diffuser Jasmine 30ml   £2.00   -   £2.00 
+1   Tesco Finest 10 Colombia Supremo Coffee 
+Capsules 54G 
+£3.25   £1.09   £2.16 
+1   Tesco Battered Chicken Dippers 20 Pack 450g   £1.65   -   £1.65 
+1   Tresemmé Professional Hydra Molecular Moisture 
+Conditioner 300ml 
+£5.25   £1.75   £3.50 
+1   TANGO Zero'd Orange Sugar Free 8 x 330ml   £3.75   £0.75   £3.00 
+1   Tesco 30 Bin Liner 50L Drawstring   £2.25   -   £2.25 
+1   Tesco Finest 10 Colombia Supremo Coffee 
+Capsules 54G 
+£3.25   £1.09   £2.16 
+1   Tesco Butterpak Spreadable - Slightly Salted 500g   £2.15   -   £2.15 
+1   Graze Honey Oat Boost Flapjack Snack 4x30G   £2.75   £1.33   £1.42 
+Payment summary 
+Subtotal:   £96.52 
+Including savings of:   £24.97 
+Delivery:   + £0.00 
+Total:   £96.52 
+Other details 
+Payment method: [redacted] Clubcard points earned: 96 points 
+Store ID: [redacted]   Clubcard points balance: [redacted] 
+
+Should you change your mind about your purchase, please return the product with your proof of purchase, within 30 days, and we'll happily offer a refund or replacement. 
+Conditions apply to some products. 
+Please see instore for details or visit   www.tesco.com/help/pages/return-and-refund-faqs 
+Any questions please visit   www.tesco.com/store-locator 

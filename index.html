@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Basket Index · Your Tesco receipts, decoded</title>
+    <meta name="description" content="Drop in your Tesco receipts and see your personal inflation rate, price rises, shrinkflation and where your money goes. Everything runs in your browser." />
+    <meta name="theme-color" content="#070b14" />
+    <meta property="og:title" content="Basket Index" />
+    <meta property="og:description" content="Your personal inflation rate, from your own Tesco receipts. Private by design." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      // Set the theme before first paint so there's no flash.
+      try {
+        const t = localStorage.getItem('bi-theme');
+        document.documentElement.dataset.theme = t || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      } catch { document.documentElement.dataset.theme = 'dark'; }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
