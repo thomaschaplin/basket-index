@@ -49,7 +49,7 @@ Vercel picks up `vercel.json` (Vite preset, output `dist`). Any static host work
 
 ### SEO and share cards
 
-Canonical, Open Graph, Twitter card and JSON-LD tags live in `index.html` and use `%SITE_URL%`, which the build fills with an absolute origin: `SITE_URL` if set (use it for a custom domain), otherwise Vercel's production domain, otherwise `http://localhost:5173`. The build also writes `robots.txt` and `sitemap.xml`; Vercel preview builds get a `Disallow: /` robots file so they stay out of search.
+Canonical, Open Graph, Twitter card and JSON-LD tags live in `index.html` and use `%SITE_URL%`, which the build fills with an absolute origin: `https://basketindex.thomaschaplin.me`, or `SITE_URL` if set. The build also writes `robots.txt` and `sitemap.xml`; Vercel preview builds get a `Disallow: /` robots file so they stay out of search.
 
 The share card (`public/og.png`, 1200×630) and the PNG app icons are rendered from `scripts/og-card.html` and `public/favicon.svg` with headless Chrome: `npm run og` (set `CHROME=/path/to/chrome` if it isn't found).
 

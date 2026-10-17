@@ -2,12 +2,8 @@ import { defineConfig, type Plugin } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
-// Absolute origin for canonical, Open Graph and sitemap URLs. Set SITE_URL for a custom domain;
-// on Vercel it falls back to the project's production domain, so previews still point at production.
-const siteUrl = (
-  process.env.SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:5173')
-).replace(/\/+$/, '');
+// Absolute origin for canonical, Open Graph and sitemap URLs. Override with SITE_URL to build for another host.
+const siteUrl = (process.env.SITE_URL || 'https://basketindex.thomaschaplin.me').replace(/\/+$/, '');
 
 // Fills %SITE_URL% in index.html and emits robots.txt + sitemap.xml. Vercel previews are kept out of search.
 function seo(): Plugin {
