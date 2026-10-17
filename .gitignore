@@ -1,0 +1,7 @@
+node_modules
+dist
+samples
+*.pdf
+.vercel
+.DS_Store
+*.tsbuildinfo
