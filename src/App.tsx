@@ -63,11 +63,11 @@ export default function App() {
                   <div className="grid gap-3">
                     {source === 'sample' && (
                       <span className="inline-flex w-fit items-center gap-2 rounded-full bg-offer px-3 py-1 text-sm font-semibold text-offer-ink">
-                        <Sparkles className="size-4" aria-hidden /> Sample data · drop your own receipts to replace it
+                        <Sparkles className="size-4" aria-hidden /> Example data · drop your own receipts to replace it
                       </span>
                     )}
                     <h1 className="font-display text-4xl font-extrabold tracking-tight text-balance sm:text-6xl">
-                      {source === 'sample' ? 'A family shop, ' : 'Your shop, '}
+                      {source === 'sample' ? 'An example household, ' : 'Your shop, '}
                       <span className="text-gradient">decoded</span>
                     </h1>
                     <p className="text-muted">

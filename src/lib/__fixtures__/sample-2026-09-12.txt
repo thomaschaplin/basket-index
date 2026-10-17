@@ -1,0 +1,34 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-015 
+Purchase date:   12/09/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   Tesco Extra Mature Cheddar 350G   £3.50   -   £7.00 
+1   Tesco British Chicken Thigh Fillets 500G   £4.75   £0.75   £4.00 
+1   Tesco Brown Onions Loose   £0.80   -   £0.38 
+1   Tesco Courgettes Loose   £0.60   -   £0.53 
+2   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £3.10 
+1   Tesco Orange Juice Smooth 1 Litre   £1.70   -   £1.70 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Salmon Fillets 2 Pack 240G   £4.50   -   £4.50 
+1   Tesco Blackberries 150G   £1.75   £0.25   £1.50 
+1   Tesco Kiwi Fruit Loose   £0.94   -   £0.72 
+1   Tesco Unsmoked Back Bacon 300G   £2.50   -   £2.50 
+1   Walkers Ready Salted Multipack Crisps 6x25g   £2.25   -   £2.25 
+1   Tesco Finest Belgian Milk Chocolate Bar 180G   £2.00   -   £2.00 
+1   Tesco Margherita Pizza 345G   £1.90   -   £1.90 
+1   Tesco Peshwari Naan 2 Pack   £1.05   -   £1.05 
+1   Tesco Extra Mature Cheddar 700G   £5.75   -   £5.75 
+2   Tesco Cherry Tomatoes 330G   £1.09   -   £2.18 
+1   Tesco British Turkey Breast Mince 500G   £4.75   £0.76   £3.99 
+2   Tesco Chopped Tomatoes 400G   £0.45   -   £0.90 
+Payment summary 
+Subtotal:   £46.70 
+Including savings of:   £0.70 
+Delivery:   + £0.00 
+Total:   £46.70 
+Other details 
+Clubcard points earned: 46 points 

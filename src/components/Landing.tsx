@@ -11,11 +11,11 @@ const FEATURES = [
   { icon: Tag, title: 'Offer dependence', body: 'How much of your shop hangs on Clubcard prices, and which staples you never catch on offer.' },
 ];
 
-// Decorative mini receipt with price tags that float around the hero. Prices are real moves from the sample data.
+// Decorative mini receipt with price tags that float around the hero. Prices come from the fictional sample data.
 const TAGS = [
-  { name: 'Tango Zero 8 × 330ml', was: '£3.40', now: '£4.00', up: true, x: '-10%', y: '36%', r: -7, d: 0 },
-  { name: 'Mature Cheddar 400g', was: '£3.25', now: '£2.95', up: false, x: '58%', y: '-6%', r: 6, d: 0.8 },
-  { name: 'Baked Crisps 6 × 22g', was: '£2.20', now: '£2.35', up: true, x: '62%', y: '72%', r: -4, d: 1.6 },
+  { name: 'Salted Butter 250g', was: '£1.99', now: '£2.25', up: true, x: '-10%', y: '36%', r: -7, d: 0 },
+  { name: 'Blackberries 150g', was: '£2.00', now: '£1.75', up: false, x: '58%', y: '-6%', r: 6, d: 0.8 },
+  { name: 'Belgian Choc Bar · £2.00', was: '200g', now: '180g', up: true, x: '62%', y: '72%', r: -4, d: 1.6 },
 ];
 
 function HeroArt() {
@@ -31,13 +31,13 @@ function HeroArt() {
       >
         <div className="mb-3 flex items-center justify-between">
           <span className="font-display text-lg font-bold">Receipt</span>
-          <span className="font-mono text-[10px] text-faint">29/07/2026</span>
+          <span className="font-mono text-[10px] text-faint">03/10/2026</span>
         </div>
         <div className="grid gap-2 font-mono text-[11px]">
           {[
-            ['Lean Beef Mince 500g', '£4.41'], ['Dairy Milk 180g ×2', '£3.30'], ['Malt Wheats 750g', '£0.99'], ['Toastie Bread 800g', '£0.66'],
-            ['Whole Cucumber', '£0.86'], ['Carrots Loose', '£0.40'], ['Biscoff Spread 380g', '£2.72'], ['Ice Cream 2L', '£1.38'],
-            ['Lemon Curd 411g', '£1.03'], ['Exotic Fruit Mix', '£2.55'], ['Dr Pepper 8×330ml', '£2.96'],
+            ['Semi Skimmed Milk 4pt', '£1.55'], ['Wholemeal Bread 800g', '£0.75'], ['Chicken Thighs 500g', '£4.75'], ['Salted Butter 250g', '£2.25'],
+            ['Kiwi Fruit Loose', '£0.91'], ['Cherry Tomatoes 330g', '£1.09'], ['Extra Mature Cheddar', '£3.50'], ['Penne Pasta 500g', '£0.75'],
+            ['Gala Apples 6pk', '£1.60'], ['Orange Juice 1L', '£1.70'], ['Granola 850g', '£2.85'],
           ].map(([n, p], i) => (
             <motion.div key={n} initial={reduce ? false : { opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.06 }} className="flex justify-between gap-3 border-b border-dashed border-line pb-1.5 text-muted">
               <span className="truncate">{n}</span>
@@ -61,7 +61,7 @@ function HeroArt() {
             <span className="font-mono text-xs text-faint line-through">{t.was}</span>
           </div>
           <span className={`mt-1 inline-block rounded-full px-2 py-0.5 font-mono text-[10px] font-bold ${t.up ? 'bg-up-soft text-up' : 'bg-down-soft text-down'}`}>
-            {t.up ? '▲ price rise' : '▼ cheaper'}
+            {t.name.includes('Choc') ? '▲ shrinkflation' : t.up ? '▲ price rise' : '▼ cheaper'}
           </span>
         </motion.div>
       ))}
@@ -102,7 +102,7 @@ export function Landing({ onFiles, onSample, progress }: { onFiles: (f: File[]) 
             <Dropzone onFiles={onFiles} progress={progress} />
             <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
               <button onClick={onSample} className="group inline-flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-2.5 font-semibold shadow-card transition hover:-translate-y-0.5 hover:border-brand/50">
-                Try it with 8 sample receipts
+                Try it with an example household
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
               </button>
               <span className="inline-flex items-center gap-1.5 text-sm text-muted">
