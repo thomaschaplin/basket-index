@@ -1,0 +1,25 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   FT2G-FYWZ-0EEV-BLKH 
+Purchase date:   14/04/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Bananas Loose   £0.85   -   £1.11 
+1   Tesco Large Free Range Eggs 6 Pack   £3.30   -   £3.30 
+1   Tesco Medium Sliced White Bread 800G   £0.75   -   £0.75 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+2   Tesco Greek Style Natural Yogurt 500G   £1.15   £0.40   £1.90 
+1   Tesco Health Pain Relief Tablets - Paracetamol 
+500mg 16s 
+£0.45   -   £0.45 
+1   Tesco Whole Cucumber Each   £0.75   -   £0.75 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+Payment summary 
+Subtotal:   £11.61 
+Including savings of:   £0.16 
+Total:   £11.61 
+Other details 
+Clubcard points earned: 11 points 

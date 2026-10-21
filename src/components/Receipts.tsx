@@ -1,22 +1,30 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertTriangle, ChevronDown, Receipt as ReceiptIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { Analysis } from '../lib/analysis';
 import { CATEGORY_EMOJI } from '../lib/categories';
 import { dayLong, gbp, plural } from '../lib/format';
 import { Pill, Reveal, Section } from './ui';
 
+const PAGE = 10;
+
 export function Receipts({ a }: { a: Analysis }) {
   const [open, setOpen] = useState<string | null>(null);
-  const orders = [...a.orders].reverse();
+  const [limit, setLimit] = useState(PAGE);
+  const orders = useMemo(() => [...a.orders].reverse(), [a.orders]);
   const max = Math.max(1, ...orders.map((o) => o.total));
+  const linesByOrder = useMemo(() => {
+    const m = new Map<string, Analysis['purchases']>();
+    a.purchases.forEach((p) => (m.get(p.orderId) ?? m.set(p.orderId, []).get(p.orderId)!).push(p));
+    return m;
+  }, [a.purchases]);
 
   return (
     <Section id="receipts" eyebrow="Your receipts" title="Every shop, line by line" subtitle="Newest first. Open one to see what was in the basket.">
       <div className="grid gap-3">
-        {orders.map((o, i) => {
+        {orders.slice(0, limit).map((o, i) => {
           const isOpen = open === o.orderId;
-          const items = a.purchases.filter((p) => p.orderId === o.orderId);
+          const items = linesByOrder.get(o.orderId) ?? [];
           return (
             <Reveal key={o.orderId} delay={Math.min(i, 6) * 0.04} className="card overflow-hidden">
               <button onClick={() => setOpen(isOpen ? null : o.orderId)} aria-expanded={isOpen} className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 p-4 text-left hover:bg-surface-2/60 sm:p-5">
@@ -62,6 +70,11 @@ export function Receipts({ a }: { a: Analysis }) {
           );
         })}
       </div>
+      {orders.length > limit && (
+        <button onClick={() => setLimit((l) => l + PAGE * 2)} className="mx-auto rounded-full border border-line bg-surface px-5 py-2 text-sm font-semibold hover:border-brand/50">
+          Show more ({orders.length - limit} older)
+        </button>
+      )}
     </Section>
   );
 }

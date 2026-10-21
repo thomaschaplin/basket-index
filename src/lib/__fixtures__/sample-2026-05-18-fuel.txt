@@ -1,0 +1,14 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   97401041218052600543003678554669 
+Purchase date:   18/05/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+35.8   DIESEL   £1.58   -   £56.50 
+Payment summary 
+Subtotal:   £56.50 
+Total:   £56.50 
+Other details 
+Clubcard points earned: 56 points 

@@ -1,0 +1,18 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   6C53-WGL3-2KYM-483X 
+Purchase date:   13/02/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+2   Tesco Cheese & Onion Rolls 4 Pack   £2.00   -   £4.00 
+1   Tesco Extra Mature Cheddar 700G   £5.75   -   £5.75 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+2   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £2.90 
+Payment summary 
+Subtotal:   £14.35 
+Total:   £14.35 
+Other details 
+Clubcard points earned: 14 points 

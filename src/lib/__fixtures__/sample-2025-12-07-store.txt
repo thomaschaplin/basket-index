@@ -1,0 +1,20 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   Q27S-Y6BF-6W81-Z1YT 
+Purchase date:   07/12/2025 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   Colgate Total Original Care Toothpaste 75Ml   £3.00   £2.00   £4.00 
+1   Tesco Easy Peelers 600G   £1.75   £0.35   £1.40 
+2   Tesco Wholemeal Bread 800g   £0.75   -   £1.50 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.39   -   £1.39 
+1   Tesco Large Free Range Eggs 6 Pack   £3.15   -   £3.15 
+2   Tesco Health Vitamin D 25mcg Tablets 120s   £3.00   -   £6.00 
+Payment summary 
+Subtotal:   £17.44 
+Including savings of:   £0.94 
+Total:   £17.44 
+Other details 
+Clubcard points earned: 17 points 

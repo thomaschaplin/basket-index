@@ -1,0 +1,48 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-022 
+Purchase date:   20/06/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Dishwasher Tablets Lemon 30 Pack   £4.00   £0.40   £3.60 
+1   Tesco Garlic Bread Baguette 2 Pack   £1.00   £0.10   £0.90 
+1   Tesco Sparkling Water 4X1.5L   £1.40   £0.14   £1.26 
+3   Tesco Chopped Tomatoes 400G   £0.45   £0.14   £1.21 
+1   McVitie's Milk Chocolate Digestive Biscuits 
+266G 
+£2.25   £0.23   £2.02 
+1   Tesco Red Seedless Grapes 500G   £2.00   £0.20   £1.80 
+1   Tesco Margherita Pizza 345G   £1.90   £0.19   £1.71 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   £0.15   £1.30 
+1   Tesco Fruit & Nut Crunchy Granola 1Kg   £3.00   £0.30   £2.70 
+1   Tesco Courgettes Loose   £0.60   £0.03   £0.30 
+1   Tesco Reduced Fat Houmous 300G   £1.15   £0.12   £1.03 
+1   Tesco British Chicken Thigh Fillets 500G   £4.50   £0.45   £4.05 
+2   Tesco Wholemeal Bread 800g   £0.75   £0.15   £1.35 
+1   Tesco Chocolate Ice Cream 900Ml   £1.75   £0.18   £1.57 
+1   Tesco Blackberries 150G   £2.00   £0.20   £1.80 
+1   Tesco Penne Pasta 500G   £0.75   £0.08   £0.67 
+1   Tesco Cooked Ham Slices 125G   £1.50   £0.15   £1.35 
+2   Tesco Beef Stock Cubes 10 x 10g   £0.75   £0.15   £1.35 
+1   Tesco Medium Sliced White Bread 800G   £0.75   £0.08   £0.67 
+1   Tesco Finest Quarter Pounders 454g   £4.00   £0.40   £3.60 
+1   Tesco Plain Tortilla Wraps 8 Pack   £1.25   £0.13   £1.12 
+1   Tesco Greek Style Natural Yogurt 500G   £1.15   £0.30   £0.85 
+1   Tesco Cherry Tomatoes 330G   £0.99   £0.10   £0.89 
+1   Heinz Baked Beanz 4 x 415G   £1.70   £0.17   £1.53 
+2   Tesco British Beef Lean Steak Mince 5% Fat 
+500G 
+£4.75   £2.30   £7.20 
+1   Tesco Baby Potatoes 1Kg   £1.65   £0.17   £1.48 
+1   Tesco Gala Apples 6 Pack   £1.60   £0.39   £1.21 
+1   Tesco Ripe & Ready Mango Each   £0.75   £0.08   £0.67 
+1   Tesco Easy Peelers 600G   £1.75   £0.18   £1.57 
+Payment summary 
+Subtotal:   £56.47 
+Including savings of:   £3.06 
+Delivery:   + £0.00 
+Total:   £50.76 
+Other details 
+Clubcard points earned: 50 points 

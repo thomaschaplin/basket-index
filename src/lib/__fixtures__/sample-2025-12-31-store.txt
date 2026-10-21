@@ -1,0 +1,22 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   S36E-D6H4-1XX8-GECK 
+Purchase date:   31/12/2025 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Bananas Loose   £0.85   -   £0.75 
+1   Carlton Everyday Bday Balloons and Stars 
+100001-0-1 
+£2.00   -   £2.00 
+1   Tesco Honey Nut Cornflakes 500G   £1.65   -   £1.65 
+1   Tesco Finest Belgian Milk Chocolate Bar 200G   £2.00   -   £2.00 
+1   Coca-Cola Zero Sugar 8 x 330ml   £5.25   £0.75   £4.50 
+Payment summary 
+Subtotal:   £11.65 
+Including savings of:   £0.30 
+Total:   £11.65 
+Other details 
+Clubcard points earned: 11 points 

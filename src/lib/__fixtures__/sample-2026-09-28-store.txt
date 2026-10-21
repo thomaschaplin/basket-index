@@ -1,0 +1,18 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   EU6F-SBKD-CBHL-EP49 
+Purchase date:   28/09/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Large Free Range Eggs 6 Pack   £3.50   -   £3.50 
+1   Tesco Tenderstem Broccoli 200G   £0.79   -   £0.79 
+1   Tesco Cherry Tomatoes 330G   £1.09   -   £1.09 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £1.55 
+Payment summary 
+Subtotal:   £7.68 
+Total:   £7.68 
+Other details 
+Clubcard points earned: 7 points 

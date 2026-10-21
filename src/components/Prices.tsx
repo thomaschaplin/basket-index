@@ -2,7 +2,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Award, Scale } from 'lucide-react';
 import { useState } from 'react';
 import type { Analysis, PriceChange, PricePoint } from '../lib/analysis';
-import { day, gbp, plural } from '../lib/format';
+import { weighedUnit } from '../lib/categories';
+import { dayRange, dayYear, gbp, plural } from '../lib/format';
 import { Delta, Empty, Pill, Reveal, Section, Segmented } from './ui';
 
 export function Sparkline({ points, height = 36, className = '' }: { points: PricePoint[]; height?: number; className?: string }) {
@@ -19,7 +20,7 @@ export function Sparkline({ points, height = 36, className = '' }: { points: Pri
       <path d={d} fill="none" stroke="currentColor" strokeWidth={2} vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" className="text-faint" />
       {points.map((p, i) => (
         <circle key={i} cx={x(i)} cy={y(p.shelf)} r={i === points.length - 1 ? 4 : 3} className={p.onOffer ? 'fill-offer' : 'fill-ink'} stroke="var(--surface)" strokeWidth={1.5} vectorEffect="non-scaling-stroke">
-          <title>{`${day(p.date)}: ${gbp(p.shelf)}${p.onOffer ? ` (on offer, paid ${gbp(p.paid)})` : ''}`}</title>
+          <title>{`${dayYear(p.date)}: ${gbp(p.shelf)}${p.onOffer ? ` (on offer, paid ${gbp(p.paid)})` : ''}`}</title>
         </circle>
       ))}
     </svg>
@@ -46,8 +47,8 @@ function MoverCard({ c, onOpen }: { c: PriceChange; onOpen: () => void }) {
       </span>
       <Sparkline points={c.points} />
       <span className="flex justify-between gap-2 border-t border-dashed border-line pt-2 text-xs text-muted">
-        <span>{day(c.fromDate)} → {day(c.toDate)}</span>
-        <span>{c.weighed ? 'per kg' : `bought ${c.times}×`}</span>
+        <span>{dayRange(c.fromDate, c.toDate)}</span>
+        <span>{c.weighed ? `per ${weighedUnit(c.category)}` : `bought ${c.times}×`}</span>
       </span>
     </motion.button>
   );
@@ -93,6 +94,8 @@ export function PriceMovers({ a, onOpen }: { a: Analysis; onOpen: (key: string) 
 }
 
 export function PackSizes({ a }: { a: Analysis }) {
+  const [showAll, setShowAll] = useState(false);
+  const choices = showAll ? a.packChoices : a.packChoices.slice(0, 8);
   return (
     <Section id="packs" eyebrow="Shrinkflation watch" title="Smaller packs, bigger prices?" subtitle="Products you've bought in more than one size, compared on price per 100g, 100ml or item.">
       {a.shrinkflation.length ? (
@@ -103,7 +106,7 @@ export function PackSizes({ a }: { a: Analysis }) {
               <div className="grid min-w-0 flex-1 gap-1">
                 <strong className="font-display text-lg">{s.after.name}</strong>
                 <span className="text-sm text-muted">
-                  Was {s.before.size.label} at {gbp(s.before.price)} until {day(s.before.last)}. From {day(s.after.first)} it's {s.after.size.label} at {gbp(s.after.price)}:{' '}
+                  Was {s.before.size.label} at {gbp(s.before.price)} until {dayYear(s.before.last)}. From {dayYear(s.after.first)} it's {s.after.size.label} at {gbp(s.after.price)}:{' '}
                   <b className="text-ink">{Math.abs(s.sizeChangePct).toFixed(0)}% less product, {s.unitChangePct.toFixed(0)}% more {s.after.perUnit.label}</b>.
                 </span>
               </div>
@@ -136,7 +139,7 @@ export function PackSizes({ a }: { a: Analysis }) {
                 </tr>
               </thead>
               <tbody>
-                {a.packChoices.map((p) =>
+                {choices.map((p) =>
                   p.sizes.map((s, i) => (
                     <tr key={s.name} className={i === 0 ? 'border-t border-line' : ''}>
                       <td className="px-5 py-2.5">
@@ -152,6 +155,11 @@ export function PackSizes({ a }: { a: Analysis }) {
               </tbody>
             </table>
           </div>
+          {a.packChoices.length > 8 && (
+            <button onClick={() => setShowAll((s) => !s)} className="w-full border-t border-line px-5 py-3 text-sm font-semibold text-brand-ink hover:bg-surface-2">
+              {showAll ? 'Show fewer' : `Show all ${a.packChoices.length} products`}
+            </button>
+          )}
         </Reveal>
       )}
     </Section>

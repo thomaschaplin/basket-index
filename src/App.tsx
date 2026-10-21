@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ShieldCheck, Sparkles } from 'lucide-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { Dropzone, DropOverlay } from './components/Dropzone';
 import { GetReceipts } from './components/GetReceipts';
 import { Headline } from './components/Headline';
@@ -12,16 +12,16 @@ import { ReceiptChecks, Receipts } from './components/Receipts';
 import { Categories, Insights, SpendChart } from './components/Spending';
 import { Toast, type ToastMsg } from './components/Toast';
 import { useReceipts } from './hooks/useReceipts';
-import { chartColours, useTheme } from './hooks/useTheme';
-import { analyse } from './lib/analysis';
+import { chartColours, useTheme, type ChartColours } from './hooks/useTheme';
+import { analyse, type Analysis } from './lib/analysis';
 import { downloadCsv } from './lib/export';
-import { day, plural } from './lib/format';
+import { dayRange, plural } from './lib/format';
 
 export default function App() {
   const { theme, toggle } = useTheme();
   const { source, receipts, progress, addFiles, showSample, clear } = useReceipts();
   const a = useMemo(() => analyse(receipts), [receipts]);
-  const c = chartColours(theme);
+  const c = useMemo(() => chartColours(theme), [theme]);
   const [productKey, setProductKey] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastMsg | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -71,26 +71,14 @@ export default function App() {
                       <span className="text-gradient">decoded</span>
                     </h1>
                     <p className="text-muted">
-                      {plural(a.overview.receipts, 'receipt')} · {a.overview.from && day(a.overview.from)} to {a.overview.to && day(a.overview.to)} · {a.overview.lines} lines read
+                      {plural(a.overview.receipts, 'receipt')} · {a.overview.from && a.overview.to && dayRange(a.overview.from, a.overview.to, ' to ')} · {a.overview.lines} lines read
                     </p>
                   </div>
                   <div className="w-full sm:w-96"><Dropzone onFiles={onFiles} progress={progress} compact /></div>
                 </div>
                 <Headline a={a} c={c} />
               </div>
-              <Insights a={a} />
-              <section id="spend" className="grid gap-4 lg:grid-cols-[1.25fr_1fr]">
-                <SpendChart a={a} c={c} />
-                <Categories a={a} />
-              </section>
-              <PriceMovers a={a} onOpen={setProductKey} />
-              <PackSizes a={a} />
-              <Staples a={a} onOpen={setProductKey} />
-              <TopLists a={a} onOpen={setProductKey} />
-              <ProductExplorer a={a} onOpen={setProductKey} />
-              <Receipts a={a} />
-              <ReceiptChecks a={a} />
-              <GetReceipts />
+              <Dashboard a={a} c={c} onOpen={setProductKey} />
             </motion.div>
           ) : (
             <motion.div key="landing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -20 }}>
@@ -110,3 +98,24 @@ export default function App() {
     </>
   );
 }
+
+/** Everything below the headline. Memoised so opening a product or showing a toast doesn't re-render every section. */
+const Dashboard = memo(function Dashboard({ a, c, onOpen }: { a: Analysis; c: ChartColours; onOpen: (key: string) => void }) {
+  return (
+    <>
+      <Insights a={a} />
+      <section id="spend" className="grid gap-4 lg:grid-cols-[1.25fr_1fr]">
+        <SpendChart a={a} c={c} />
+        <Categories a={a} />
+      </section>
+      <PriceMovers a={a} onOpen={onOpen} />
+      <PackSizes a={a} />
+      <Staples a={a} onOpen={onOpen} />
+      <TopLists a={a} onOpen={onOpen} />
+      <ProductExplorer a={a} onOpen={onOpen} />
+      <Receipts a={a} />
+      <ReceiptChecks a={a} />
+      <GetReceipts />
+    </>
+  );
+});

@@ -1,0 +1,20 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   C6BB-BP8R-L20Y-LVVT 
+Purchase date:   12/12/2025 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   Tesco Wholemeal Bread 800g   £0.75   -   £1.50 
+1   Tesco Bananas Loose   £0.85   -   £0.94 
+1   Tesco Free Range Medium Eggs 12 Pack   £3.90   -   £3.90 
+1   Tesco Kiwi Fruit Loose   £0.94   -   £1.00 
+1   Tesco Salted Butter 250g   £1.99   -   £1.99 
+1   Tesco Washing Up Liquid Original 450Ml   £0.65   -   £0.65 
+1   Tesco Medium Sliced White Bread 800G   £0.75   -   £0.75 
+Payment summary 
+Subtotal:   £10.73 
+Total:   £10.73 
+Other details 
+Clubcard points earned: 10 points 

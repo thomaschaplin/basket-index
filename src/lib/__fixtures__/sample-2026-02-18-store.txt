@@ -1,0 +1,20 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   HKX2-WTTF-VMNK-QJW1 
+Purchase date:   18/02/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+1   Tesco Rich Tea Biscuits 300G   £0.55   -   £0.55 
+1   Tesco Large Free Range Eggs 6 Pack   £3.15   -   £3.15 
+2   Tesco Wholemeal Bread 800g   £0.75   -   £1.50 
+1   Tesco Bananas Loose   £0.85   -   £1.02 
+1   Tesco Baby Spinach 240G   £1.50   -   £1.50 
+1   Coca-Cola Zero Sugar 8 x 330ml   £5.75   -   £5.75 
+Payment summary 
+Subtotal:   £14.92 
+Total:   £14.92 
+Other details 
+Clubcard points earned: 14 points 

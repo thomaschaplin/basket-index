@@ -1,0 +1,18 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   39LY-S6VL-KXZ9-HLH5 
+Purchase date:   16/09/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+2   Tesco Wholemeal Bread 800g   £0.75   -   £1.50 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £1.55 
+1   Tesco Basmati Rice 1Kg   £2.30   -   £2.30 
+Payment summary 
+Subtotal:   £7.45 
+Total:   £7.45 
+Other details 
+Clubcard points earned: 7 points 

@@ -1,0 +1,16 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   7JMX-KXQP-UJ9L-B8UN 
+Purchase date:   04/05/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Red Seedless Grapes 500G   £2.00   -   £2.00 
+2   Tesco Medium Sliced White Bread 800G   £0.75   -   £1.50 
+1   Tesco Bananas Loose   £0.85   -   £0.86 
+Payment summary 
+Subtotal:   £4.36 
+Total:   £4.36 
+Other details 
+Clubcard points earned: 4 points 

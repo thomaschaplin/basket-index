@@ -1,0 +1,16 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   Y53G-SMP8-KG24-JRL3 
+Purchase date:   10/04/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Finest Belgian Milk Chocolate Bar 200G   £2.00   -   £2.00 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+1   Tesco Orange Juice Smooth 1 Litre   £1.55   -   £1.55 
+Payment summary 
+Subtotal:   £4.70 
+Total:   £4.70 
+Other details 
+Clubcard points earned: 4 points 

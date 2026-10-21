@@ -1,0 +1,40 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-018 
+Purchase date:   07/05/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Greek Style Natural Yogurt 500G   £1.15   -   £1.15 
+1   Tesco Cherry Tomatoes 330G   £0.99   -   £0.99 
+1   Tesco Strawberries 400G   £2.50   -   £2.50 
+1   Tesco Red Seedless Grapes 500G   £2.00   -   £2.00 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+1   Tesco Cooked Ham Slices 125G   £1.50   -   £1.50 
+1   Tesco Large Free Range Eggs 6 Pack   £3.30   -   £3.30 
+1   Tesco Extra Mature Cheddar 700G   £5.75   -   £5.75 
+1   Tesco Gala Apples 6 Pack   £1.60   -   £1.60 
+1   Tesco Washing Up Liquid Original 450Ml   £0.65   -   £0.65 
+1   Tesco Garlic Bread Baguette 2 Pack   £1.00   -   £1.00 
+1   Tesco Broccoli 375G   £0.82   -   £0.82 
+1   Tesco Fruit & Nut Crunchy Granola 1Kg   £3.00   -   £3.00 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+2   Tesco Plain Tortilla Wraps 8 Pack   £1.25   -   £2.50 
+1   Tesco Ripe & Ready Mango Each   £0.75   -   £0.75 
+1   Tesco Easy Peelers 600G   £1.75   -   £1.75 
+1   Tesco British Chicken Thigh Fillets 500G   £4.50   -   £4.50 
+1   Tesco Bananas Loose   £0.85   -   £1.18 
+1   Tesco Kiwi Fruit Loose   £0.94   -   £0.92 
+1   Tesco Salted Butter 250g   £1.99   -   £1.99 
+1   Tesco Free Range Medium Eggs 12 Pack   £4.20   -   £4.20 
+1   Tesco Penne Pasta 500G   £0.70   -   £0.70 
+1   Tesco Beef Stock Cubes 10 x 10g   £0.75   -   £0.75 
+1   Tesco Kids Apple & Pear Fruit Pouches 4 x 90g   £1.60   -   £1.60 
+Payment summary 
+Subtotal:   £48.45 
+Delivery:   + £0.00 
+Total:   £48.45 
+Other details 
+Clubcard points earned: 48 points 

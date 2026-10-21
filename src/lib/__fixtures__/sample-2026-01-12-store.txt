@@ -1,0 +1,22 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   KDBH-CMTD-XAYV-X1CG 
+Purchase date:   12/01/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.39   -   £1.39 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Red Seedless Grapes 500G   £2.00   £0.25   £1.75 
+1   Tesco Unsmoked Back Bacon 300G   £2.50   £0.50   £2.00 
+1   Tesco Sea Salt & Black Pepper Kettle Chips 
+150G 
+£1.50   -   £1.50 
+1   Tesco Salmon Fillets 2 Pack 240G   £4.50   -   £4.50 
+Payment summary 
+Subtotal:   £11.89 
+Including savings of:   £0.30 
+Total:   £11.89 
+Other details 
+Clubcard points earned: 11 points 

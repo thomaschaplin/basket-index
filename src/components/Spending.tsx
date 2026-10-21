@@ -4,7 +4,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 import type { ChartColours } from '../hooks/useTheme';
 import type { Analysis } from '../lib/analysis';
 import { CATEGORY_EMOJI } from '../lib/categories';
-import { day, gbp, gbp0, monthName } from '../lib/format';
+import { day, dayYear, gbp, gbp0, monthName } from '../lib/format';
 import { Reveal, Section, Segmented } from './ui';
 
 export function Insights({ a }: { a: Analysis }) {
@@ -29,12 +29,12 @@ export function Insights({ a }: { a: Analysis }) {
 
 type SpendView = 'shops' | 'months';
 
-function SpendTip({ active, payload }: { active?: boolean; payload?: { payload: { label: string; paid: number; saved: number; units?: number } }[] }) {
+function SpendTip({ active, payload }: { active?: boolean; payload?: { payload: { label: string; tip?: string; paid: number; saved: number; units?: number } }[] }) {
   if (!active || !payload?.length) return null;
   const p = payload[0].payload;
   return (
     <div className="glass grid gap-1 rounded-xl border border-line px-3 py-2 text-sm shadow-xl">
-      <div className="text-xs text-muted">{p.label}{p.units ? ` · ${p.units} items` : ''}</div>
+      <div className="text-xs text-muted">{p.tip ?? p.label}{p.units ? ` · ${p.units} items` : ''}</div>
       <div className="flex items-center gap-2"><span className="size-2.5 rounded-sm bg-brand" />Paid <b className="num ml-auto pl-4">{gbp(p.paid)}</b></div>
       <div className="flex items-center gap-2"><span className="size-2.5 rounded-sm bg-aqua" />Saved <b className="num ml-auto pl-4">{gbp(p.saved)}</b></div>
     </div>
@@ -43,7 +43,7 @@ function SpendTip({ active, payload }: { active?: boolean; payload?: { payload: 
 
 export function SpendChart({ a, c }: { a: Analysis; c: ChartColours }) {
   const [view, setView] = useState<SpendView>('shops');
-  const shops = a.orders.map((o) => ({ label: day(o.date), paid: o.total, saved: o.saved, units: o.units }));
+  const shops = a.orders.map((o) => ({ label: day(o.date), tip: dayYear(o.date), paid: o.total, saved: o.saved, units: o.units }));
   const monthMap = new Map<string, { paid: number; saved: number }>();
   a.orders.forEach((o) => {
     const m = monthMap.get(o.date.slice(0, 7)) ?? { paid: 0, saved: 0 };
@@ -53,6 +53,8 @@ export function SpendChart({ a, c }: { a: Analysis; c: ChartColours }) {
   });
   const months = [...monthMap].map(([m, v]) => ({ label: monthName(m), ...v }));
   const data = view === 'shops' ? shops : months;
+  // Dozens of shops leave a few pixels per bar: drop the gaps and outlines or the bars round down to nothing.
+  const dense = data.length > 40;
 
   return (
     <Reveal className="card grid gap-4 p-5 sm:p-6">
@@ -69,13 +71,13 @@ export function SpendChart({ a, c }: { a: Analysis; c: ChartColours }) {
       </div>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 4, right: 0, left: 0, bottom: 0 }} barCategoryGap="22%">
+          <BarChart data={data} margin={{ top: 4, right: 0, left: 0, bottom: 0 }} barCategoryGap={dense ? 0 : '22%'}>
             <CartesianGrid vertical={false} stroke={c.grid} />
             <XAxis dataKey="label" tick={{ fill: c.muted, fontSize: 11 }} axisLine={false} tickLine={false} interval="preserveStartEnd" minTickGap={8} />
             <YAxis tickFormatter={(v: number) => gbp0(v)} tick={{ fill: c.muted, fontSize: 11 }} axisLine={false} tickLine={false} width={48} />
             <Tooltip content={<SpendTip />} cursor={{ fill: c.grid, opacity: 0.5 }} />
-            <Bar dataKey="paid" stackId="s" fill={c.brand} stroke={c.surface} strokeWidth={2} radius={[0, 0, 4, 4]} maxBarSize={56} animationDuration={900} />
-            <Bar dataKey="saved" stackId="s" fill={c.aqua} stroke={c.surface} strokeWidth={2} radius={[4, 4, 0, 0]} maxBarSize={56} animationDuration={900} />
+            <Bar dataKey="paid" stackId="s" fill={c.brand} stroke={c.surface} strokeWidth={dense ? 0 : 2} radius={[0, 0, 4, 4]} maxBarSize={56} animationDuration={900} />
+            <Bar dataKey="saved" stackId="s" fill={c.aqua} stroke={c.surface} strokeWidth={dense ? 0 : 2} radius={[4, 4, 0, 0]} maxBarSize={56} animationDuration={900} />
           </BarChart>
         </ResponsiveContainer>
       </div>

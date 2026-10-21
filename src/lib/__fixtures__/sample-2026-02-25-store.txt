@@ -1,0 +1,17 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   ZK1D-SBN3-WUCQ-5X9W 
+Purchase date:   25/02/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+1   Tesco Kiwi Fruit Loose   £0.94   -   £0.99 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+Payment summary 
+Subtotal:   £4.54 
+Total:   £4.54 
+Other details 
+Clubcard points earned: 4 points 

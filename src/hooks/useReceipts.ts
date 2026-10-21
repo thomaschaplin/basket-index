@@ -4,6 +4,7 @@ import { parseReceiptText } from '../lib/parser';
 import { fileToText } from '../lib/pdf-browser';
 import { loadSample } from '../lib/sample';
 import type { Receipt } from '../lib/types';
+import { expandZips } from '../lib/zip';
 
 export type Source = 'none' | 'sample' | 'mine';
 const KEY = 'bi-receipts-v2';
@@ -59,7 +60,8 @@ export function useReceipts() {
   const clear = useCallback(() => setState({ source: 'none', receipts: [] }), []);
 
   const addFiles = useCallback(
-    async (files: File[]): Promise<LoadResult> => {
+    async (dropped: File[]): Promise<LoadResult> => {
+      const files = await expandZips(dropped);
       const pdfs = files.filter((f) => /pdf$/i.test(f.type) || /\.pdf$/i.test(f.name));
       const failed = files.filter((f) => !pdfs.includes(f)).map((f) => f.name);
       const parsed: Receipt[] = [];

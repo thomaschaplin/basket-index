@@ -1,0 +1,18 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   M7TF-171U-0DK4-N1G7 
+Purchase date:   09/10/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £3.10 
+2   Tesco Wholemeal Bread 800g   £0.75   -   £1.50 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+1   Tesco Orange Juice Smooth 1 Litre   £1.70   -   £1.70 
+2   Plenty Kitchen Roll 3 Roll   £1.75   -   £3.50 
+Payment summary 
+Subtotal:   £10.95 
+Total:   £10.95 
+Other details 
+Clubcard points earned: 10 points 

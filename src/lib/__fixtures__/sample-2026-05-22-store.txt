@@ -1,0 +1,24 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   7P0Q-CGV8-SHQ5-8ZWS 
+Purchase date:   22/05/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   £0.70   -   £0.70 
+1   Tesco British Turkey Breast Mince 500G   £4.50   £0.51   £3.99 
+1   Tesco Whole Cucumber Each   £0.85   -   £0.85 
+1   Tesco Apple & Blackcurrant No Added Sugar 
+Squash 1L 
+£0.85   -   £0.85 
+1   Tesco Medium Sliced White Bread 800G   £0.75   -   £0.75 
+2   Tesco Salmon Fillets 2 Pack 240G   £4.50   -   £9.00 
+1   Tesco Margherita Pizza 345G   £1.90   -   £1.90 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+Payment summary 
+Subtotal:   £18.79 
+Including savings of:   £0.20 
+Total:   £18.79 
+Other details 
+Clubcard points earned: 18 points 

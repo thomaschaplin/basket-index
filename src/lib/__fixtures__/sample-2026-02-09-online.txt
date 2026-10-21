@@ -1,0 +1,42 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-010 
+Purchase date:   09/02/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+2   Tesco Gala Apples 6 Pack   £1.60   £0.50   £2.70 
+1   Tesco Kiwi Fruit Loose   £0.94   -   £1.17 
+1   Tesco British Beef Lean Steak Mince 5% Fat 
+500G 
+£4.50   -   £4.50 
+1   Tesco Tenderstem Broccoli 200G   £0.79   -   £0.79 
+1   Tesco British Chicken Thigh Fillets 500G   £4.50   -   £4.50 
+1   Tesco Large Free Range Eggs 6 Pack   £3.15   -   £3.15 
+1   Tesco Blackberries 150G   £2.00   -   £2.00 
+1   Tesco Carrots 1Kg   £0.69   -   £0.69 
+2   Tesco Red Seedless Grapes 500G   £2.00   -   £4.00 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+1   Tesco Ripe & Ready Mango Each   £0.75   -   £0.75 
+1   Tesco Courgettes Loose   £0.60   -   £0.34 
+1   Tesco Bananas Loose   £0.85   -   £0.79 
+1   Tesco Medium Sliced White Bread 800G   £0.75   -   £0.75 
+1   Tesco British Turkey Breast Mince 500G   £4.50   £0.51   £3.99 
+1   Tesco Salted Butter 250g   £1.99   -   £1.99 
+4   Tesco Chopped Tomatoes 400G   £0.45   -   £1.80 
+1   Tesco Whole Cucumber Each   £0.75   -   £0.75 
+1   Tesco Luxury Soft Toilet Tissue 9 Roll   £4.50   -   £4.50 
+1   Tesco Penne Pasta 500G   £0.70   -   £0.70 
+1   Tesco Sparkling Water 4X1.5L   £1.40   -   £1.40 
+1   Muller Corner Strawberry Yogurt 6 x 124g   £4.00   -   £4.00 
+Payment summary 
+Subtotal:   £50.26 
+Including savings of:   £0.40 
+Delivery:   + £0.00 
+Total:   £50.26 
+Other details 
+Clubcard points earned: 50 points 

@@ -1,0 +1,53 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-031 
+Purchase date:   14/10/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+2   Tesco Mozzarella 125G   £0.75   -   £1.50 
+2   Tesco Whole Cucumber Each   £0.85   -   £1.70 
+1   Tesco Bananas Loose   £0.85   -   £0.88 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+2   Tesco Tenderstem Broccoli 200G   £0.79   -   £1.58 
+1   Muller Corner Strawberry Yogurt 6 x 124g   £4.00   -   £4.00 
+2   Coca-Cola Zero Sugar 8 x 330ml   £5.75   £2.50   £9.00 
+1   Tesco Large Free Range Eggs 6 Pack   £3.50   -   £3.50 
+1   Tesco Baby Spinach 240G   £1.50   -   £1.50 
+1   Walkers Ready Salted Multipack Crisps 6x25g   £2.25   £0.50   £1.75 
+1   Tesco Porridge Oats 1Kg   £1.15   -   £1.15 
+1   Tesco Sweet Potatoes 1Kg   £1.19   -   £1.19 
+1   Tesco Broccoli 375G   £0.82   -   £0.82 
+2   Tesco Spaghetti 500G   £0.70   -   £1.40 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+1   Plenty Kitchen Roll 3 Roll   £1.75   -   £1.75 
+1   Tesco Apple & Blackcurrant No Added Sugar 
+Squash 1L 
+£0.85   -   £0.85 
+1   McVitie's Milk Chocolate Digestive Biscuits 
+266G 
+£2.25   £0.50   £1.75 
+1   Tesco Washing Up Liquid Original 450Ml   £0.65   -   £0.65 
+1   Tesco Salted Butter 250g   £2.25   -   £2.25 
+1   Tesco Finest 6 Cumberland Sausages 400G   £3.00   -   £3.00 
+1   Tesco Orange Juice Smooth 1 Litre   £1.70   -   £1.70 
+1   Tesco Bin Liners 50L 30 Pack   £1.50   -   £1.50 
+1   Tesco Extra Mature Cheddar 350G   £3.50   -   £3.50 
+1   Tesco Courgettes Loose   £0.60   -   £0.31 
+1   Tesco British Beef Lean Steak Mince 5% Fat 
+500G 
+£4.99   -   £4.99 
+2   Tesco Honey Nut Cornflakes 500G   £1.65   -   £3.30 
+1   Tesco Kiwi Fruit Loose   £0.94   -   £0.91 
+1   Tesco Gala Apples 6 Pack   £1.60   -   £1.60 
+1   Philadelphia Original Soft Cheese 165G   £2.25   £0.60   £1.65 
+1   Tesco Baby Potatoes 1Kg   £1.79   -   £1.79 
+Payment summary 
+Subtotal:   £64.32 
+Including savings of:   £1.64 
+Delivery:   + £0.00 
+Total:   £64.32 
+Other details 
+Clubcard points earned: 64 points 

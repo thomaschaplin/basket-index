@@ -1,0 +1,22 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   K0FG-383A-7X16-SHL3 
+Purchase date:   03/06/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   Tesco Medium Sliced White Bread 800G   £0.75   -   £1.50 
+1   Tesco Whole Cucumber Each   £0.85   -   £0.85 
+1   Tesco Coleslaw 300G   £0.99   -   £0.99 
+1   Tesco Sea Salt & Black Pepper Kettle Chips 
+150G 
+£1.50   -   £1.50 
+1   Tesco Garlic Bread Baguette 2 Pack   £1.00   -   £1.00 
+1   Tesco Salted Butter 250g   £1.99   -   £1.99 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+Payment summary 
+Subtotal:   £9.28 
+Total:   £9.28 
+Other details 
+Clubcard points earned: 9 points 

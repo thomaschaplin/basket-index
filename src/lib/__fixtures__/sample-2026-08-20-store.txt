@@ -1,0 +1,15 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   B2EG-4CXH-P210-DS2W 
+Purchase date:   20/08/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £1.55 
+2   Tesco Orange Juice Smooth 1 Litre   £1.70   -   £3.40 
+Payment summary 
+Subtotal:   £4.95 
+Total:   £4.95 
+Other details 
+Clubcard points earned: 4 points 

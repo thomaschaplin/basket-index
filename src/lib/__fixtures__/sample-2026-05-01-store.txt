@@ -1,0 +1,15 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   0F9L-N8B9-UJ1G-TM91 
+Purchase date:   01/05/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Cherry Tomatoes 330G   £0.99   -   £0.99 
+1   Tesco Non Bio Washing Powder 40 Washes 2Kg   £5.00   -   £5.00 
+Payment summary 
+Subtotal:   £5.99 
+Total:   £5.99 
+Other details 
+Clubcard points earned: 5 points 

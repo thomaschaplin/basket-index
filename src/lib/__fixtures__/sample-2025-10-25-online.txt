@@ -1,0 +1,44 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-001 
+Purchase date:   25/10/2025 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   Tesco Honey Nut Cornflakes 500G   £1.65   -   £3.30 
+1   Tesco Unsmoked Back Bacon 300G   £2.50   -   £2.50 
+1   Tesco Garlic Bread Baguette 2 Pack   £1.00   -   £1.00 
+1   Tesco Extra Mature Cheddar 350G   £3.15   -   £3.15 
+1   Tesco British Chicken Thigh Fillets 500G   £4.25   £0.25   £4.00 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.39   -   £1.39 
+2   Tesco Bin Liners 50L 30 Pack   £1.50   -   £3.00 
+2   McVitie's Milk Chocolate Digestive Biscuits 
+266G 
+£2.25   -   £4.50 
+1   Tesco Large Free Range Eggs 6 Pack   £3.15   -   £3.15 
+1   Tesco Salted Butter 250g   £1.99   -   £1.99 
+1   Tesco Carrots 1Kg   £0.69   -   £0.69 
+1   Tesco Margherita Pizza 345G   £1.90   £0.40   £1.50 
+1   Tesco Fish Fingers 10 Pack 250G   £1.75   -   £1.75 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+1   Tesco Courgettes Loose   £0.60   -   £0.53 
+1   Tesco Bananas Loose   £0.85   -   £1.17 
+2   Tesco Red Seedless Grapes 500G   £2.00   £0.50   £3.50 
+1   Tesco Easy Peelers 600G   £1.75   £0.35   £1.40 
+1   Tesco Cooked Ham Slices 125G   £1.50   -   £1.50 
+2   Robinsons Double Strength Orange Squash 1.75L   £3.75   £1.50   £6.00 
+1   Tesco Peshwari Naan 2 Pack   £1.05   -   £1.05 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Penne Pasta 500G   £0.70   -   £0.70 
+2   Tesco Broccoli 375G   £0.75   -   £1.50 
+1   Tesco Ripe & Ready Mango Each   £0.75   -   £0.75 
+1   Tesco Oven Chips 1.5Kg   £1.99   -   £1.99 
+Payment summary 
+Subtotal:   £55.36 
+Including savings of:   £1.20 
+Delivery:   + £0.00 
+Total:   £55.36 
+Other details 
+Clubcard points earned: 55 points 

@@ -1,8 +1,9 @@
 import { CalendarClock, Coins, PiggyBank, ShoppingBasket, Star, TrendingUp } from 'lucide-react';
+import { memo } from 'react';
 import { Area, AreaChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { ChartColours } from '../hooks/useTheme';
 import type { Analysis } from '../lib/analysis';
-import { day, gbp, gbp0, signPct } from '../lib/format';
+import { day, dayRange, dayYear, gbp, gbp0, signPct } from '../lib/format';
 import { CountUp, Reveal } from './ui';
 
 function ChartTip({ active, payload }: { active?: boolean; payload?: { payload: { date: string; index: number } }[] }) {
@@ -10,13 +11,13 @@ function ChartTip({ active, payload }: { active?: boolean; payload?: { payload: 
   const p = payload[0].payload;
   return (
     <div className="glass rounded-xl border border-line px-3 py-2 text-sm shadow-xl">
-      <div className="text-xs text-muted">{day(p.date)}</div>
+      <div className="text-xs text-muted">{dayYear(p.date)}</div>
       <div className="num font-semibold">{p.index.toFixed(1)} <span className="text-muted">({signPct(p.index - 100)})</span></div>
     </div>
   );
 }
 
-export function Headline({ a, c }: { a: Analysis; c: ChartColours }) {
+export const Headline = memo(function Headline({ a, c }: { a: Analysis; c: ChartColours }) {
   const inf = a.inflation;
   const o = a.overview;
   const tone = inf.pct > 0.05 ? 'text-up' : inf.pct < -0.05 ? 'text-down' : 'text-ink';
@@ -29,7 +30,7 @@ export function Headline({ a, c }: { a: Analysis; c: ChartColours }) {
     { icon: TrendingUp, label: 'Projected per year', value: o.perYear ?? 0, fmt: (n: number) => (o.perYear ? gbp0(n) : '—'), sub: 'At your current weekly rate' },
     { icon: Coins, label: 'Average basket', value: o.avgBasket, fmt: gbp, sub: `${o.units} items · ${o.distinctProducts} products` },
     { icon: PiggyBank, label: 'Saved on offers', value: o.savings, fmt: gbp0, sub: `${o.savingsRate.toFixed(0)}% off shelf price · ${o.onOfferShare.toFixed(0)}% of lines` },
-    { icon: CalendarClock, label: 'Shop every', value: o.daysBetweenShops ?? 0, fmt: (n: number) => (o.daysBetweenShops ? `${n.toFixed(1)} days` : '—'), sub: o.from && o.to ? `${day(o.from)} to ${day(o.to)}` : '' },
+    { icon: CalendarClock, label: 'Shop every', value: o.daysBetweenShops ?? 0, fmt: (n: number) => (o.daysBetweenShops ? `${n.toFixed(1)} days` : '—'), sub: o.from && o.to ? dayRange(o.from, o.to, ' to ') : '' },
     { icon: Star, label: 'Clubcard points', value: o.points, fmt: (n: number) => Math.round(n).toLocaleString('en-GB'), sub: `≈ ${gbp(o.points)} in vouchers` },
   ];
 
@@ -96,4 +97,4 @@ export function Headline({ a, c }: { a: Analysis; c: ChartColours }) {
       </div>
     </div>
   );
-}
+});
