@@ -8,7 +8,7 @@ import { Reveal } from './ui';
 const FEATURES = [
   { icon: LineChart, title: 'Your own inflation rate', body: 'A fixed basket of the things you actually buy again, priced first time vs latest. Not the national average: yours.' },
   { icon: PackageSearch, title: 'Shrinkflation watch', body: 'Spots packs that got smaller but not cheaper, and works out which pack size is really the best value.' },
-  { icon: Tag, title: 'Offer dependence', body: 'How much of your shop hangs on Clubcard prices, and which staples you never catch on offer.' },
+  { icon: Tag, title: 'Offer dependence', body: 'How much of your shop hangs on Clubcard and Nectar prices, and which staples you never catch on offer.' },
 ];
 
 // Decorative mini receipt with price tags that float around the hero. Prices come from the fictional sample data.
@@ -80,7 +80,7 @@ export function Landing({ onFiles, onSample, progress }: { onFiles: (f: File[]) 
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex w-fit items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-3 py-1.5 text-sm font-medium text-brand-ink"
           >
-            <Sparkles className="size-4" aria-hidden /> Your Tesco receipts, read like a price index
+            <Sparkles className="size-4" aria-hidden /> Your Tesco and Sainsbury's receipts, read like a price index
           </motion.span>
           <motion.h1
             initial={reduce ? false : { opacity: 0, y: 20 }}

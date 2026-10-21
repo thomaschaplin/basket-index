@@ -1,7 +1,7 @@
 {
   "name": "Basket Index",
   "short_name": "Basket Index",
-  "description": "Cost-of-living insights from your own Tesco receipts. Parsed in the browser, never uploaded.",
+  "description": "Cost-of-living insights from your own Tesco and Sainsbury's receipts. Parsed in the browser, never uploaded.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#070b14",

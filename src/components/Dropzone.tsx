@@ -38,7 +38,7 @@ export function Dropzone({ onFiles, progress, compact = false }: { onFiles: (f: 
               </motion.span>
             ) : (
               <motion.span key="idle" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="grid gap-1">
-                <strong className={`font-display ${compact ? 'text-base' : 'text-2xl sm:text-3xl'}`}>{compact ? 'Add more receipts' : 'Drop your Tesco receipt PDFs or zip here'}</strong>
+                <strong className={`font-display ${compact ? 'text-base' : 'text-2xl sm:text-3xl'}`}>{compact ? 'Add more receipts' : 'Drop your Tesco or Sainsbury\'s receipt PDFs or zip here'}</strong>
                 <span className="text-sm text-muted">
                   {compact ? 'Drop PDFs or a zip anywhere on the page, or tap to choose.' : 'Or tap to choose files. Select as many as you like: they are read on your device and never uploaded.'}
                 </span>

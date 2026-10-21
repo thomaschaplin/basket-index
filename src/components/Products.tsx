@@ -5,6 +5,7 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import type { ChartColours } from '../hooks/useTheme';
 import type { Analysis, ProductHistory } from '../lib/analysis';
 import { CATEGORY_EMOJI, weighedUnit } from '../lib/categories';
+import { RETAILER_NAME } from '../lib/parser';
 import { day, dayLong, dayYear, gbp, plural } from '../lib/format';
 import { Sparkline } from './Prices';
 import { Delta, Empty, Pill, Reveal, Section } from './ui';
@@ -110,7 +111,7 @@ export function ProductExplorer({ a, onOpen }: { a: Analysis; onOpen: (key: stri
                     <span className="text-xl leading-none" aria-hidden>{CATEGORY_EMOJI[p.category]}</span>
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-medium">{p.name}</span>
-                      <span className="block text-xs text-muted">{plural(p.units, 'unit')} · {plural(p.orders, 'shop')}{p.saved ? ` · saved ${gbp(p.saved)}` : ''}</span>
+                      <span className="block text-xs text-muted">{a.overview.retailers.length > 1 && `${RETAILER_NAME[p.retailer]} · `}{plural(p.units, 'unit')} · {plural(p.orders, 'shop')}{p.saved ? ` · saved ${gbp(p.saved)}` : ''}</span>
                     </span>
                     <span className="hidden sm:block">{p.points.length > 1 && <Sparkline points={p.points} height={24} />}</span>
                     <span className="num text-sm font-semibold">{gbp(p.spend)}</span>
@@ -173,7 +174,7 @@ export function ProductModal({ product, a, c, onClose }: { product: ProductHisto
             <div className="flex items-start gap-4">
               <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-surface-2 text-2xl" aria-hidden>{CATEGORY_EMOJI[product.category]}</span>
               <div className="grid min-w-0 flex-1 gap-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-muted">{product.category}</span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-muted">{product.category}{a.overview.retailers.length > 1 && ` · ${RETAILER_NAME[product.retailer]}`}</span>
                 <h3 id="product-title" className="font-display text-2xl font-bold leading-tight text-balance">{product.name}</h3>
               </div>
               <button onClick={onClose} autoFocus aria-label="Close" className="rounded-full p-2 text-muted hover:bg-surface-2 hover:text-ink"><X className="size-5" /></button>

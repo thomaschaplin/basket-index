@@ -39,7 +39,7 @@ export default function App() {
       const parts = [];
       if (r.added) parts.push(`Added ${plural(r.added, 'receipt')}.`);
       if (r.duplicates) parts.push(`${plural(r.duplicates, 'duplicate')} skipped.`);
-      if (r.failed.length) parts.push(`Couldn't read ${r.failed.length}: ${r.failed.slice(0, 3).join(', ')}${r.failed.length > 3 ? '…' : ''}. They may not be Tesco digital receipts.`);
+      if (r.failed.length) parts.push(`Couldn't read ${r.failed.length}: ${r.failed.slice(0, 3).join(', ')}${r.failed.length > 3 ? '…' : ''}. They may not be Tesco or Sainsbury's digital receipts.`);
       notify(r.failed.length || !r.added ? 'warn' : 'ok', parts.join(' ') || 'No new receipts found.');
       if (r.added) window.scrollTo({ top: 0, behavior: 'smooth' });
     },
@@ -90,7 +90,7 @@ export default function App() {
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-8 text-sm text-muted sm:px-6">
           <span className="flex items-center gap-2"><ShieldCheck className="size-4 text-down" aria-hidden /> Receipts are read in your browser and saved only on this device. Names, addresses and card details are ignored.</span>
-          <span>Not affiliated with Tesco.</span>
+          <span>Not affiliated with Tesco or Sainsbury's.</span>
         </div>
       </footer>
       <ProductModal product={product} a={a} c={c} onClose={() => setProductKey(null)} />

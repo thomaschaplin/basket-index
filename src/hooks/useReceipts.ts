@@ -19,7 +19,8 @@ function restore(): Saved {
     const raw = localStorage.getItem(KEY);
     if (raw) {
       const saved = JSON.parse(raw) as Saved;
-      if (saved.source === 'mine' && Array.isArray(saved.receipts) && saved.receipts.length) return saved;
+      // Receipts saved before Sainsbury's support have no retailer: they're all Tesco.
+      if (saved.source === 'mine' && Array.isArray(saved.receipts) && saved.receipts.length) return { ...saved, receipts: saved.receipts.map((r) => ({ ...r, retailer: r.retailer ?? 'tesco' })) };
       if (saved.source === 'sample') return { source: 'sample', receipts: loadSample() };
     }
   } catch {
@@ -70,7 +71,7 @@ export function useReceipts() {
         setProgress({ done: i, total: pdfs.length, current: f.name });
         try {
           const r = parseReceiptText(await fileToText(f));
-          if (!r.items.length || !r.date) throw new Error('Not a Tesco receipt');
+          if (!r.items.length || !r.date) throw new Error('Not a Tesco or Sainsbury\'s receipt');
           parsed.push(r);
         } catch {
           failed.push(f.name);

@@ -70,6 +70,22 @@ describe('analyse', () => {
     expect(s.staples.map((x) => [x.name, x.months])).toEqual([['DIESEL', 3], ['Tesco Wholemeal Bread 800g', 3]]);
   });
 
+  it("keeps Tesco and Sainsbury's prices apart and counts Sainsbury's order-level savings and Nectar points", () => {
+    const tesco = (id: string, date: string, price: string) =>
+      parseReceiptText(`Order ID: ${id} Purchase date: ${date} Total cost 1 Comfort Fabric Conditioner 1.16L ${price} - ${price} Payment summary Total: ${price} Clubcard points earned: 100`);
+    const sains = (id: string, date: string, price: string) =>
+      parseReceiptText(`Your receipt for order: ${id} Slot time: ${date}, 8:00am - 9:00am Groceries (1 item) 1 Comfort Fabric Conditioner 1.16L ${price} Order summary Delivery cost £0.00 You've saved* -£0.50 Total paid ${price} Points earned 100`);
+    const m = analyse([tesco('T-1', '5/1/2026', '£3.00'), sains('900001', 'Monday 12th January 2026', '£3.50'), tesco('T-2', '2/2/2026', '£3.00'), sains('900002', 'Monday 9th February 2026', '£3.50')]);
+    expect(m.priceChanges.map((c) => c.change)).toEqual([0, 0]);
+    expect(m.inflation.pct).toBe(0); // switching shops isn't inflation
+    expect(new Set(m.products.map((p) => p.retailer))).toEqual(new Set(['tesco', 'sainsburys']));
+    expect(m.overview.retailers.sort()).toEqual(['sainsburys', 'tesco']);
+    expect(m.overview.savings).toBe(100);
+    expect(m.overview.pointsValue).toBe(300); // 200 Clubcard at 1p + 200 Nectar at 0.5p
+    expect(m.orders.filter((o) => o.retailer === 'sainsburys').map((o) => o.saved)).toEqual([50, 50]);
+    expect(m.reportedSavings).toBe(0);
+  });
+
   it('category totals add up to the line totals', () => {
     const lines = a.purchases.reduce((s, p) => s + p.lineTotal, 0);
     expect(a.categories.reduce((s, c) => s + c.value, 0)).toBe(lines);
