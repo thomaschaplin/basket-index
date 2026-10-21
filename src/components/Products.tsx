@@ -5,7 +5,7 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import type { ChartColours } from '../hooks/useTheme';
 import type { Analysis, ProductHistory } from '../lib/analysis';
 import { CATEGORY_EMOJI, weighedUnit } from '../lib/categories';
-import { day, dayLong, gbp, plural } from '../lib/format';
+import { day, dayLong, dayYear, gbp, plural } from '../lib/format';
 import { Sparkline } from './Prices';
 import { Delta, Empty, Pill, Reveal, Section } from './ui';
 
@@ -132,7 +132,7 @@ function HistoryTip({ active, payload }: { active?: boolean; payload?: { payload
   const p = payload[0].payload;
   return (
     <div className="glass grid gap-0.5 rounded-xl border border-line px-3 py-2 text-sm shadow-xl">
-      <div className="text-xs text-muted">{day(p.date)} · ×{p.qty}</div>
+      <div className="text-xs text-muted">{dayYear(p.date)} · ×{p.qty}</div>
       <div>Shelf <b className="num">{gbp(p.shelf)}</b></div>
       {p.onOffer && <div className="text-xs font-semibold">On offer: paid {gbp(p.paid)} each</div>}
     </div>

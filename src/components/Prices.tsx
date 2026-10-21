@@ -3,7 +3,7 @@ import { Award, Scale } from 'lucide-react';
 import { useState } from 'react';
 import type { Analysis, PriceChange, PricePoint } from '../lib/analysis';
 import { weighedUnit } from '../lib/categories';
-import { day, dayRange, gbp, plural } from '../lib/format';
+import { dayRange, dayYear, gbp, plural } from '../lib/format';
 import { Delta, Empty, Pill, Reveal, Section, Segmented } from './ui';
 
 export function Sparkline({ points, height = 36, className = '' }: { points: PricePoint[]; height?: number; className?: string }) {
@@ -20,7 +20,7 @@ export function Sparkline({ points, height = 36, className = '' }: { points: Pri
       <path d={d} fill="none" stroke="currentColor" strokeWidth={2} vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" className="text-faint" />
       {points.map((p, i) => (
         <circle key={i} cx={x(i)} cy={y(p.shelf)} r={i === points.length - 1 ? 4 : 3} className={p.onOffer ? 'fill-offer' : 'fill-ink'} stroke="var(--surface)" strokeWidth={1.5} vectorEffect="non-scaling-stroke">
-          <title>{`${day(p.date)}: ${gbp(p.shelf)}${p.onOffer ? ` (on offer, paid ${gbp(p.paid)})` : ''}`}</title>
+          <title>{`${dayYear(p.date)}: ${gbp(p.shelf)}${p.onOffer ? ` (on offer, paid ${gbp(p.paid)})` : ''}`}</title>
         </circle>
       ))}
     </svg>
@@ -106,7 +106,7 @@ export function PackSizes({ a }: { a: Analysis }) {
               <div className="grid min-w-0 flex-1 gap-1">
                 <strong className="font-display text-lg">{s.after.name}</strong>
                 <span className="text-sm text-muted">
-                  Was {s.before.size.label} at {gbp(s.before.price)} until {day(s.before.last)}. From {day(s.after.first)} it's {s.after.size.label} at {gbp(s.after.price)}:{' '}
+                  Was {s.before.size.label} at {gbp(s.before.price)} until {dayYear(s.before.last)}. From {dayYear(s.after.first)} it's {s.after.size.label} at {gbp(s.after.price)}:{' '}
                   <b className="text-ink">{Math.abs(s.sizeChangePct).toFixed(0)}% less product, {s.unitChangePct.toFixed(0)}% more {s.after.perUnit.label}</b>.
                 </span>
               </div>
