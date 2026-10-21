@@ -15,6 +15,30 @@ describe('parseReceiptText', () => {
     expect(r.warnings).toEqual([]);
   });
 
+  it('reads in-store order IDs and channel', () => {
+    const head = (id: string) => `Receipt Order information Order ID: ${id} Purchase date: 19/10/2026 Channel: In-store VAT number: GB 220 4302 31 Your items Total cost 1 Tesco Bread 800g £0.75 - £0.75 Payment summary Total: £0.75`;
+    expect(parseReceiptText(head('57E8-15KT-Q05F-XBNQ'))).toMatchObject({ orderId: '57E8-15KT-Q05F-XBNQ', channel: 'In-store', date: '2026-10-19' });
+    expect(parseReceiptText(head('97401041200926145342850800037025')).orderId).toBe('97401041200926145342850800037025');
+  });
+
+  it('keeps in-store lines that have no product name', () => {
+    const r = parseReceiptText('Purchase date: 21/1/2026 Total cost 1 Tesco Yogurt 4 X 90G £3.40 £0.80 £2.60 1 £0.25 - £0.25 1 Tesco Avocados Twin Pack £1.50 - £1.50 2 £0.70 - £1.40 1 Tesco Baguette 2 Pack £0.85 - £0.85 Payment summary Total: £6.60');
+    expect(r.items.map((i) => [i.qty, i.name, i.lineTotal])).toEqual([
+      [1, 'Tesco Yogurt 4 X 90G', 260], [1, 'Unnamed item', 25], [1, 'Tesco Avocados Twin Pack', 150], [2, 'Unnamed item', 140], [1, 'Tesco Baguette 2 Pack', 85],
+    ]);
+    expect(r.warnings).toEqual([]);
+  });
+
+  it('reads fuel bought by the litre as a weighed line', () => {
+    const r = parseReceiptText('Purchase date: 23/10/2025 Total cost 13.9 DIESEL £1.44 - £20.00 Payment summary Subtotal: £20.00 Total: £20.00');
+    expect(r.items).toEqual([expect.objectContaining({ qty: 1, name: 'DIESEL', unitPrice: 144, lineTotal: 2000, weighed: true })]);
+    expect(r.warnings).toEqual([]);
+    // Tesco truncates the litres column, so a whole-number quantity is unreliable for fuel too (45.3 L printed as "34").
+    const t = parseReceiptText('Purchase date: 16/11/2025 Total cost 34 DIESEL £1.44 - £65.24 Payment summary Total: £65.24');
+    expect(t.items[0]).toMatchObject({ qty: 1, weighed: true, lineTotal: 6524 });
+    expect(t.warnings).toEqual([]);
+  });
+
   it('joins product names that wrap onto two lines', () => {
     expect(fixture('2026-06-27').items.find((i) => i.name.startsWith("McVitie's"))).toMatchObject({
       name: "McVitie's Milk Chocolate Digestive Biscuits 266G", qty: 1, unitPrice: 225, saving: 68, lineTotal: 157,

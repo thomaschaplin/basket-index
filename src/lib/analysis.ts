@@ -296,10 +296,13 @@ export function analyse(input: Receipt[]) {
 
   // ---- Top lists
   const topSpend = products.slice(0, 10);
+  // Staples: bought in at least half the months you shopped. Counting shops instead would let lots of small
+  // top-up shops (or fuel stops) push everyday items below the bar.
+  const stapleMonths = new Set(rs.map((r) => month(r.date!))).size;
   const staples = products
-    .filter((t) => t.orders >= Math.max(2, Math.ceil(rs.length / 2)))
-    .sort((a, b) => b.orders - a.orders || b.spend - a.spend)
-    .map((s) => ({ ...s, offers: s.points.filter((x) => x.onOffer).length }));
+    .map((s) => ({ ...s, months: new Set(s.points.map((x) => month(x.date))).size, offers: s.points.filter((x) => x.onOffer).length }))
+    .filter((s) => s.months >= Math.max(2, Math.ceil(stapleMonths / 2)))
+    .sort((a, b) => b.orders - a.orders || b.spend - a.spend);
   const topSavers = products.filter((t) => t.saved > 0).sort((a, b) => b.saved - a.saved).slice(0, 10);
 
   // ---- Receipt checks
@@ -341,6 +344,7 @@ export function analyse(input: Receipt[]) {
     packExtra: totalExtra,
     topSpend,
     staples,
+    stapleMonths,
     topSavers,
     warnings,
     basketDeals,

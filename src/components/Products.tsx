@@ -4,15 +4,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { ChartColours } from '../hooks/useTheme';
 import type { Analysis, ProductHistory } from '../lib/analysis';
-import { CATEGORY_EMOJI } from '../lib/categories';
+import { CATEGORY_EMOJI, weighedUnit } from '../lib/categories';
 import { day, dayLong, gbp, plural } from '../lib/format';
 import { Sparkline } from './Prices';
 import { Delta, Empty, Pill, Reveal, Section } from './ui';
 
 export function Staples({ a, onOpen }: { a: Analysis; onOpen: (key: string) => void }) {
-  const n = a.overview.receipts;
+  const n = a.stapleMonths;
   return (
-    <Section id="staples" eyebrow="Your staples" title="The things you always buy" subtitle="In at least half your shops, with how often you caught them on offer.">
+    <Section id="staples" eyebrow="Your staples" title="The things you always buy" subtitle="Bought in at least half the months you shopped, with how often you caught them on offer.">
       {a.staples.length ? (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {a.staples.slice(0, 12).map((s, i) => (
@@ -22,13 +22,13 @@ export function Staples({ a, onOpen }: { a: Analysis; onOpen: (key: string) => v
                   <span className="text-2xl leading-none" aria-hidden>{CATEGORY_EMOJI[s.category]}</span>
                   <span className="line-clamp-2 flex-1 text-sm font-semibold leading-snug">{s.name}</span>
                 </span>
-                <span className="flex items-center gap-1" aria-label={`In ${s.orders} of ${n} shops`}>
+                <span className="flex items-center gap-1" aria-label={`Bought in ${s.months} of ${n} months`}>
                   {Array.from({ length: n }, (_, j) => (
-                    <span key={j} className={`h-2 flex-1 rounded-full ${j < s.orders ? 'bg-gradient-brand' : 'bg-surface-2'}`} />
+                    <span key={j} className={`h-2 flex-1 rounded-full ${j < s.months ? 'bg-gradient-brand' : 'bg-surface-2'}`} />
                   ))}
                 </span>
                 <span className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
-                  <span><b className="num text-ink">{s.orders}/{n}</b> shops · <b className="num text-ink">{gbp(s.spend)}</b></span>
+                  <span><b className="num text-ink">{s.months}/{n}</b> months · {plural(s.orders, 'shop')} · <b className="num text-ink">{gbp(s.spend)}</b></span>
                   {s.offers ? <Pill tone="offer">On offer {s.offers}/{s.points.length}</Pill> : <Pill>Never on offer</Pill>}
                 </span>
               </button>
@@ -181,7 +181,7 @@ export function ProductModal({ product, a, c, onClose }: { product: ProductHisto
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {[
-                ['Latest shelf price', gbp(product.points.at(-1)!.shelf) + (product.weighed ? '/kg' : '')],
+                ['Latest shelf price', gbp(product.points.at(-1)!.shelf) + (product.weighed ? `/${weighedUnit(product.category)}` : '')],
                 ['Total spent', gbp(product.spend)],
                 ['Bought', `${product.units}× in ${plural(product.orders, 'shop')}`],
                 ['Saved on offers', gbp(product.saved)],
@@ -232,7 +232,7 @@ export function ProductModal({ product, a, c, onClose }: { product: ProductHisto
                   <li key={i} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5">
                     <span>{dayLong(b.date)}</span>
                     <span className="flex items-center gap-3">
-                      <span className="text-muted">×{b.qty}{b.weighed ? ` @ ${gbp(b.unitPrice)}/kg` : ` @ ${gbp(b.unitPrice)}`}</span>
+                      <span className="text-muted">×{b.qty}{b.weighed ? ` @ ${gbp(b.unitPrice)}/${weighedUnit(b.category)}` : ` @ ${gbp(b.unitPrice)}`}</span>
                       {b.saving > 0 && <Pill tone="offer">−{gbp(b.saving)}</Pill>}
                       <b className="num">{gbp(b.lineTotal)}</b>
                     </span>

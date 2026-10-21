@@ -63,9 +63,9 @@ const gbp = (p: number) => `£${(p / 100).toFixed(2)}`;
 export function parseReceiptText(raw: string): Receipt {
   const text = raw.replace(/\s+/g, ' ');
   const receipt: Receipt = {
-    orderId: field(text, /Order ID:\s*([\d-]+)/),
+    orderId: field(text, /Order ID:\s*([A-Z0-9]+(?:-[A-Z0-9]+)*)/),
     date: isoDate(field(text, /Purchase date:\s*(\d{1,2}\/\d{1,2}\/\d{4})/)),
-    channel: field(text, /Channel:\s*(\w+)/),
+    channel: field(text, /Channel:\s*([A-Za-z]+(?:-[A-Za-z]+)?)/),
     subtotal: money(field(text, /Subtotal:\s*£([\d,.]+)/)),
     reportedSavings: money(field(text, /Including savings of:\s*£([\d,.]+)/)),
     delivery: money(field(text, /Delivery:\s*\+\s*£([\d,.]+)/)),
@@ -84,16 +84,19 @@ export function parseReceiptText(raw: string): Receipt {
   const body = text.slice(start, end > 0 ? end : undefined);
 
   // qty, name, unit price, saving (or "-"), line total. pdf.js keeps wrapped names in reading order.
-  const re = /(\d{1,3})\s+(.+?)\s+£([\d,]+\.\d{2})\s+(?:£([\d,]+\.\d{2})|-)\s+£([\d,]+\.\d{2})/g;
+  // In-store receipts can leave the name blank ("1 £0.25 - £0.25") and give fuel in litres ("13.9 DIESEL £1.44 - £20.00").
+  const re = /(?<![\w.,£])(\d{1,3}(?:\.\d{1,3})?)\s+(?:(.*?)\s+)??£([\d,]+\.\d{2})\s+(?:£([\d,]+\.\d{2})|-)\s+£([\d,]+\.\d{2})/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(body))) {
-    const qty = +m[1];
-    const name = m[2].replace(/\s+/g, ' ').trim();
+    const name = (m[2] ?? '').replace(/\s+/g, ' ').trim() || 'Unnamed item';
     if (/^free sample\b/i.test(name)) continue; // £0.00 promotional extras aren't part of the shop
+    // Fuel: priced like loose produce, one line with the unit price per litre. Tesco truncates the litres column, so ignore it.
+    const byVolume = !Number.isInteger(+m[1]) || /\b(diesel|unleaded|petrol)\b/i.test(name);
+    const qty = byVolume ? 1 : +m[1];
     const unitPrice = money(m[3]);
     const saving = money(m[4]);
     const lineTotal = money(m[5]);
-    const weighed = /\bloose\b/i.test(name) || (qty === 1 && !saving && lineTotal !== unitPrice);
+    const weighed = byVolume || /\bloose\b/i.test(name) || (qty === 1 && !saving && lineTotal !== unitPrice);
     const item: ReceiptItem = { qty, name, unitPrice, saving, lineTotal, weighed, size: parseSize(name), family: familyKey(name) };
     if (!weighed && qty * unitPrice - saving !== lineTotal) receipt.warnings.push(`Line doesn't add up: ${name}`);
     receipt.items.push(item);

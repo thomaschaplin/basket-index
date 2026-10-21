@@ -1,4 +1,5 @@
 import { CalendarClock, Coins, PiggyBank, ShoppingBasket, Star, TrendingUp } from 'lucide-react';
+import { memo } from 'react';
 import { Area, AreaChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { ChartColours } from '../hooks/useTheme';
 import type { Analysis } from '../lib/analysis';
@@ -16,7 +17,7 @@ function ChartTip({ active, payload }: { active?: boolean; payload?: { payload: 
   );
 }
 
-export function Headline({ a, c }: { a: Analysis; c: ChartColours }) {
+export const Headline = memo(function Headline({ a, c }: { a: Analysis; c: ChartColours }) {
   const inf = a.inflation;
   const o = a.overview;
   const tone = inf.pct > 0.05 ? 'text-up' : inf.pct < -0.05 ? 'text-down' : 'text-ink';
@@ -96,4 +97,4 @@ export function Headline({ a, c }: { a: Analysis; c: ChartColours }) {
       </div>
     </div>
   );
-}
+});

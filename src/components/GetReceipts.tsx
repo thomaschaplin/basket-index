@@ -4,10 +4,10 @@ import DOWNLOADER from '../lib/downloader.js?raw';
 import { Section } from './ui';
 
 const STEPS = [
-  <>On a computer, sign in at <a className="font-semibold text-brand-ink underline decoration-brand/40 underline-offset-4 hover:decoration-brand" href="https://www.tesco.com/account/receipts/en-GB?tab=online&page=1" target="_blank" rel="noopener noreferrer">tesco.com/account/receipts <ExternalLink className="inline size-3.5" aria-hidden /></a></>,
+  <>On a computer, sign in at <a className="font-semibold text-brand-ink underline decoration-brand/40 underline-offset-4 hover:decoration-brand" href="https://www.tesco.com/account/receipts/en-GB/" target="_blank" rel="noopener noreferrer">tesco.com/account/receipts <ExternalLink className="inline size-3.5" aria-hidden /></a></>,
   <>Open the browser console: <kbd className="rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-xs">⌘ ⌥ J</kbd> on Mac, <kbd className="rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-xs">Ctrl ⇧ J</kbd> on Windows.</>,
-  <>Paste the script and press Enter. Allow multiple downloads if your browser asks.</>,
-  <>Drop the downloaded PDFs onto this page. Done.</>,
+  <>Paste the script and press Enter. It saves every receipt in one zip file.</>,
+  <>Drop the zip onto this page. Done.</>,
 ];
 
 export function GetReceipts() {
@@ -26,7 +26,7 @@ export function GetReceipts() {
   };
 
   return (
-    <Section id="get-receipts" eyebrow="One-minute setup" title="Grab every receipt at once" subtitle="Tesco lets you download receipts one by one. This script fetches them all using your own signed-in session. It only talks to tesco.com.">
+    <Section id="get-receipts" eyebrow="One-minute setup" title="Grab every receipt at once" subtitle="Tesco lets you download receipts one by one. This script fetches them all into one zip using your own signed-in session. It only talks to tesco.com.">
       <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
         <ol className="grid gap-3">
           {STEPS.map((s, i) => (

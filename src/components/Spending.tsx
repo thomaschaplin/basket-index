@@ -53,6 +53,8 @@ export function SpendChart({ a, c }: { a: Analysis; c: ChartColours }) {
   });
   const months = [...monthMap].map(([m, v]) => ({ label: monthName(m), ...v }));
   const data = view === 'shops' ? shops : months;
+  // Dozens of shops leave a few pixels per bar: drop the gaps and outlines or the bars round down to nothing.
+  const dense = data.length > 40;
 
   return (
     <Reveal className="card grid gap-4 p-5 sm:p-6">
@@ -69,13 +71,13 @@ export function SpendChart({ a, c }: { a: Analysis; c: ChartColours }) {
       </div>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 4, right: 0, left: 0, bottom: 0 }} barCategoryGap="22%">
+          <BarChart data={data} margin={{ top: 4, right: 0, left: 0, bottom: 0 }} barCategoryGap={dense ? 0 : '22%'}>
             <CartesianGrid vertical={false} stroke={c.grid} />
             <XAxis dataKey="label" tick={{ fill: c.muted, fontSize: 11 }} axisLine={false} tickLine={false} interval="preserveStartEnd" minTickGap={8} />
             <YAxis tickFormatter={(v: number) => gbp0(v)} tick={{ fill: c.muted, fontSize: 11 }} axisLine={false} tickLine={false} width={48} />
             <Tooltip content={<SpendTip />} cursor={{ fill: c.grid, opacity: 0.5 }} />
-            <Bar dataKey="paid" stackId="s" fill={c.brand} stroke={c.surface} strokeWidth={2} radius={[0, 0, 4, 4]} maxBarSize={56} animationDuration={900} />
-            <Bar dataKey="saved" stackId="s" fill={c.aqua} stroke={c.surface} strokeWidth={2} radius={[4, 4, 0, 0]} maxBarSize={56} animationDuration={900} />
+            <Bar dataKey="paid" stackId="s" fill={c.brand} stroke={c.surface} strokeWidth={dense ? 0 : 2} radius={[0, 0, 4, 4]} maxBarSize={56} animationDuration={900} />
+            <Bar dataKey="saved" stackId="s" fill={c.aqua} stroke={c.surface} strokeWidth={dense ? 0 : 2} radius={[4, 4, 0, 0]} maxBarSize={56} animationDuration={900} />
           </BarChart>
         </ResponsiveContainer>
       </div>
