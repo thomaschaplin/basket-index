@@ -11,15 +11,15 @@ const a = analyse(receipts);
 
 describe('analyse', () => {
   it('summarises all orders', () => {
-    expect(a.overview.receipts).toBe(17);
-    expect(a.overview.from).toBe('2026-05-02');
-    expect(a.overview.to).toBe('2026-10-03');
+    expect(a.overview.receipts).toBe(88);
+    expect(a.overview.from).toBe('2025-10-25');
+    expect(a.overview.to).toBe('2026-10-14');
     expect(a.overview.spend).toBe(receipts.reduce((s, r) => s + r.total, 0));
     expect(a.orders.map((o) => o.date)).toEqual([...a.orders.map((o) => o.date)].sort());
   });
 
   it('de-duplicates the same order loaded twice', () => {
-    expect(analyse([...receipts, ...receipts]).overview.receipts).toBe(17);
+    expect(analyse([...receipts, ...receipts]).overview.receipts).toBe(88);
   });
 
   it('builds a fixed-basket inflation figure from repeat buys', () => {
@@ -34,6 +34,16 @@ describe('analyse', () => {
     expect([...new Set(butter.points.map((p) => p.shelf))]).toEqual([199, 215, 225]);
     const bread = a.products.find((p) => p.name === 'Tesco Wholemeal Bread 800g')!;
     expect(bread.points.every((p) => p.shelf === 75)).toBe(true);
+  });
+
+  it('covers a year of online shops, in-store top-ups and fuel', () => {
+    const channels = receipts.reduce<Record<string, number>>((m, r) => ((m[r.channel!] = (m[r.channel!] ?? 0) + 1), m), {});
+    expect(channels).toEqual({ Online: 31, 'In-store': 57 });
+    expect(a.stapleMonths).toBe(13);
+    expect(a.staples[0].name).toBe('Tesco Semi Skimmed Milk 2.272L, 4 Pints');
+    expect(a.categories.map((c) => c.name)).toEqual(expect.arrayContaining(['Fuel', 'Health', 'Clothing & home', 'Baby & kids', 'Other']));
+    // Fuel is there but shouldn't dominate a grocery example.
+    expect(a.categories[0].name).not.toBe('Fuel');
   });
 
   it('spots shrinkflation but not an ordinary pack choice', () => {

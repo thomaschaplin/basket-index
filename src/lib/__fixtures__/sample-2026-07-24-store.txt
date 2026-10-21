@@ -1,0 +1,19 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   VLX9-XW02-65S9-CM5Z 
+Purchase date:   24/07/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £1.55 
+1   Tesco Bananas Loose   £0.85   -   £0.86 
+1   Tesco Fish Fingers 10 Pack 250G   £1.75   -   £1.75 
+1   Tesco Whole Cucumber Each   £0.85   -   £0.85 
+1   Tesco Orange Juice Smooth 1 Litre   £1.70   -   £1.70 
+1   Tesco Cooked Ham Slices 125G   £1.50   -   £1.50 
+Payment summary 
+Subtotal:   £8.21 
+Total:   £8.21 
+Other details 
+Clubcard points earned: 8 points 

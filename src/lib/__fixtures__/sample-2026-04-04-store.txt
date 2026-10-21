@@ -1,0 +1,19 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   5Z27-9SQZ-QPPW-3Y6X 
+Purchase date:   04/04/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   Tesco Wholemeal Bread 800g   £0.75   -   £1.50 
+1   Tesco Porridge Oats 1Kg   £1.15   -   £1.15 
+1   Tesco Non Bio Washing Powder 40 Washes 2Kg   £5.00   -   £5.00 
+1   Tesco Bananas Loose   £0.85   -   £1.09 
+1   Tesco Kiwi Fruit Loose   £0.94   -   £0.91 
+1   Tesco Broccoli 375G   £0.82   -   £0.82 
+Payment summary 
+Subtotal:   £10.47 
+Total:   £10.47 
+Other details 
+Clubcard points earned: 10 points 

@@ -1,0 +1,60 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-027 
+Purchase date:   25/08/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Red Seedless Grapes 500G   £2.25   £0.50   £1.75 
+1   Tesco Extra Mature Cheddar 700G   £5.75   -   £5.75 
+1   Tesco Coleslaw 300G   £0.99   -   £0.99 
+2   Tesco British Chicken Thigh Fillets 500G   £4.75   -   £9.50 
+1   Tesco Brown Onions Loose   £0.80   -   £0.48 
+1   Philadelphia Original Soft Cheese 165G   £2.25   -   £2.25 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+1   Tesco Spaghetti 500G   £0.70   -   £0.70 
+4   Tesco Chopped Tomatoes 400G   £0.45   -   £1.80 
+2   Tesco Finest Belgian Milk Chocolate Bar 180G   £2.00   -   £4.00 
+1   Yorkshire Tea Teabags 160 Pack   £6.00   £1.50   £4.50 
+1   Tesco British Turkey Breast Mince 500G   £4.75   -   £4.75 
+1   Tesco Bananas Loose   £0.85   -   £0.76 
+1   Walkers Ready Salted Multipack Crisps 6x25g   £2.25   £0.50   £1.75 
+1   Tesco Free Range Medium Eggs 12 Pack   £4.20   -   £4.20 
+1   Tesco Whole Cucumber Each   £0.85   -   £0.85 
+1   Coca-Cola Zero Sugar 8 x 330ml   £5.75   £1.25   £4.50 
+1   Tesco Strawberries 400G   £2.50   -   £2.50 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Plain Tortilla Wraps 8 Pack   £1.25   -   £1.25 
+1   Tesco Cooked Ham Slices 125G   £1.50   -   £1.50 
+1   Tesco Ripe & Ready Mango Each   £0.69   -   £0.69 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+1   Tesco Large Free Range Eggs 6 Pack   £3.50   -   £3.50 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £1.55 
+1   Tesco Salted Butter 250g   £2.15   -   £2.15 
+1   Tesco Greek Style Natural Yogurt 500G   £1.15   -   £1.15 
+1   Tesco Easy Peelers 600G   £1.75   -   £1.75 
+1   McVitie's Milk Chocolate Digestive Biscuits 
+266G 
+£2.25   £0.50   £1.75 
+1   Tesco Extra Mature Cheddar 350G   £3.50   -   £3.50 
+1   Tesco Penne Pasta 500G   £0.75   -   £0.75 
+2   Tesco Mini Watermelon Each   £2.50   £1.00   £4.00 
+1   Tesco Tenderstem Broccoli 200G   £0.79   -   £0.79 
+1   Muller Corner Strawberry Yogurt 6 x 124g   £4.00   £1.00   £3.00 
+1   Tesco Oven Chips 1.5Kg   £2.15   -   £2.15 
+1   Tesco Beef Stock Cubes 10 x 10g   £0.75   -   £0.75 
+1   Tesco Cherry Tomatoes 330G   £1.09   -   £1.09 
+1   Tesco Courgettes Loose   £0.60   -   £0.46 
+1   Tesco Bin Liners 50L 30 Pack   £1.50   -   £1.50 
+1   Tesco British Beef Lean Steak Mince 5% Fat 
+500G 
+£4.75   -   £4.75 
+1   Tesco Carrots 1Kg   £0.69   -   £0.69 
+Payment summary 
+Subtotal:   £93.50 
+Including savings of:   £2.50 
+Delivery:   + £0.00 
+Total:   £93.50 
+Other details 
+Clubcard points earned: 93 points 

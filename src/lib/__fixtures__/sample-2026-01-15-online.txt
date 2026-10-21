@@ -1,0 +1,49 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-008 
+Purchase date:   15/01/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Bin Liners 50L 30 Pack   £1.50   -   £1.50 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+1   Tesco Greek Style Natural Yogurt 500G   £1.15   £0.20   £0.95 
+1   Tesco Plain Tortilla Wraps 8 Pack   £1.25   -   £1.25 
+1   Tesco Large Free Range Eggs 6 Pack   £3.15   -   £3.15 
+1   Tesco Basmati Rice 1Kg   £2.30   -   £2.30 
+1   Tesco Sweet Potatoes 1Kg   £1.19   -   £1.19 
+1   Cadbury Creme Egg 5 Pack 200G   £2.35   -   £2.35 
+1   Tesco Spaghetti 500G   £0.70   -   £0.70 
+1   Heinz Baked Beanz 4 x 415G   £1.55   -   £1.55 
+1   Tesco Courgettes Loose   £0.60   -   £0.24 
+1   Tesco Salmon Fillets 2 Pack 240G   £4.50   -   £4.50 
+1   Tesco Sea Salt & Black Pepper Kettle Chips 
+150G 
+£1.50   -   £1.50 
+1   Colgate Total Original Care Toothpaste 75Ml   £3.00   £1.00   £2.00 
+1   Tesco Carrots 1Kg   £0.69   -   £0.69 
+1   Tesco British Chicken Thigh Fillets 500G   £4.25   -   £4.25 
+1   Tesco Broccoli 375G   £0.75   -   £0.75 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.39   -   £1.39 
+1   Tesco Tenderstem Broccoli 200G   £0.79   -   £0.79 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco British Beef Lean Steak Mince 5% Fat 
+500G 
+£4.50   -   £4.50 
+1   Tesco Medium Sliced White Bread 800G   £0.75   -   £0.75 
+1   Tesco Unsmoked Back Bacon 300G   £2.50   -   £2.50 
+1   Tesco Gala Apples 6 Pack   £1.60   -   £1.60 
+1   Tesco Whole Chicken 1.6Kg   £4.50   -   £4.50 
+1   Tesco Bananas Loose   £0.85   -   £1.17 
+1   Tesco Extra Mature Cheddar 350G   £3.30   -   £3.30 
+1   Tesco Luxury Soft Toilet Tissue 9 Roll   £4.50   -   £4.50 
+1   Tesco Cooked Ham Slices 125G   £1.50   -   £1.50 
+1   Philadelphia Original Soft Cheese 165G   £2.00   -   £2.00 
+Payment summary 
+Subtotal:   £59.77 
+Including savings of:   £0.48 
+Delivery:   + £0.00 
+Total:   £59.77 
+Other details 
+Clubcard points earned: 59 points 

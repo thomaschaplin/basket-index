@@ -1,0 +1,40 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-020 
+Purchase date:   28/05/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Bananas Loose   £0.85   -   £1.10 
+1   Tesco Mini Watermelon Each   £2.50   -   £2.50 
+1   Tesco Large Free Range Eggs 6 Pack   £3.30   -   £3.30 
+1   Tesco British Chicken Thigh Fillets 500G   £4.50   -   £4.50 
+1   Tesco Carrots 1Kg   £0.69   -   £0.69 
+1   Tesco Oven Chips 1.5Kg   £2.15   -   £2.15 
+1   Tesco Cheese & Onion Rolls 4 Pack   £2.00   -   £2.00 
+1   Tesco Cooked Ham Slices 125G   £1.50   -   £1.50 
+1   Heinz Baked Beanz 4 x 415G   £1.70   -   £1.70 
+1   Tesco Cherry Tomatoes 330G   £0.99   -   £0.99 
+1   Tesco Salted Butter 250g   £1.99   -   £1.99 
+2   Tesco Kids Apple & Pear Fruit Pouches 4 x 90g   £1.60   -   £3.20 
+1   Tesco Blackberries 150G   £2.00   -   £2.00 
+1   Tesco Orange Juice Smooth 1 Litre   £1.55   -   £1.55 
+1   Tesco Strawberries 400G   £2.50   -   £2.50 
+1   Tesco Salmon Fillets 2 Pack 240G   £4.50   -   £4.50 
+2   Tesco Gala Apples 6 Pack   £1.60   £0.50   £2.70 
+1   Tesco Everyday Moisturising Shower Gel With 
+Coconut Scent 500Ml 
+£1.10   -   £1.10 
+2   Tesco Whole Chicken 1.6Kg   £4.75   -   £9.50 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+1   Tesco Broccoli 375G   £0.82   -   £0.82 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+1   Tesco Extra Mature Cheddar 350G   £3.30   -   £3.30 
+Payment summary 
+Subtotal:   £56.69 
+Including savings of:   £0.20 
+Delivery:   + £0.00 
+Total:   £56.69 
+Other details 
+Clubcard points earned: 56 points 

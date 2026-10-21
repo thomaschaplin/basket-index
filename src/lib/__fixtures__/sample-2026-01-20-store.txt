@@ -1,0 +1,21 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   EE57-ST4S-5D2K-SD60 
+Purchase date:   20/01/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   McVitie's Milk Chocolate Digestive Biscuits 
+266G 
+£2.25   £1.00   £3.50 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.39   -   £1.39 
+1   Tesco Mozzarella 125G   £0.75   -   £0.75 
+1   Tesco Cherry Tomatoes 330G   £0.99   -   £0.99 
+1   Tesco Salmon Fillets 2 Pack 240G   £4.50   -   £4.50 
+Payment summary 
+Subtotal:   £11.13 
+Including savings of:   £0.40 
+Total:   £11.13 
+Other details 
+Clubcard points earned: 11 points 

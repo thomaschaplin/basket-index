@@ -1,0 +1,24 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   N008-DVVW-XXV6-VR0G 
+Purchase date:   27/06/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+1   Tesco Greek Style Natural Yogurt 500G   £1.15   £0.20   £0.95 
+1   Tesco Cherry Tomatoes 330G   £0.99   -   £0.99 
+1   Tesco Cheese & Onion Rolls 4 Pack   £2.00   -   £2.00 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+1   Tesco Bananas Loose   £0.85   -   £1.08 
+1   Tesco Tenderstem Broccoli 200G   £0.79   -   £0.79 
+1   Tesco Sea Salt & Black Pepper Kettle Chips 
+150G 
+£1.50   -   £1.50 
+Payment summary 
+Subtotal:   £9.41 
+Including savings of:   £0.08 
+Total:   £9.41 
+Other details 
+Clubcard points earned: 9 points 

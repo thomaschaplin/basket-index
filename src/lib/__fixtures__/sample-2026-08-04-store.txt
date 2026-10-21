@@ -1,0 +1,16 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   WH64-05H6-4WUQ-NSTV 
+Purchase date:   04/08/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Tenderstem Broccoli 200G   £0.79   -   £0.79 
+1   Tesco Easy Peelers 600G   £1.75   -   £1.75 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £1.55 
+Payment summary 
+Subtotal:   £4.09 
+Total:   £4.09 
+Other details 
+Clubcard points earned: 4 points 

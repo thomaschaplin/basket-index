@@ -41,7 +41,7 @@ npm test           # parser + analysis tests against the fixtures
 npm run build      # type-check and build to dist/
 ```
 
-The example data is made up: `npm run sample` regenerates it. It deliberately includes price rises, two shrinkflation cases, a pack-size choice, loose produce, wrapped product names, a whole-basket coupon and one receipt that doesn't add up, so every part of the dashboard has something to show. Real receipts never go in the repo.
+The example data is made up: `npm run sample` regenerates it. It's a year of a fictional household's shopping (a big online shop every week or two, in-store top-ups in between, and fuel every few weeks) and deliberately includes price rises, two shrinkflation cases, a pack-size choice, loose produce, wrapped product names, seasonal buys, in-store order IDs and nameless till lines, fuel by the litre, a whole-basket coupon and one receipt that doesn't add up, so every part of the dashboard has something to show. Real receipts never go in the repo.
 
 ## Deploy
 

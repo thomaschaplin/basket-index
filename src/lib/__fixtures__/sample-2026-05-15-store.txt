@@ -1,0 +1,25 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   QCJV-ESX4-1HSX-180C 
+Purchase date:   15/05/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+2   Tesco Cooked Ham Slices 125G   £1.50   -   £3.00 
+1   Tesco Salted Butter 250g   £1.99   -   £1.99 
+1   Tesco Penne Pasta 500G   £0.70   -   £0.70 
+1   Walkers Ready Salted Multipack Crisps 6x25g   £2.25   £0.50   £1.75 
+1   Tesco Dishwasher Tablets Lemon 30 Pack   £4.00   -   £4.00 
+1   Tesco Whole Cucumber Each   £0.85   -   £0.85 
+1   Tesco Single Cream 300Ml   £1.05   -   £1.05 
+1   Tesco Carrots 1Kg   £0.69   -   £0.69 
+1   Tesco Red Seedless Grapes 500G   £2.00   -   £2.00 
+1   £0.70   -   £0.70 
+Payment summary 
+Subtotal:   £18.18 
+Including savings of:   £0.20 
+Total:   £18.18 
+Other details 
+Clubcard points earned: 18 points 

@@ -1,0 +1,19 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   JWV4-7ZLK-B0J1-PS8M 
+Purchase date:   15/11/2025 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Apple & Blackcurrant No Added Sugar 
+Squash 1L 
+£0.85   -   £0.85 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.39   -   £1.39 
+1   Tesco Baby Spinach 240G   £1.50   -   £1.50 
+1   Tesco Medium Sliced White Bread 800G   £0.75   -   £0.75 
+Payment summary 
+Subtotal:   £4.49 
+Total:   £4.49 
+Other details 
+Clubcard points earned: 4 points 

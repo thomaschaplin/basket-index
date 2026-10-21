@@ -1,0 +1,22 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   KF3E-G6G4-X6LL-YRJY 
+Purchase date:   02/09/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Free Range Medium Eggs 12 Pack   £4.20   -   £4.20 
+1   Tesco Finest Belgian Milk Chocolate Bar 180G   £2.00   -   £2.00 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.55   -   £1.55 
+1   Tesco Extra Mature Cheddar 350G   £3.50   -   £3.50 
+1   Tesco Easy Peelers 600G   £1.75   £0.35   £1.40 
+1   Coca-Cola Zero Sugar 8 x 330ml   £5.75   -   £5.75 
+1   Tesco Cherry Tomatoes 330G   £1.09   -   £1.09 
+2   Tesco Broccoli 375G   £0.82   -   £1.64 
+Payment summary 
+Subtotal:   £21.13 
+Including savings of:   £0.14 
+Total:   £21.13 
+Other details 
+Clubcard points earned: 21 points 

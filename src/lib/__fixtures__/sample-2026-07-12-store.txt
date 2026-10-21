@@ -1,0 +1,28 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   ZW47-QDU5-4YRT-0XJ3 
+Purchase date:   12/07/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Carlton Everyday Bday Balloons and Stars 
+100001-0-1 
+£2.00   -   £2.00 
+1   Tesco Health Vitamin D 25mcg Tablets 120s   £3.00   -   £3.00 
+1   Tesco Large Free Range Eggs 6 Pack   £3.30   -   £3.30 
+1   Tesco Red Seedless Grapes 500G   £2.25   £0.50   £1.75 
+1   Tesco Bin Liners 50L 30 Pack   £1.50   -   £1.50 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Cheese & Onion Rolls 4 Pack   £2.00   -   £2.00 
+1   Tesco Bananas Loose   £0.85   -   £1.04 
+2   Walkers Ready Salted Multipack Crisps 6x25g   £2.25   -   £4.50 
+1   Tesco Cooked Ham Slices 125G   £1.50   -   £1.50 
+1   Tesco Spaghetti 500G   £0.70   -   £0.70 
+2   Tesco Dishwasher Tablets Lemon 30 Pack   £4.00   -   £8.00 
+Payment summary 
+Subtotal:   £30.04 
+Including savings of:   £0.20 
+Total:   £30.04 
+Other details 
+Clubcard points earned: 30 points 

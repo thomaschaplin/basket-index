@@ -3,7 +3,7 @@ import { Award, Scale } from 'lucide-react';
 import { useState } from 'react';
 import type { Analysis, PriceChange, PricePoint } from '../lib/analysis';
 import { weighedUnit } from '../lib/categories';
-import { day, gbp, plural } from '../lib/format';
+import { day, dayRange, gbp, plural } from '../lib/format';
 import { Delta, Empty, Pill, Reveal, Section, Segmented } from './ui';
 
 export function Sparkline({ points, height = 36, className = '' }: { points: PricePoint[]; height?: number; className?: string }) {
@@ -47,7 +47,7 @@ function MoverCard({ c, onOpen }: { c: PriceChange; onOpen: () => void }) {
       </span>
       <Sparkline points={c.points} />
       <span className="flex justify-between gap-2 border-t border-dashed border-line pt-2 text-xs text-muted">
-        <span>{day(c.fromDate)} → {day(c.toDate)}</span>
+        <span>{dayRange(c.fromDate, c.toDate)}</span>
         <span>{c.weighed ? `per ${weighedUnit(c.category)}` : `bought ${c.times}×`}</span>
       </span>
     </motion.button>

@@ -1,0 +1,19 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   VBGU-7CGS-79FV-R2Z0 
+Purchase date:   12/03/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   £0.70   -   £0.70 
+1   Tesco Baby Spinach 240G   £1.50   -   £1.50 
+1   Tesco Health Light Fabric Assorted Plasters 
+40s 
+£1.40   -   £1.40 
+Payment summary 
+Subtotal:   £4.35 
+Total:   £4.35 
+Other details 
+Clubcard points earned: 4 points 

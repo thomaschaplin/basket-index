@@ -4,14 +4,14 @@ import { describe, expect, it } from 'vitest';
 import { familyKey, parseReceiptText, parseSize } from './parser';
 
 const dir = path.join(__dirname, '__fixtures__');
-const fixture = (date: string) => parseReceiptText(fs.readFileSync(path.join(dir, `sample-${date}.txt`), 'utf8'));
+const fixture = (name: string) => parseReceiptText(fs.readFileSync(path.join(dir, `sample-${name}.txt`), 'utf8'));
 
 describe('parseReceiptText', () => {
   it('reads order details and totals', () => {
-    const r = fixture('2026-05-02');
-    expect(r).toMatchObject({ orderId: '2000-0000-001', date: '2026-05-02', channel: 'Online', subtotal: 5828, total: 5828, points: 58 });
-    expect(r.items).toHaveLength(26);
-    expect(r.itemsTotal).toBe(5828);
+    const r = fixture('2025-10-25-online');
+    expect(r).toMatchObject({ orderId: '2000-0000-001', date: '2025-10-25', channel: 'Online', subtotal: 5536, total: 5536, points: 55 });
+    expect(r.items).toHaveLength(27);
+    expect(r.itemsTotal).toBe(5536);
     expect(r.warnings).toEqual([]);
   });
 
@@ -40,14 +40,14 @@ describe('parseReceiptText', () => {
   });
 
   it('joins product names that wrap onto two lines', () => {
-    expect(fixture('2026-06-27').items.find((i) => i.name.startsWith("McVitie's"))).toMatchObject({
-      name: "McVitie's Milk Chocolate Digestive Biscuits 266G", qty: 1, unitPrice: 225, saving: 68, lineTotal: 157,
+    expect(fixture('2025-10-25-online').items.find((i) => i.name.startsWith("McVitie's"))).toMatchObject({
+      name: "McVitie's Milk Chocolate Digestive Biscuits 266G", qty: 2, unitPrice: 225, saving: 0, lineTotal: 450,
     });
   });
 
   it('treats loose produce as weighed', () => {
-    const bananas = fixture('2026-06-27').items.find((i) => i.name === 'Tesco Kiwi Fruit Loose')!;
-    expect(bananas).toMatchObject({ weighed: true, unitPrice: 94, lineTotal: 103 });
+    const kiwi = fixture('2025-11-07-online').items.find((i) => i.name === 'Tesco Kiwi Fruit Loose')!;
+    expect(kiwi).toMatchObject({ weighed: true, unitPrice: 94, lineTotal: 69 });
   });
 
   it('skips free samples', () => {
@@ -56,18 +56,25 @@ describe('parseReceiptText', () => {
   });
 
   it('flags receipts whose lines do not reconcile with the charged total', () => {
-    expect(fixture('2026-08-22').warnings[0]).toMatch(/charged £51\.07, but the items add up to £50\.67/);
+    expect(fixture('2026-08-25-online').warnings[0]).toMatch(/charged £93\.50, but the items add up to £93\.10/);
   });
 
   it('detects a whole-basket discount', () => {
-    expect(fixture('2026-06-27').basketDiscount).toEqual({ amount: 354, pct: 10 });
+    expect(fixture('2026-06-20-online').basketDiscount).toEqual({ amount: 571, pct: 10 });
+  });
+
+  it('reads the in-store and fuel fixtures', () => {
+    expect(fixture('2025-10-29-store')).toMatchObject({ orderId: 'LKQY-C4MM-AW34-RL94', channel: 'In-store', delivery: 0 });
+    expect(fixture('2025-10-28-fuel')).toMatchObject({ orderId: '97401041228102500713306543417275', total: 4770, warnings: [] });
+    expect(fixture('2025-10-28-fuel').items).toEqual([expect.objectContaining({ name: 'DIESEL', qty: 1, unitPrice: 142, lineTotal: 4770, weighed: true })]);
+    expect(fixture('2026-03-12-store').items).toContainEqual(expect.objectContaining({ name: 'Unnamed item', lineTotal: 70 }));
   });
 
   it('every fixture parses with a date, items, and line maths that add up', () => {
     for (const f of fs.readdirSync(dir)) {
       const r = parseReceiptText(fs.readFileSync(path.join(dir, f), 'utf8'));
       expect(r.date, f).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      expect(r.items.length, f).toBeGreaterThan(10);
+      expect(r.items.length, f).toBeGreaterThan(f.includes('online') ? 10 : 0); // top-ups and fuel stops are small
       expect(r.warnings.filter((w) => w.startsWith("Line doesn't")), f).toEqual([]);
     }
   });

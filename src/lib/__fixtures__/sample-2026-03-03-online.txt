@@ -1,0 +1,47 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-012 
+Purchase date:   03/03/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   Tesco Honey Nut Cornflakes 500G   £1.65   -   £3.30 
+1   Tesco Large Free Range Eggs 6 Pack   £3.15   -   £3.15 
+1   Tesco Margherita Pizza 345G   £1.90   -   £1.90 
+1   Tesco Peshwari Naan 2 Pack   £1.05   -   £1.05 
+2   Tesco Ripe & Ready Mango Each   £0.75   -   £1.50 
+1   Tesco British Beef Lean Steak Mince 5% Fat 
+500G 
+£4.50   £0.50   £4.00 
+1   Tesco Sparkling Water 4X1.5L   £1.40   -   £1.40 
+1   Tesco Plain Tortilla Wraps 8 Pack   £1.25   -   £1.25 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+1   Tesco Greek Style Natural Yogurt 500G   £1.15   -   £1.15 
+1   Heinz Baked Beanz 4 x 415G   £1.70   -   £1.70 
+1   Tesco Fruit & Nut Crunchy Granola 1Kg   £3.00   -   £3.00 
+1   Tesco Bananas Loose   £0.85   -   £0.73 
+1   Tesco Brown Onions Loose   £0.80   -   £0.47 
+2   Tesco Salted Butter 250g   £1.99   -   £3.98 
+1   Tesco Washing Up Liquid Original 450Ml   £0.65   -   £0.65 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+1   Tesco Red Seedless Grapes 500G   £2.00   -   £2.00 
+1   Tesco Pesto Alla Genovese 190G   £1.65   -   £1.65 
+1   Tesco Basmati Rice 1Kg   £2.30   -   £2.30 
+1   Tesco Oven Chips 1.5Kg   £2.15   -   £2.15 
+1   Tesco Penne Pasta 500G   £0.70   -   £0.70 
+2   Tesco Wholemeal Bread 800g   £0.75   -   £1.50 
+2   Tesco Tenderstem Broccoli 200G   £0.79   -   £1.58 
+1   Tesco Orange Juice Smooth 1 Litre   £1.55   -   £1.55 
+1   Walkers Ready Salted Multipack Crisps 6x25g   £2.25   £0.50   £1.75 
+2   Tesco Spaghetti 500G   £0.70   -   £1.40 
+1   Tesco Apple & Blackcurrant No Added Sugar 
+Squash 1L 
+£0.85   -   £0.85 
+Payment summary 
+Subtotal:   £49.76 
+Including savings of:   £0.40 
+Delivery:   + £0.00 
+Total:   £49.76 
+Other details 
+Clubcard points earned: 49 points 

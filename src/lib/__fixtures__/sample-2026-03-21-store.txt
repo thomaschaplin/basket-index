@@ -1,0 +1,21 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   EZA9-YQF2-T6XW-3H9G 
+Purchase date:   21/03/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   Tesco Wholemeal Bread 800g   £0.75   -   £1.50 
+1   Tesco Extra Mature Cheddar 700G   £5.75   -   £5.75 
+1   Tesco Cooked Ham Slices 125G   £1.50   -   £1.50 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+2   Tesco Sparkling Water 4X1.5L   £1.40   -   £2.80 
+1   Tesco Easy Peelers 600G   £1.75   -   £1.75 
+2   Heinz Baked Beanz 4 x 415G   £1.70   -   £3.40 
+1   Tesco Baby Spinach 240G   £1.50   -   £1.50 
+Payment summary 
+Subtotal:   £19.15 
+Total:   £19.15 
+Other details 
+Clubcard points earned: 19 points 

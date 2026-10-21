@@ -15,7 +15,7 @@ import { useReceipts } from './hooks/useReceipts';
 import { chartColours, useTheme, type ChartColours } from './hooks/useTheme';
 import { analyse, type Analysis } from './lib/analysis';
 import { downloadCsv } from './lib/export';
-import { day, plural } from './lib/format';
+import { dayRange, plural } from './lib/format';
 
 export default function App() {
   const { theme, toggle } = useTheme();
@@ -71,7 +71,7 @@ export default function App() {
                       <span className="text-gradient">decoded</span>
                     </h1>
                     <p className="text-muted">
-                      {plural(a.overview.receipts, 'receipt')} · {a.overview.from && day(a.overview.from)} to {a.overview.to && day(a.overview.to)} · {a.overview.lines} lines read
+                      {plural(a.overview.receipts, 'receipt')} · {a.overview.from && a.overview.to && dayRange(a.overview.from, a.overview.to, ' to ')} · {a.overview.lines} lines read
                     </p>
                   </div>
                   <div className="w-full sm:w-96"><Dropzone onFiles={onFiles} progress={progress} compact /></div>

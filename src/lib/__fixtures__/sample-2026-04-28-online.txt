@@ -1,0 +1,47 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-017 
+Purchase date:   28/04/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Cooked Ham Slices 125G   £1.50   -   £1.50 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+1   Tesco Large Free Range Eggs 6 Pack   £3.30   -   £3.30 
+1   Tesco Frozen Garden Peas 1Kg   £1.60   -   £1.60 
+1   Tesco Ripe & Ready Mango Each   £0.75   -   £0.75 
+1   Tesco Cherry Tomatoes 330G   £0.99   -   £0.99 
+1   Tesco Finest Belgian Milk Chocolate Bar 200G   £2.00   -   £2.00 
+1   Tesco Apple & Blackcurrant No Added Sugar 
+Squash 1L 
+£0.85   -   £0.85 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Kids Strawberry Fromage Frais 6 x 45G   £0.95   -   £0.95 
+1   Tesco Extra Mature Cheddar 700G   £5.75   -   £5.75 
+1   Tesco British Turkey Breast Mince 500G   £4.50   -   £4.50 
+2   Tesco Penne Pasta 500G   £0.70   -   £1.40 
+1   Tesco Oven Chips 1.5Kg   £2.15   -   £2.15 
+1   Tesco Salted Butter 250g   £1.99   -   £1.99 
+1   Tesco Gala Apples 6 Pack   £1.60   £0.25   £1.35 
+1   Tesco Reduced Fat Houmous 300G   £1.15   -   £1.15 
+1   Tesco Bananas Loose   £0.85   -   £1.15 
+1   Tesco Easy Peelers 600G   £1.75   £0.35   £1.40 
+1   Tesco Baby Spinach 240G   £1.50   -   £1.50 
+2   Tesco Broccoli 375G   £0.82   -   £1.64 
+1   Tesco Orange Juice Smooth 1 Litre   £1.55   -   £1.55 
+1   Tesco Whole Chicken 1.6Kg   £4.50   -   £4.50 
+1   Tesco British Chicken Thigh Fillets 500G   £4.50   -   £4.50 
+1   Tesco Brown Onions Loose   £0.80   -   £0.41 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.45   -   £1.45 
+1   Tesco Kiwi Fruit Loose   £0.94   -   £1.06 
+1   Tesco Greek Style Natural Yogurt 500G   £1.15   -   £1.15 
+1   Tesco Fruit & Nut Crunchy Granola 1Kg   £3.00   -   £3.00 
+1   Tesco Carrots 1Kg   £0.69   -   £0.69 
+Payment summary 
+Subtotal:   £56.63 
+Including savings of:   £0.24 
+Delivery:   + £0.00 
+Total:   £56.63 
+Other details 
+Clubcard points earned: 56 points 

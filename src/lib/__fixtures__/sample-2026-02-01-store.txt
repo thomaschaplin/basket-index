@@ -1,0 +1,18 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   887Z-41QY-EK78-KDV8 
+Purchase date:   01/02/2026 
+Channel:   In-store 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+1   Tesco Medium Sliced White Bread 800G   £0.75   -   £0.75 
+1   Tesco Frozen Garden Peas 1Kg   £1.60   -   £1.60 
+1   Tesco Orange Juice Smooth 1 Litre   £1.55   -   £1.55 
+2   Tesco Salted Butter 250g   £1.99   -   £3.98 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.39   -   £1.39 
+Payment summary 
+Subtotal:   £9.27 
+Total:   £9.27 
+Other details 
+Clubcard points earned: 9 points 

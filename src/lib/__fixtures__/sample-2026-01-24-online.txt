@@ -1,0 +1,57 @@
+Receipt 
+Customer details [example household] Seller details Tesco Order information 
+Order ID:   2000-0000-009 
+Purchase date:   24/01/2026 
+Channel:   Online 
+
+Your items 
+Qty   Product description   Unit price   Savings   Total cost 
+2   Tesco Extra Mature Cheddar 700G   £5.75   -   £11.50 
+1   Tesco Large Free Range Eggs 6 Pack   £3.15   -   £3.15 
+1   Tesco Single Cream 300Ml   £1.05   -   £1.05 
+1   Walkers Ready Salted Multipack Crisps 6x25g   £2.25   -   £2.25 
+1   Tesco Sparkling Water 4X1.5L   £1.40   -   £1.40 
+1   Tesco Blackberries 150G   £2.00   -   £2.00 
+1   Tesco Cooked Ham Slices 125G   £1.50   -   £1.50 
+1   Tesco Sea Salt & Black Pepper Kettle Chips 
+150G 
+£1.50   -   £1.50 
+1   McVitie's Milk Chocolate Digestive Biscuits 
+266G 
+£2.25   -   £2.25 
+1   Tesco Bananas Loose   £0.85   -   £0.76 
+1   Cadbury Creme Egg 5 Pack 200G   £2.35   -   £2.35 
+1   Tesco Tenderstem Broccoli 200G   £0.79   -   £0.79 
+1   Tesco Gala Apples 6 Pack   £1.60   -   £1.60 
+1   Tesco Wholemeal Bread 800g   £0.75   -   £0.75 
+1   Tesco Honey Nut Cornflakes 500G   £1.65   -   £1.65 
+1   Tesco Courgettes Loose   £0.60   -   £0.53 
+1   Tesco Apple & Blackcurrant No Added Sugar 
+Squash 1L 
+£0.85   -   £0.85 
+1   Tesco Red Seedless Grapes 500G   £2.00   £0.25   £1.75 
+1   Tesco Semi Skimmed Milk 2.272L, 4 Pints   £1.39   -   £1.39 
+1   Tesco Baby Potatoes 1Kg   £1.65   -   £1.65 
+1   Tesco British Beef Lean Steak Mince 5% Fat 
+500G 
+£4.50   -   £4.50 
+2   Tesco Whole Cucumber Each   £0.75   -   £1.50 
+1   Tesco Penne Pasta 500G   £0.70   -   £0.70 
+1   Tesco Garlic Bread Baguette 2 Pack   £1.00   -   £1.00 
+1   Tesco Cherry Tomatoes 330G   £0.99   -   £0.99 
+2   Tesco British Chicken Thigh Fillets 500G   £4.25   -   £8.50 
+3   Tesco Chopped Tomatoes 400G   £0.45   -   £1.35 
+2   Tesco Fruit & Nut Crunchy Granola 1Kg   £3.00   -   £6.00 
+1   Tesco Carrots 1Kg   £0.69   -   £0.69 
+2   Tesco Salted Butter 250g   £1.99   -   £3.98 
+1   Tesco Medium Sliced White Bread 800G   £0.75   -   £0.75 
+1   Tesco Whole Chicken 1.6Kg   £4.50   -   £4.50 
+1   Tesco Free Range Medium Eggs 12 Pack   £3.90   -   £3.90 
+1   Tesco Greek Style Natural Yogurt 500G   £1.15   £0.20   £0.95 
+Payment summary 
+Subtotal:   £79.98 
+Including savings of:   £0.18 
+Delivery:   + £0.00 
+Total:   £79.98 
+Other details 
+Clubcard points earned: 79 points 
