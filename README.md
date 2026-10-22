@@ -54,6 +54,32 @@ Canonical, Open Graph, Twitter card and JSON-LD tags live in `index.html` and us
 
 The share card (`public/og.png`, 1200×630) and the PNG app icons are rendered from `scripts/og-card.html` and `public/favicon.svg` with headless Chrome: `npm run og` (set `CHROME=/path/to/chrome` if it isn't found).
 
+## Sainsbury's downloader
+
+`src/lib/downloader-sainsburys.js` runs in the browser console while you're signed in on sainsburys.co.uk. It uses that signed-in session to save all your groceries orders into one zip for Basket Index. It only talks to sainsburys.co.uk.
+
+1. **Checks where it's running.** Off sainsburys.co.uk, it tells you to open your orders page and stops.
+2. **Picks up your sign-in.** The groceries API expects a `WCAuthToken` header, whose value is the `WC_AUTHENTICATION_<id>` cookie set at sign-in. The script sends that cookie as the header, as Sainsbury's own app does, and the browser sends the usual session cookies.
+3. **Lists your orders** from the order history endpoint the website itself uses, `GET /groceries-api/gol-services/order/v1/order?page_number=…&page_size=50`, page by page. It stops when a page brings nothing new, when the reported total is reached, or after 40 pages. Set `SINCE = '2026-01-01'` at the top to skip older orders.
+4. **Fetches each order's details** from `GET /groceries-api/gol-services/order/v1/order/{orderId}`: items, quantities, line prices, per-item offers (`adjustment`), coupons (`vouchers_savings`), delivery (`slot_price`) and totals. Each order gets up to 3 tries, waiting longer each time, with a short pause between orders. Cancelled orders, orders with no items and orders whose slot hasn't ended yet are skipped and logged.
+5. **Trims each order down** to the order ID, status, type, slot time, totals, delivery, bag charge, coupons and savings, plus each item's quantity, unit, line total, product ID, name and offer amounts. The delivery address, payment card, Nectar details, receipt link, image links and everything else are dropped. Each order becomes one small file, e.g. `Sainsburys_Order_2026-10-09_1355072309.json`.
+6. **Zips and downloads** them as `Sainsburys_Receipts_<today>.zip`, built uncompressed in the browser. One file avoids the browser's "multiple downloads" block.
+
+### Why JSON and not the e-receipt PDFs
+
+"Download e-receipt" links to a PDF on Amazon S3 through a signed link that expires after an hour. S3 sends no CORS header and no `Content-Disposition`, so a script on sainsburys.co.uk can't read the file, and opening the link only shows it in the PDF viewer. A server-side fetch would mean uploading data, which Basket Index doesn't do.
+
+The order details hold the same information, with one difference each way:
+
+- **Better:** each line's offer saving is listed separately (e.g. £4.00 reduced to £3.25 by a Nectar Price), where the PDF has one savings total for the whole order.
+- **Missing:** Nectar points.
+
+E-receipt PDFs downloaded by hand still work and can be mixed with saved orders. The same order from both sources is counted once, matched by order number.
+
+### What Basket Index does with the zip
+
+It unzips in the browser and reads each `.json` with `parseSainsburysOrder`. Shelf price is the price before offers, coupons come off the whole order, and the date is the delivery slot's date in UK time. Item lines plus delivery and bag charge, minus coupons, are checked against what was paid. Re-running the script and dropping the new zip doesn't create duplicates.
+
 ## Parser notes
 
 ### Tesco
@@ -67,7 +93,7 @@ The share card (`public/og.png`, 1200×630) and the PNG app icons are rendered f
 
 - Only groceries orders (delivery and click & collect) are supported. There are no digital in-store receipts to download.
 - Two sources, both read by the app: the e-receipt PDF you download by hand from an order's page, and the order JSON the downloader saves.
-- **Downloader / JSON.** The e-receipt PDFs are on S3 behind short-lived signed links with no CORS, so a console script can't read them. The downloader saves each order from the groceries API that sainsburys.co.uk itself uses (`/groceries-api/gol-services/order/v1/order/{id}`), keeping only items, quantities, prices, per-line offers and totals (no address, card or links). Each line's `adjustment` gives its offer saving, so shelf prices are before offers, like Tesco. Catchweight lines (fractional quantity) are weighed. Slot times are UTC and dated on the UK calendar. The JSON has no Nectar points.
+- **Saved order JSON** (see [Sainsbury's downloader](#sainsburys-downloader)). Each line's `adjustment` gives its offer saving, so shelf prices are before offers, like Tesco. Catchweight lines (fractional quantity) are weighed. Slot times are UTC and dated on the UK calendar. There are no Nectar points.
 - **PDF.** Each line has a quantity, a name and the price paid. Offers and Nectar Prices are one "You've saved" figure for the whole order, so they count towards your savings but not to any product, and shelf price is the price paid.
 - Line totals are after offers but before coupons: they reconcile with **Total paid** − delivery + coupons. In a PDF, the "(28 items)" heading is checked against the quantities read.
 - pdf.js returns the ff/fi/fl ligatures as separate text pieces ("Di ff user"), which the parser joins back up.
