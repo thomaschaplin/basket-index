@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import type { Analysis } from '../lib/analysis';
 import { CATEGORY_EMOJI } from '../lib/categories';
 import { dayLong, gbp, plural } from '../lib/format';
+import { RETAILER_NAME } from '../lib/parser';
 import { Pill, Reveal, Section } from './ui';
 
 const PAGE = 10;
@@ -13,9 +14,13 @@ export function Receipts({ a }: { a: Analysis }) {
   const [limit, setLimit] = useState(PAGE);
   const orders = useMemo(() => [...a.orders].reverse(), [a.orders]);
   const max = Math.max(1, ...orders.map((o) => o.total));
+  const mixed = a.overview.retailers.length > 1;
   const linesByOrder = useMemo(() => {
     const m = new Map<string, Analysis['purchases']>();
-    a.purchases.forEach((p) => (m.get(p.orderId) ?? m.set(p.orderId, []).get(p.orderId)!).push(p));
+    a.purchases.forEach((p) => {
+      const k = `${p.retailer}:${p.orderId}`;
+      (m.get(k) ?? m.set(k, []).get(k)!).push(p);
+    });
     return m;
   }, [a.purchases]);
 
@@ -23,18 +28,20 @@ export function Receipts({ a }: { a: Analysis }) {
     <Section id="receipts" eyebrow="Your receipts" title="Every shop, line by line" subtitle="Newest first. Open one to see what was in the basket.">
       <div className="grid gap-3">
         {orders.slice(0, limit).map((o, i) => {
-          const isOpen = open === o.orderId;
-          const items = linesByOrder.get(o.orderId) ?? [];
+          const id = `${o.retailer}:${o.orderId}`;
+          const isOpen = open === id;
+          const items = linesByOrder.get(id) ?? [];
           return (
-            <Reveal key={o.orderId} delay={Math.min(i, 6) * 0.04} className="card overflow-hidden">
-              <button onClick={() => setOpen(isOpen ? null : o.orderId)} aria-expanded={isOpen} className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 p-4 text-left hover:bg-surface-2/60 sm:p-5">
+            <Reveal key={id} delay={Math.min(i, 6) * 0.04} className="card overflow-hidden">
+              <button onClick={() => setOpen(isOpen ? null : id)} aria-expanded={isOpen} className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 p-4 text-left hover:bg-surface-2/60 sm:p-5">
                 <span className="grid size-11 place-items-center rounded-2xl bg-brand/10 text-brand-ink"><ReceiptIcon className="size-5" aria-hidden /></span>
                 <span className="grid min-w-0 gap-1.5">
                   <span className="flex flex-wrap items-center gap-2">
                     <b className="font-display text-lg">{dayLong(o.date)}</b>
+                    {mixed && <Pill>{RETAILER_NAME[o.retailer]}</Pill>}
                     {o.warnings.length > 0 && <Pill tone="warn"><AlertTriangle className="size-3" aria-hidden /> Check</Pill>}
                   </span>
-                  <span className="text-xs text-muted">{plural(o.units, 'item')} · saved {gbp(o.saved)} · {o.points} points</span>
+                  <span className="text-xs text-muted">{plural(o.units, 'item')} · saved {gbp(o.saved)}{o.points ? ` · ${o.points} points` : ''}</span>
                   <span className="h-1.5 overflow-hidden rounded-full bg-surface-2" aria-hidden>
                     <span className="block h-full rounded-full bg-gradient-brand" style={{ width: `${(o.total / max) * 100}%` }} />
                   </span>
@@ -84,8 +91,8 @@ export function ReceiptChecks({ a }: { a: Analysis }) {
   a.basketDeals.forEach((d) =>
     notes.push({ date: d.date, text: `A whole-basket discount took ${gbp(d.amount)} (${d.pct}%) off. It's spread across every line, so those lines don't count as "on offer".` }),
   );
-  if (Math.abs(a.reportedSavings - a.overview.savings) > 100) {
-    notes.push({ date: '', text: `Tesco's receipts claim ${gbp(a.reportedSavings)} in savings, but the item lines add up to ${gbp(a.overview.savings)}. Basket Index uses the item lines.` });
+  if (Math.abs(a.reportedSavings - a.lineSavings) > 100) {
+    notes.push({ date: '', text: `Tesco's receipts claim ${gbp(a.reportedSavings)} in savings, but the item lines add up to ${gbp(a.lineSavings)}. Basket Index uses the item lines.` });
   }
   if (!notes.length) return null;
   return (

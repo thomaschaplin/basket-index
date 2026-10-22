@@ -1,8 +1,9 @@
 // Turns parsed receipts into cost-of-living insights. All money in pence.
 import { categorise, type Category } from './categories';
-import type { PackSize, Receipt, ReceiptItem } from './types';
+import type { PackSize, Receipt, ReceiptItem, Retailer } from './types';
 
 export interface Purchase extends ReceiptItem {
+  retailer: Retailer;
   date: string;
   orderId: string;
   key: string;
@@ -21,6 +22,7 @@ export interface PricePoint {
 
 export interface ProductHistory {
   key: string;
+  retailer: Retailer;
   name: string;
   category: Category;
   weighed: boolean;
@@ -74,6 +76,7 @@ export interface PackChoice {
 
 export interface OrderSummary {
   orderId: string;
+  retailer: Retailer;
   date: string;
   total: number;
   gross: number;
@@ -95,6 +98,12 @@ export interface Insight {
 export type Analysis = ReturnType<typeof analyse>;
 
 const key = (name: string) => name.toLowerCase().replace(/cof+ee/g, 'coffee').replace(/\s+/g, ' ').trim();
+// The same branded product at another shop is a different price series: switching shops isn't inflation.
+const scoped = (r: Receipt, k: string) => (r.retailer === 'tesco' ? k : `${r.retailer}:${k}`);
+const orderKey = (r: Receipt) => r.orderId || `${r.date}-${r.total}`;
+/** What a point is worth in vouchers, in pence: Clubcard 1p, Nectar 0.5p. */
+const POINT_VALUE: Record<Retailer, number> = { tesco: 1, sainsburys: 0.5 };
+const unitemisedSavings = (r: Receipt) => (r.retailer === 'sainsburys' ? Math.max(0, r.reportedSavings - r.computedSavings) : 0);
 const month = (iso: string) => iso.slice(0, 7);
 export const pct = (a: number, b: number) => (b ? ((a - b) / b) * 100 : 0);
 const gbp = (p: number) => `£${(p / 100).toFixed(2)}`;
@@ -107,7 +116,7 @@ function perUnit(size: PackSize, price: number) {
 /** De-duplicate by order ID (people re-run the downloader) and sort oldest first. */
 export function dedupe(receipts: Receipt[]): Receipt[] {
   const byId = new Map<string, Receipt>();
-  receipts.forEach((r) => byId.set(r.orderId || `${r.date}-${r.total}`, r));
+  receipts.forEach((r) => byId.set(scoped(r, orderKey(r)), r));
   return [...byId.values()].filter((r) => r.date).sort((a, b) => a.date!.localeCompare(b.date!));
 }
 
@@ -119,9 +128,11 @@ export function analyse(input: Receipt[]) {
     r.items.forEach((i) =>
       purchases.push({
         ...i,
+        retailer: r.retailer,
+        family: scoped(r, i.family),
         date: r.date!,
-        orderId: r.orderId || `${r.date}-${r.total}`,
-        key: key(i.name),
+        orderId: orderKey(r),
+        key: scoped(r, key(i.name)),
         category: categorise(i.name),
         basketDeal: !!r.basketDiscount,
       }),
@@ -131,8 +142,13 @@ export function analyse(input: Receipt[]) {
 
   // ---- Overview
   const spend = rs.reduce((a, r) => a + r.total, 0);
-  const gross = purchases.reduce((a, p) => a + shelfCost(p), 0);
-  const savings = purchases.reduce((a, p) => a + p.saving, 0);
+  // Sainsbury's e-receipt PDFs give offers as one figure per order, not per line: what the lines don't account for
+  // counts towards savings but no product. (Orders saved by the downloader have per-line savings.)
+  const unitemised = rs.reduce((a, r) => a + unitemisedSavings(r), 0);
+  const lineSavings = purchases.reduce((a, p) => a + p.saving, 0);
+  const savings = lineSavings + unitemised;
+  const gross = purchases.reduce((a, p) => a + shelfCost(p), 0) + unitemised;
+  const retailers = [...new Set(rs.map((r) => r.retailer))];
   const from = rs[0]?.date ?? null;
   const to = rs[rs.length - 1]?.date ?? null;
   const days = from && to && rs.length > 1 ? (Date.parse(to) - Date.parse(from)) / 864e5 : 0;
@@ -154,6 +170,8 @@ export function analyse(input: Receipt[]) {
     savingsRate: gross ? (savings / gross) * 100 : 0,
     coupons: rs.reduce((a, r) => a + r.coupons, 0),
     points: rs.reduce((a, r) => a + r.points, 0),
+    pointsValue: rs.reduce((a, r) => a + r.points * POINT_VALUE[r.retailer], 0),
+    retailers,
     onOfferShare: purchases.length ? (purchases.filter((p) => p.saving > 0 && !p.basketDeal).length / purchases.length) * 100 : 0,
     perWeek,
     perYear: perWeek ? perWeek * 52 : null,
@@ -163,14 +181,15 @@ export function analyse(input: Receipt[]) {
   // ---- Orders timeline
   const orders: OrderSummary[] = rs.map((r) => {
     const categories: Partial<Record<Category, number>> = {};
-    const ps = purchases.filter((p) => p.orderId === (r.orderId || `${r.date}-${r.total}`));
+    const ps = purchases.filter((p) => p.orderId === orderKey(r) && p.retailer === r.retailer);
     ps.forEach((p) => (categories[p.category] = (categories[p.category] ?? 0) + p.lineTotal));
     return {
-      orderId: r.orderId || `${r.date}-${r.total}`,
+      orderId: orderKey(r),
+      retailer: r.retailer,
       date: r.date!,
       total: r.total,
       gross: ps.reduce((a, p) => a + shelfCost(p), 0),
-      saved: ps.reduce((a, p) => a + p.saving, 0),
+      saved: ps.reduce((a, p) => a + p.saving, 0) + unitemisedSavings(r),
       items: ps.length,
       units: ps.reduce((a, p) => a + p.qty, 0),
       points: r.points,
@@ -194,7 +213,7 @@ export function analyse(input: Receipt[]) {
   purchases.forEach((p) => {
     let h = history.get(p.key);
     if (!h) {
-      h = { key: p.key, name: p.name, category: p.category, weighed: p.weighed, size: p.size, points: [], spend: 0, units: 0, saved: 0, orders: 0 };
+      h = { key: p.key, retailer: p.retailer, name: p.name, category: p.category, weighed: p.weighed, size: p.size, points: [], spend: 0, units: 0, saved: 0, orders: 0 };
       history.set(p.key, h);
       orderSets.set(p.key, new Set());
     }
@@ -308,7 +327,8 @@ export function analyse(input: Receipt[]) {
   // ---- Receipt checks
   const warnings = rs.flatMap((r) => r.warnings.map((w) => ({ date: r.date!, text: w })));
   const basketDeals = rs.filter((r) => r.basketDiscount).map((r) => ({ date: r.date!, ...r.basketDiscount! }));
-  const reportedSavings = rs.reduce((a, r) => a + r.reportedSavings, 0);
+  // Tesco's own savings figure, to compare with its line savings. Sainsbury's has no line savings to compare with.
+  const reportedSavings = rs.reduce((a, r) => a + (r.retailer === 'tesco' ? r.reportedSavings : 0), 0);
 
   // ---- Headline insights, most interesting first.
   const insights: Insight[] = [];
@@ -321,7 +341,8 @@ export function analyse(input: Receipt[]) {
     insights.push({ tone: 'bad', icon: '🫣', title: `Shrinkflation spotted: ${s.after.name}`, body: `${Math.abs(s.sizeChangePct).toFixed(0)}% less in the pack, ${s.unitChangePct.toFixed(0)}% more ${s.after.perUnit.label}.` });
   }
   if (categoryList[0]) insights.push({ tone: 'neutral', icon: '🛒', title: `${categoryList[0].name} is your biggest category`, body: `${categoryList[0].share.toFixed(0)}% of everything you bought, ${gbp(categoryList[0].value)} in total.` });
-  if (savings > 0) insights.push({ tone: 'good', icon: '🏷️', title: `Clubcard offers saved you ${gbp(savings)}`, body: `That's ${overview.savingsRate.toFixed(0)}p in every £1 of shelf price${topSavers[0] ? `, led by ${topSavers[0].name} (${gbp(topSavers[0].saved)})` : ''}.` });
+  const offers = retailers.length === 1 ? (retailers[0] === 'tesco' ? 'Clubcard offers' : 'Nectar Prices and offers') : 'Offers';
+  if (savings > 0) insights.push({ tone: 'good', icon: '🏷️', title: `${offers} saved you ${gbp(savings)}`, body: `That's ${overview.savingsRate.toFixed(0)}p in every £1 of shelf price${topSavers[0] ? `, led by ${topSavers[0].name} (${gbp(topSavers[0].saved)})` : ''}.` });
   const totalExtra = packChoices.reduce((a, p) => a + p.extra, 0);
   if (totalExtra >= 50) insights.push({ tone: 'neutral', icon: '📦', title: `${gbp(totalExtra)} lost to pack sizes`, body: `Buying the best-value size of products you already buy in several sizes would have saved this.` });
   if (staples[0]) insights.push({ tone: 'neutral', icon: '⭐', title: `${staples[0].name} is in ${staples[0].orders} of ${rs.length} shops`, body: `Your most loyal buy. ${staples[0].offers ? `On offer ${staples[0].offers} of ${staples[0].points.length} times.` : 'Never bought on offer.'}` });
@@ -349,6 +370,7 @@ export function analyse(input: Receipt[]) {
     warnings,
     basketDeals,
     reportedSavings,
+    lineSavings,
     insights,
   };
 }

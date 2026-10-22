@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { dedupe } from '../lib/analysis';
-import { parseReceiptText } from '../lib/parser';
+import { parseReceiptText, parseSainsburysOrder } from '../lib/parser';
 import { fileToText } from '../lib/pdf-browser';
 import { loadSample } from '../lib/sample';
 import type { Receipt } from '../lib/types';
@@ -19,7 +19,8 @@ function restore(): Saved {
     const raw = localStorage.getItem(KEY);
     if (raw) {
       const saved = JSON.parse(raw) as Saved;
-      if (saved.source === 'mine' && Array.isArray(saved.receipts) && saved.receipts.length) return saved;
+      // Receipts saved before Sainsbury's support have no retailer: they're all Tesco.
+      if (saved.source === 'mine' && Array.isArray(saved.receipts) && saved.receipts.length) return { ...saved, receipts: saved.receipts.map((r) => ({ ...r, retailer: r.retailer ?? 'tesco' })) };
       if (saved.source === 'sample') return { source: 'sample', receipts: loadSample() };
     }
   } catch {
@@ -62,15 +63,17 @@ export function useReceipts() {
   const addFiles = useCallback(
     async (dropped: File[]): Promise<LoadResult> => {
       const files = await expandZips(dropped);
-      const pdfs = files.filter((f) => /pdf$/i.test(f.type) || /\.pdf$/i.test(f.name));
+      const isJson = (f: File) => /json$/i.test(f.type) || /\.json$/i.test(f.name);
+      const pdfs = files.filter((f) => /pdf$/i.test(f.type) || /\.pdf$/i.test(f.name) || isJson(f));
       const failed = files.filter((f) => !pdfs.includes(f)).map((f) => f.name);
       const parsed: Receipt[] = [];
       setProgress({ done: 0, total: pdfs.length });
       for (const [i, f] of pdfs.entries()) {
         setProgress({ done: i, total: pdfs.length, current: f.name });
         try {
-          const r = parseReceiptText(await fileToText(f));
-          if (!r.items.length || !r.date) throw new Error('Not a Tesco receipt');
+          // Saved Sainsbury's orders come as JSON from the downloader; everything else is a receipt PDF.
+          const r = isJson(f) ? parseSainsburysOrder(JSON.parse(await f.text())) : parseReceiptText(await fileToText(f));
+          if (!r.items.length || !r.date) throw new Error('Not a Tesco or Sainsbury\'s receipt');
           parsed.push(r);
         } catch {
           failed.push(f.name);

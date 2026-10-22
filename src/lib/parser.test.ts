@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { familyKey, parseReceiptText, parseSize } from './parser';
+import { familyKey, joinLigatures, parseReceiptText, parseSainsburysOrder, parseSize, type SainsburysOrder } from './parser';
 
 const dir = path.join(__dirname, '__fixtures__');
 const fixture = (name: string) => parseReceiptText(fs.readFileSync(path.join(dir, `sample-${name}.txt`), 'utf8'));
@@ -85,6 +85,98 @@ describe('parseReceiptText', () => {
     expect(r.total).toBe(129900);
     expect(r.warnings).toEqual([]);
   });
+});
+
+// A made-up Sainsbury's e-receipt as pdf.js extracts it: ligatures split off as their own text items ("Di ff user"),
+// a name wrapped onto a second line, and order-level savings and coupons. No real receipt data.
+const sainsburys = (lines: string, summary = 'Delivery cost   £1.50 \nSubtotal   £11.30 \nYou\'ve saved*   -£0.40 \nCoupons   -£5.00 \nTotal paid   £5.90') =>
+  `Your receipt for order:   1200000001 \nSlot time:   Saturday 3rd January 2026, 8:00am - 9:00am \n${lines}\nOrder summary \n${summary} \n` +
+  `We took payment on a card\nending in   4242 \nNectar   (************9876543) \nPrevious points balance   100 \nPoints earned   14 \nNew points balance   114 \n` +
+  `If whilst inspecting the goods you   fi nd goods you do not\nwant, you are free to return them. Sainsbury's o ff ers a 30 day goodwill returns policy.`;
+const SAINSBURYS_ITEMS =
+  `Groceries (5 items) \n1   Sainsbury's British Semi Skimmed Milk 2.27L   £1.65 \n2   Sainsbury's Wholemeal Bread 800g   £1.50 \n` +
+  `1   Home Di ff user 100ml Fresh Linen   £4.50 \n1   Zo fl ora Concentrated Multipurpose Disinfectant Country Garden 3\nin 1 Action 120ml   £1.75 \n`;
+
+describe('parseReceiptText (Sainsbury\'s)', () => {
+  it('reads order details, totals and Nectar points, but not card or Nectar numbers', () => {
+    const r = parseReceiptText(sainsburys(SAINSBURYS_ITEMS));
+    expect(r).toMatchObject({
+      retailer: 'sainsburys', orderId: '1200000001', date: '2026-01-03', channel: 'Online',
+      subtotal: 1130, reportedSavings: 40, delivery: 150, coupons: 500, total: 590, points: 14, warnings: [],
+    });
+    expect(JSON.stringify(r)).not.toMatch(/4242|9876543/);
+  });
+
+  it('reads item lines, rejoining split ligatures and wrapped names', () => {
+    const r = parseReceiptText(sainsburys(SAINSBURYS_ITEMS));
+    expect(r.items.map((i) => [i.qty, i.name, i.unitPrice, i.lineTotal])).toEqual([
+      [1, "Sainsbury's British Semi Skimmed Milk 2.27L", 165, 165],
+      [2, "Sainsbury's Wholemeal Bread 800g", 75, 150],
+      [1, 'Home Diffuser 100ml Fresh Linen', 450, 450],
+      [1, 'Zoflora Concentrated Multipurpose Disinfectant Country Garden 3 in 1 Action 120ml', 175, 175],
+    ]);
+    expect(r.items.every((i) => i.saving === 0 && !i.weighed)).toBe(true);
+    // Lines are after offers but before coupons: they reconcile with total paid - delivery + coupons.
+    expect(r.itemsTotal).toBe(940);
+  });
+
+  it('reads items across several section headings and checks the item count', () => {
+    const two = `Groceries (2 items) \n2   Sainsbury's Wholemeal Bread 800g   £1.50 \nFrozen & Chilled (1 item) \n1   Sainsbury's Garden Peas 1kg   £1.60 \n`;
+    const r = parseReceiptText(sainsburys(two, 'Delivery cost   £0.00 \nSubtotal   £3.10 \nTotal paid   £3.10'));
+    expect(r.items.map((i) => i.name)).toEqual(["Sainsbury's Wholemeal Bread 800g", "Sainsbury's Garden Peas 1kg"]);
+    expect(r.warnings).toEqual([]);
+    const short = parseReceiptText(sainsburys(two.replace('(1 item)', '(3 items)'), 'Delivery cost   £0.00 \nSubtotal   £3.10 \nTotal paid   £3.10'));
+    expect(short.warnings).toEqual(['The receipt lists 5 items, but Basket Index could read 3']);
+  });
+
+  it("flags Sainsbury's receipts whose lines do not reconcile", () => {
+    const r = parseReceiptText(sainsburys(SAINSBURYS_ITEMS, 'Delivery cost   £1.50 \nCoupons   -£5.00 \nTotal paid   £6.20'));
+    expect(r.warnings).toEqual([expect.stringMatching(/^Sainsbury's charged £6\.20, but the items add up to £9\.40 \(£0\.30 more/)]);
+  });
+});
+
+// A made-up order as the Sainsbury's downloader saves it (a trimmed groceries API order). No real order data.
+const ORDER: SainsburysOrder = {
+  order_uid: '1200000002', order_type: 'delivery', slot_start_time: '2026-06-12T23:30:00Z',
+  total: 6.4, sub_total: 9.4, slot_price: 1.5, carrier_bag_charge: 0, vouchers_savings: -4.5, savings: -1.25,
+  order_items: [
+    { quantity: 1, sub_total: 1.65, product: { name: " Sainsbury's British Semi Skimmed Milk 2.27L", adjustment: null } },
+    { quantity: 2, sub_total: 2.5, product: { name: "Sainsbury's Wholemeal Bread 800g", adjustment: [{ usage: 'Discount', amount: '-0.50' }] } },
+    { quantity: 1, sub_total: 3.25, product: { name: 'Comfort Fabric Conditioner 52 Washes 1.56L', adjustment: [{ usage: 'Discount', amount: '-0.75' }] } },
+    { quantity: 0.5, sub_total: 2.0, product: { name: "Sainsbury's Mature Cheddar Cheese", adjustment: null } },
+  ],
+};
+
+describe("parseSainsburysOrder (downloader's saved orders)", () => {
+  it('reads totals, the UK slot date and coupons', () => {
+    // 23:30 UTC on 12 June is 00:30 on the 13th in the UK (BST).
+    expect(parseSainsburysOrder(ORDER)).toMatchObject({
+      retailer: 'sainsburys', orderId: '1200000002', date: '2026-06-13', channel: 'Online',
+      delivery: 150, coupons: 450, total: 640, reportedSavings: 125, computedSavings: 125, points: 0, itemsTotal: 940, warnings: [],
+    });
+  });
+
+  it('reads each line with its own offer saving, and catchweight lines as weighed', () => {
+    expect(parseSainsburysOrder(ORDER).items.map((i) => [i.qty, i.name, i.unitPrice, i.saving, i.lineTotal, i.weighed])).toEqual([
+      [1, "Sainsbury's British Semi Skimmed Milk 2.27L", 165, 0, 165, false],
+      [2, "Sainsbury's Wholemeal Bread 800g", 150, 50, 250, false],
+      [1, 'Comfort Fabric Conditioner 52 Washes 1.56L', 400, 75, 325, false],
+      [1, "Sainsbury's Mature Cheddar Cheese", 400, 0, 200, true], // £4.00/kg, 0.5 kg
+    ]);
+  });
+
+  it('flags an order whose lines do not reconcile', () => {
+    expect(parseSainsburysOrder({ ...ORDER, total: 6.9 }).warnings).toEqual([expect.stringMatching(/^Sainsbury's charged £6\.90, but the items add up to £9\.40/)]);
+  });
+});
+
+describe('joinLigatures', () => {
+  it.each([
+    ['Home Di ff user', 'Home Diffuser'],
+    ['Zo fl ora Lemon', 'Zoflora Lemon'],
+    ['you   fi nd goods', 'you   find goods'],
+    ['Co ff ee 12  fl  oz', 'Coffee 12  fl  oz'], // real spaces either side are kept
+  ])('%s', (raw, expected) => expect(joinLigatures(raw)).toBe(expected));
 });
 
 describe('parseSize', () => {

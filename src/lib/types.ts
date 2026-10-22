@@ -20,11 +20,15 @@ export interface ReceiptItem {
   family: string;
 }
 
+export type Retailer = 'tesco' | 'sainsburys';
+
 export interface Receipt {
+  retailer: Retailer;
   orderId: string | null;
   date: string | null; // ISO yyyy-mm-dd
   channel: string | null;
   subtotal: number;
+  /** The receipt's own savings figure. Sainsbury's only gives this one figure, not per line. */
   reportedSavings: number;
   delivery: number;
   coupons: number;
