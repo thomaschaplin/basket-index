@@ -12,7 +12,10 @@ function unzipAsync(data: Uint8Array) {
 export async function expandZips(files: File[]): Promise<File[]> {
   const out: File[] = [];
   for (const f of files) {
-    if (!isZip(f)) { out.push(f); continue; }
+    if (!isZip(f)) {
+      out.push(f);
+      continue;
+    }
     try {
       const entries = await unzipAsync(new Uint8Array(await f.arrayBuffer()));
       for (const [path, bytes] of Object.entries(entries)) {

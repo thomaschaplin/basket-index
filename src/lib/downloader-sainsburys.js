@@ -20,7 +20,10 @@
     if (!res.ok) throw new Error(`${res.status} from ${url}`);
     return res.json();
   };
-  const localDate = (iso) => { const d = new Date(iso); return isNaN(d) ? '' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+  const localDate = (iso) => {
+    const d = new Date(iso);
+    return Number.isNaN(+d) ? '' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  };
 
   // 1. Collect every order from the order history API:
   // {"orders":[{"order_uid":"1355072309","status":"previous","slot_start_time":"2026-10-09T18:00:00Z",…}],"controls":{"total_record_count":42,…}}
@@ -47,7 +50,11 @@
 
   const todo = [...orders].filter(([, o]) => !SINCE || !o.date || o.date >= SINCE);
   if (!todo.length) {
-    log(orders.size ? `No orders on or after ${SINCE}.` : "No orders found. Check you are signed in and that My orders lists your shops. If it does, Sainsbury's may have changed the page: please open an issue.");
+    log(
+      orders.size
+        ? `No orders on or after ${SINCE}.`
+        : "No orders found. Check you are signed in and that My orders lists your shops. If it does, Sainsbury's may have changed the page: please open an issue.",
+    );
     return;
   }
   log(`Fetching ${todo.length} orders…`);
@@ -90,19 +97,26 @@
         await sleep(1500 * attempt);
       }
     }
-    if (!order) { failed.push(id); log('Failed', id); continue; }
+    if (!order) {
+      failed.push(id);
+      log('Failed', id);
+      continue;
+    }
     // Upcoming and cancelled orders aren't shops yet.
     if (/cancel/i.test(order.status || '') || !order.order_items?.length || Date.parse(order.slot_end_time) > Date.now()) {
       skipped.push(`${id} (${order.status || 'no items'})`);
       continue;
     }
     const date = localDate(order.slot_start_time);
-    files.push({ name: `Sainsburys_Order_${date ? date + '_' : ''}${id}.json`, bytes: new TextEncoder().encode(JSON.stringify(slim(order), null, 1)) });
+    files.push({ name: `Sainsburys_Order_${date ? `${date}_` : ''}${id}.json`, bytes: new TextEncoder().encode(JSON.stringify(slim(order), null, 1)) });
     log(`Fetched ${files.length}/${todo.length}`);
     await sleep(400);
   }
   if (skipped.length) log(`Skipped ${skipped.length} not yet delivered or cancelled: ${skipped.join(', ')}`);
-  if (!files.length) { log(failed.length ? 'Could not fetch any orders. Try again in a few minutes.' : 'No delivered orders to save.'); return; }
+  if (!files.length) {
+    log(failed.length ? 'Could not fetch any orders. Try again in a few minutes.' : 'No delivered orders to save.');
+    return;
+  }
 
   // 3. Pack them into one zip (stored, no compression: the files are small).
   // A single file avoids Chrome blocking "multiple downloads" after the first.
@@ -119,7 +133,11 @@
   const now = new Date();
   const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1);
   const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
-  const header = (size, write) => { const v = new DataView(new ArrayBuffer(size)); write(v); return new Uint8Array(v.buffer); };
+  const header = (size, write) => {
+    const v = new DataView(new ArrayBuffer(size));
+    write(v);
+    return new Uint8Array(v.buffer);
+  };
   const parts = [];
   const central = [];
   let offset = 0;
@@ -127,18 +145,42 @@
     const n = new TextEncoder().encode(name);
     const crc = crc32(bytes);
     const common = (v, at) => {
-      v.setUint16(at, 20, true); v.setUint16(at + 2, 0x0800, true); v.setUint16(at + 4, 0, true);
-      v.setUint16(at + 6, dosTime, true); v.setUint16(at + 8, dosDate, true); v.setUint32(at + 10, crc, true);
-      v.setUint32(at + 14, bytes.length, true); v.setUint32(at + 18, bytes.length, true); v.setUint16(at + 22, n.length, true);
+      v.setUint16(at, 20, true);
+      v.setUint16(at + 2, 0x0800, true);
+      v.setUint16(at + 4, 0, true);
+      v.setUint16(at + 6, dosTime, true);
+      v.setUint16(at + 8, dosDate, true);
+      v.setUint32(at + 10, crc, true);
+      v.setUint32(at + 14, bytes.length, true);
+      v.setUint32(at + 18, bytes.length, true);
+      v.setUint16(at + 22, n.length, true);
     };
-    parts.push(header(30, (v) => { v.setUint32(0, 0x04034b50, true); common(v, 4); }), n, bytes);
-    central.push(header(46, (v) => { v.setUint32(0, 0x02014b50, true); v.setUint16(4, 20, true); common(v, 6); v.setUint32(42, offset, true); }), n);
+    parts.push(
+      header(30, (v) => {
+        v.setUint32(0, 0x04034b50, true);
+        common(v, 4);
+      }),
+      n,
+      bytes,
+    );
+    central.push(
+      header(46, (v) => {
+        v.setUint32(0, 0x02014b50, true);
+        v.setUint16(4, 20, true);
+        common(v, 6);
+        v.setUint32(42, offset, true);
+      }),
+      n,
+    );
     offset += 30 + n.length + bytes.length;
   }
   const centralSize = central.reduce((t, p) => t + p.length, 0);
   const end = header(22, (v) => {
-    v.setUint32(0, 0x06054b50, true); v.setUint16(8, files.length, true); v.setUint16(10, files.length, true);
-    v.setUint32(12, centralSize, true); v.setUint32(16, offset, true);
+    v.setUint32(0, 0x06054b50, true);
+    v.setUint16(8, files.length, true);
+    v.setUint16(10, files.length, true);
+    v.setUint32(12, centralSize, true);
+    v.setUint32(16, offset, true);
   });
   const zip = new Blob([...parts, ...central, end], { type: 'application/zip' });
 
@@ -146,8 +188,12 @@
     href: URL.createObjectURL(zip),
     download: `Sainsburys_Receipts_${now.toISOString().slice(0, 10)}.zip`,
   });
-  document.body.appendChild(a); a.click(); a.remove();
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 60000);
 
-  log(`Done: ${a.download} with ${files.length} orders${failed.length ? `. ${failed.length} failed (${failed.join(', ')}): run again to retry` : ''}. Drop the zip onto Basket Index.`);
+  log(
+    `Done: ${a.download} with ${files.length} orders${failed.length ? `. ${failed.length} failed (${failed.join(', ')}): run again to retry` : ''}. Drop the zip onto Basket Index.`,
+  );
 })();

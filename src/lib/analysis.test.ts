@@ -18,6 +18,18 @@ describe('analyse', () => {
     expect(a.orders.map((o) => o.date)).toEqual([...a.orders.map((o) => o.date)].sort());
   });
 
+  it('puts a product in the category you picked, everywhere it shows up', () => {
+    const milk = a.products.find((p) => p.name === 'Tesco Semi Skimmed Milk 2.272L, 4 Pints')!;
+    expect(milk.category).toBe('Dairy & eggs');
+    const b = analyse(receipts, { [milk.key]: 'Drinks' });
+    expect(b.products.find((p) => p.key === milk.key)!.category).toBe('Drinks');
+    expect(b.purchases.filter((p) => p.key === milk.key).every((p) => p.category === 'Drinks')).toBe(true);
+    const drinks = (x: typeof a) => x.categories.find((c) => c.name === 'Drinks')?.value ?? 0;
+    expect(drinks(b) - drinks(a)).toBe(milk.spend);
+    // Other products are untouched.
+    expect(b.products.filter((p) => p.key !== milk.key).map((p) => p.category)).toEqual(a.products.filter((p) => p.key !== milk.key).map((p) => p.category));
+  });
+
   it('de-duplicates the same order loaded twice', () => {
     expect(analyse([...receipts, ...receipts]).overview.receipts).toBe(88);
   });
@@ -37,7 +49,10 @@ describe('analyse', () => {
   });
 
   it('covers a year of online shops, in-store top-ups and fuel', () => {
-    const channels = receipts.reduce<Record<string, number>>((m, r) => ((m[r.channel!] = (m[r.channel!] ?? 0) + 1), m), {});
+    const channels = receipts.reduce<Record<string, number>>((m, r) => {
+      m[r.channel!] = (m[r.channel!] ?? 0) + 1;
+      return m;
+    }, {});
     expect(channels).toEqual({ Online: 31, 'In-store': 57 });
     expect(a.stapleMonths).toBe(13);
     expect(a.staples[0].name).toBe('Tesco Semi Skimmed Milk 2.272L, 4 Pints');
@@ -47,10 +62,7 @@ describe('analyse', () => {
   });
 
   it('spots shrinkflation but not an ordinary pack choice', () => {
-    expect(a.shrinkflation.map((s) => s.after.name).sort()).toEqual([
-      'Tesco Finest Belgian Milk Chocolate Bar 180G',
-      'Tesco Fruit & Nut Crunchy Granola 850G',
-    ]);
+    expect(a.shrinkflation.map((s) => s.after.name).sort()).toEqual(['Tesco Finest Belgian Milk Chocolate Bar 180G', 'Tesco Fruit & Nut Crunchy Granola 850G']);
     const cheddar = a.packChoices.find((p) => p.best.name === 'Tesco Extra Mature Cheddar 700G');
     expect(cheddar?.sizes).toHaveLength(2);
     expect(a.shrinkflation.some((s) => /cheddar/i.test(s.after.name))).toBe(false);
@@ -60,22 +72,34 @@ describe('analyse', () => {
     // A product in every month but only a third of the shops: frequent small shops shouldn't hide it.
     const shop = (id: string, date: string, extra = '') =>
       parseReceiptText(`Order ID: ${id} Purchase date: ${date} Total cost ${extra} 1 Tesco Wholemeal Bread 800g £0.75 - £0.75 Payment summary Total: £0.75`);
-    const rs = ['01', '02', '03'].flatMap((m) => [
-      shop(`B${m}`, `5/${m}/2026`),
-      shop(`T${m}a`, `12/${m}/2026`, '1 DIESEL £1.44 - £20.00'),
-      shop(`T${m}b`, `20/${m}/2026`, '1 DIESEL £1.44 - £20.00'),
-    ].map((r, i) => (i ? { ...r, items: r.items.filter((x) => x.name === 'DIESEL') } : r)));
+    const rs = ['01', '02', '03'].flatMap((m) =>
+      [shop(`B${m}`, `5/${m}/2026`), shop(`T${m}a`, `12/${m}/2026`, '1 DIESEL £1.44 - £20.00'), shop(`T${m}b`, `20/${m}/2026`, '1 DIESEL £1.44 - £20.00')].map(
+        (r, i) => (i ? { ...r, items: r.items.filter((x) => x.name === 'DIESEL') } : r),
+      ),
+    );
     const s = analyse(rs);
     expect(s.stapleMonths).toBe(3);
-    expect(s.staples.map((x) => [x.name, x.months])).toEqual([['DIESEL', 3], ['Tesco Wholemeal Bread 800g', 3]]);
+    expect(s.staples.map((x) => [x.name, x.months])).toEqual([
+      ['DIESEL', 3],
+      ['Tesco Wholemeal Bread 800g', 3],
+    ]);
   });
 
   it("keeps Tesco and Sainsbury's prices apart and counts Sainsbury's order-level savings and Nectar points", () => {
     const tesco = (id: string, date: string, price: string) =>
-      parseReceiptText(`Order ID: ${id} Purchase date: ${date} Total cost 1 Comfort Fabric Conditioner 1.16L ${price} - ${price} Payment summary Total: ${price} Clubcard points earned: 100`);
+      parseReceiptText(
+        `Order ID: ${id} Purchase date: ${date} Total cost 1 Comfort Fabric Conditioner 1.16L ${price} - ${price} Payment summary Total: ${price} Clubcard points earned: 100`,
+      );
     const sains = (id: string, date: string, price: string) =>
-      parseReceiptText(`Your receipt for order: ${id} Slot time: ${date}, 8:00am - 9:00am Groceries (1 item) 1 Comfort Fabric Conditioner 1.16L ${price} Order summary Delivery cost £0.00 You've saved* -£0.50 Total paid ${price} Points earned 100`);
-    const m = analyse([tesco('T-1', '5/1/2026', '£3.00'), sains('900001', 'Monday 12th January 2026', '£3.50'), tesco('T-2', '2/2/2026', '£3.00'), sains('900002', 'Monday 9th February 2026', '£3.50')]);
+      parseReceiptText(
+        `Your receipt for order: ${id} Slot time: ${date}, 8:00am - 9:00am Groceries (1 item) 1 Comfort Fabric Conditioner 1.16L ${price} Order summary Delivery cost £0.00 You've saved* -£0.50 Total paid ${price} Points earned 100`,
+      );
+    const m = analyse([
+      tesco('T-1', '5/1/2026', '£3.00'),
+      sains('900001', 'Monday 12th January 2026', '£3.50'),
+      tesco('T-2', '2/2/2026', '£3.00'),
+      sains('900002', 'Monday 9th February 2026', '£3.50'),
+    ]);
     expect(m.priceChanges.map((c) => c.change)).toEqual([0, 0]);
     expect(m.inflation.pct).toBe(0); // switching shops isn't inflation
     expect(new Set(m.products.map((p) => p.retailer))).toEqual(new Set(['tesco', 'sainsburys']));
@@ -128,7 +152,7 @@ describe('categorise', () => {
     ['Yankee Candle Midnight Jasmine Plug Refill 2 X 18.5', 'Clothing & home'],
     ['DISNEY - Winnie the Pooh Nature Walk Bedding Set Cotton Rich Toddler', 'Clothing & home'],
     ['Tesco Rainbow Tulips Bunch', 'Clothing & home'],
-    ['Carlton Father\'s Day Card Someone Special 129397-0-1', 'Clothing & home'],
+    ["Carlton Father's Day Card Someone Special 129397-0-1", 'Clothing & home'],
     ['Tesco Everyday Bday Brother Kraft Stars 113340-0-1', 'Clothing & home'],
     ['Tesco Light Caesar Salad Dressing 250ml', 'Cupboard'],
     ['Sure Women Bright Bouquet 48h Antiperspirant Deodorant 200ml', 'Toiletries'],

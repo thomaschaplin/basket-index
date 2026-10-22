@@ -27,6 +27,28 @@ export function useTheme() {
 /** Concrete colours for SVG chart attributes, which can't read CSS variables everywhere. */
 export const chartColours = (theme: Theme) =>
   theme === 'dark'
-    ? { ink: '#e8eefc', muted: '#95a2bd', faint: '#6b7792', grid: '#1f2a44', surface: '#0f1729', brand: '#3987e5', aqua: '#199e70', offer: '#facc15', up: '#ff7b7b', down: '#4ade80' }
-    : { ink: '#0b1220', muted: '#5b6478', faint: '#8a93a6', grid: '#e2e7f0', surface: '#ffffff', brand: '#2a78d6', aqua: '#1baf7a', offer: '#e0a800', up: '#c62828', down: '#127a12' };
+    ? {
+        ink: '#e8eefc',
+        muted: '#95a2bd',
+        faint: '#6b7792',
+        grid: '#1f2a44',
+        surface: '#0f1729',
+        brand: '#3987e5',
+        aqua: '#199e70',
+        offer: '#facc15',
+        up: '#ff7b7b',
+        down: '#4ade80',
+      }
+    : {
+        ink: '#0b1220',
+        muted: '#5b6478',
+        faint: '#8a93a6',
+        grid: '#e2e7f0',
+        surface: '#ffffff',
+        brand: '#2a78d6',
+        aqua: '#1baf7a',
+        offer: '#e0a800',
+        up: '#c62828',
+        down: '#127a12',
+      };
 export type ChartColours = ReturnType<typeof chartColours>;

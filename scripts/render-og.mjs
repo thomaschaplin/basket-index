@@ -19,10 +19,21 @@ const chrome = candidates.find((c) => !c.includes('/') || existsSync(c));
 if (!chrome) throw new Error('No Chrome found. Set CHROME=/path/to/chrome.');
 
 function shoot(url, out, w, h) {
-  execFileSync(chrome, [
-    '--headless=old', '--disable-gpu', '--hide-scrollbars', '--no-sandbox', '--force-device-scale-factor=1',
-    '--virtual-time-budget=3000', `--window-size=${w},${h}`, `--screenshot=${join(root, out)}`, url,
-  ], { stdio: 'ignore' });
+  execFileSync(
+    chrome,
+    [
+      '--headless=old',
+      '--disable-gpu',
+      '--hide-scrollbars',
+      '--no-sandbox',
+      '--force-device-scale-factor=1',
+      '--virtual-time-budget=3000',
+      `--window-size=${w},${h}`,
+      `--screenshot=${join(root, out)}`,
+      url,
+    ],
+    { stdio: 'ignore' },
+  );
   console.log(`wrote ${out}`);
 }
 
@@ -31,10 +42,17 @@ shoot(pathToFileURL(join(root, 'scripts/og-card.html')).href, 'public/og.png', 1
 // Square icons from the SVG favicon, on the app's dark background so iOS doesn't add its own.
 const svg = readFileSync(join(root, 'public/favicon.svg'), 'utf8');
 const tmp = mkdtempSync(join(tmpdir(), 'bi-icon-'));
-for (const [out, size] of [['public/apple-touch-icon.png', 180], ['public/icon-192.png', 192], ['public/icon-512.png', 512]]) {
+for (const [out, size] of [
+  ['public/apple-touch-icon.png', 180],
+  ['public/icon-192.png', 192],
+  ['public/icon-512.png', 512],
+]) {
   const page = join(tmp, `${size}.html`);
   const pad = Math.round(size * 0.1);
-  writeFileSync(page, `<!doctype html><style>*{margin:0}html,body{width:${size}px;height:${size}px;background:#070b14;overflow:hidden}svg{display:block;margin:${pad}px;width:${size - pad * 2}px;height:${size - pad * 2}px}</style>${svg}`);
+  writeFileSync(
+    page,
+    `<!doctype html><style>*{margin:0}html,body{width:${size}px;height:${size}px;background:#070b14;overflow:hidden}svg{display:block;margin:${pad}px;width:${size - pad * 2}px;height:${size - pad * 2}px}</style>${svg}`,
+  );
   shoot(pathToFileURL(page).href, out, size, size);
 }
 rmSync(tmp, { recursive: true, force: true });

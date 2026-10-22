@@ -16,15 +16,22 @@ describe('parseReceiptText', () => {
   });
 
   it('reads in-store order IDs and channel', () => {
-    const head = (id: string) => `Receipt Order information Order ID: ${id} Purchase date: 19/10/2026 Channel: In-store VAT number: GB 220 4302 31 Your items Total cost 1 Tesco Bread 800g £0.75 - £0.75 Payment summary Total: £0.75`;
+    const head = (id: string) =>
+      `Receipt Order information Order ID: ${id} Purchase date: 19/10/2026 Channel: In-store VAT number: GB 220 4302 31 Your items Total cost 1 Tesco Bread 800g £0.75 - £0.75 Payment summary Total: £0.75`;
     expect(parseReceiptText(head('57E8-15KT-Q05F-XBNQ'))).toMatchObject({ orderId: '57E8-15KT-Q05F-XBNQ', channel: 'In-store', date: '2026-10-19' });
     expect(parseReceiptText(head('97401041200926145342850800037025')).orderId).toBe('97401041200926145342850800037025');
   });
 
   it('keeps in-store lines that have no product name', () => {
-    const r = parseReceiptText('Purchase date: 21/1/2026 Total cost 1 Tesco Yogurt 4 X 90G £3.40 £0.80 £2.60 1 £0.25 - £0.25 1 Tesco Avocados Twin Pack £1.50 - £1.50 2 £0.70 - £1.40 1 Tesco Baguette 2 Pack £0.85 - £0.85 Payment summary Total: £6.60');
+    const r = parseReceiptText(
+      'Purchase date: 21/1/2026 Total cost 1 Tesco Yogurt 4 X 90G £3.40 £0.80 £2.60 1 £0.25 - £0.25 1 Tesco Avocados Twin Pack £1.50 - £1.50 2 £0.70 - £1.40 1 Tesco Baguette 2 Pack £0.85 - £0.85 Payment summary Total: £6.60',
+    );
     expect(r.items.map((i) => [i.qty, i.name, i.lineTotal])).toEqual([
-      [1, 'Tesco Yogurt 4 X 90G', 260], [1, 'Unnamed item', 25], [1, 'Tesco Avocados Twin Pack', 150], [2, 'Unnamed item', 140], [1, 'Tesco Baguette 2 Pack', 85],
+      [1, 'Tesco Yogurt 4 X 90G', 260],
+      [1, 'Unnamed item', 25],
+      [1, 'Tesco Avocados Twin Pack', 150],
+      [2, 'Unnamed item', 140],
+      [1, 'Tesco Baguette 2 Pack', 85],
     ]);
     expect(r.warnings).toEqual([]);
   });
@@ -41,7 +48,11 @@ describe('parseReceiptText', () => {
 
   it('joins product names that wrap onto two lines', () => {
     expect(fixture('2025-10-25-online').items.find((i) => i.name.startsWith("McVitie's"))).toMatchObject({
-      name: "McVitie's Milk Chocolate Digestive Biscuits 266G", qty: 2, unitPrice: 225, saving: 0, lineTotal: 450,
+      name: "McVitie's Milk Chocolate Digestive Biscuits 266G",
+      qty: 2,
+      unitPrice: 225,
+      saving: 0,
+      lineTotal: 450,
     });
   });
 
@@ -51,7 +62,9 @@ describe('parseReceiptText', () => {
   });
 
   it('skips free samples', () => {
-    const r = parseReceiptText('Purchase date: 1/2/2026 Total cost 1 FREE SAMPLE - Some Sauce 490g £0.01 £0.01 £0.00 1 Tesco Bread 800g £0.75 - £0.75 Payment summary Total: £0.75');
+    const r = parseReceiptText(
+      'Purchase date: 1/2/2026 Total cost 1 FREE SAMPLE - Some Sauce 490g £0.01 £0.01 £0.00 1 Tesco Bread 800g £0.75 - £0.75 Payment summary Total: £0.75',
+    );
     expect(r.items.map((i) => i.name)).toEqual(['Tesco Bread 800g']);
   });
 
@@ -75,12 +88,17 @@ describe('parseReceiptText', () => {
       const r = parseReceiptText(fs.readFileSync(path.join(dir, f), 'utf8'));
       expect(r.date, f).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(r.items.length, f).toBeGreaterThan(f.includes('online') ? 10 : 0); // top-ups and fuel stops are small
-      expect(r.warnings.filter((w) => w.startsWith("Line doesn't")), f).toEqual([]);
+      expect(
+        r.warnings.filter((w) => w.startsWith("Line doesn't")),
+        f,
+      ).toEqual([]);
     }
   });
 
   it('handles thousands separators in money', () => {
-    const r = parseReceiptText('Order ID: 1-2 Purchase date: 1/2/2026 Total cost 1 Big Telly £1,299.00 - £1,299.00 Payment summary Subtotal: £1,299.00 Total: £1,299.00');
+    const r = parseReceiptText(
+      'Order ID: 1-2 Purchase date: 1/2/2026 Total cost 1 Big Telly £1,299.00 - £1,299.00 Payment summary Subtotal: £1,299.00 Total: £1,299.00',
+    );
     expect(r.items[0]).toMatchObject({ unitPrice: 129900, lineTotal: 129900 });
     expect(r.total).toBe(129900);
     expect(r.warnings).toEqual([]);
@@ -89,7 +107,7 @@ describe('parseReceiptText', () => {
 
 // A made-up Sainsbury's e-receipt as pdf.js extracts it: ligatures split off as their own text items ("Di ff user"),
 // a name wrapped onto a second line, and order-level savings and coupons. No real receipt data.
-const sainsburys = (lines: string, summary = 'Delivery cost   £1.50 \nSubtotal   £11.30 \nYou\'ve saved*   -£0.40 \nCoupons   -£5.00 \nTotal paid   £5.90') =>
+const sainsburys = (lines: string, summary = "Delivery cost   £1.50 \nSubtotal   £11.30 \nYou've saved*   -£0.40 \nCoupons   -£5.00 \nTotal paid   £5.90") =>
   `Your receipt for order:   1200000001 \nSlot time:   Saturday 3rd January 2026, 8:00am - 9:00am \n${lines}\nOrder summary \n${summary} \n` +
   `We took payment on a card\nending in   4242 \nNectar   (************9876543) \nPrevious points balance   100 \nPoints earned   14 \nNew points balance   114 \n` +
   `If whilst inspecting the goods you   fi nd goods you do not\nwant, you are free to return them. Sainsbury's o ff ers a 30 day goodwill returns policy.`;
@@ -97,12 +115,21 @@ const SAINSBURYS_ITEMS =
   `Groceries (5 items) \n1   Sainsbury's British Semi Skimmed Milk 2.27L   £1.65 \n2   Sainsbury's Wholemeal Bread 800g   £1.50 \n` +
   `1   Home Di ff user 100ml Fresh Linen   £4.50 \n1   Zo fl ora Concentrated Multipurpose Disinfectant Country Garden 3\nin 1 Action 120ml   £1.75 \n`;
 
-describe('parseReceiptText (Sainsbury\'s)', () => {
+describe("parseReceiptText (Sainsbury's)", () => {
   it('reads order details, totals and Nectar points, but not card or Nectar numbers', () => {
     const r = parseReceiptText(sainsburys(SAINSBURYS_ITEMS));
     expect(r).toMatchObject({
-      retailer: 'sainsburys', orderId: '1200000001', date: '2026-01-03', channel: 'Online',
-      subtotal: 1130, reportedSavings: 40, delivery: 150, coupons: 500, total: 590, points: 14, warnings: [],
+      retailer: 'sainsburys',
+      orderId: '1200000001',
+      date: '2026-01-03',
+      channel: 'Online',
+      subtotal: 1130,
+      reportedSavings: 40,
+      delivery: 150,
+      coupons: 500,
+      total: 590,
+      points: 14,
+      warnings: [],
     });
     expect(JSON.stringify(r)).not.toMatch(/4242|9876543/);
   });
@@ -137,8 +164,15 @@ describe('parseReceiptText (Sainsbury\'s)', () => {
 
 // A made-up order as the Sainsbury's downloader saves it (a trimmed groceries API order). No real order data.
 const ORDER: SainsburysOrder = {
-  order_uid: '1200000002', order_type: 'delivery', slot_start_time: '2026-06-12T23:30:00Z',
-  total: 6.4, sub_total: 9.4, slot_price: 1.5, carrier_bag_charge: 0, vouchers_savings: -4.5, savings: -1.25,
+  order_uid: '1200000002',
+  order_type: 'delivery',
+  slot_start_time: '2026-06-12T23:30:00Z',
+  total: 6.4,
+  sub_total: 9.4,
+  slot_price: 1.5,
+  carrier_bag_charge: 0,
+  vouchers_savings: -4.5,
+  savings: -1.25,
   order_items: [
     { quantity: 1, sub_total: 1.65, product: { name: " Sainsbury's British Semi Skimmed Milk 2.27L", adjustment: null } },
     { quantity: 2, sub_total: 2.5, product: { name: "Sainsbury's Wholemeal Bread 800g", adjustment: [{ usage: 'Discount', amount: '-0.50' }] } },
@@ -151,8 +185,18 @@ describe("parseSainsburysOrder (downloader's saved orders)", () => {
   it('reads totals, the UK slot date and coupons', () => {
     // 23:30 UTC on 12 June is 00:30 on the 13th in the UK (BST).
     expect(parseSainsburysOrder(ORDER)).toMatchObject({
-      retailer: 'sainsburys', orderId: '1200000002', date: '2026-06-13', channel: 'Online',
-      delivery: 150, coupons: 450, total: 640, reportedSavings: 125, computedSavings: 125, points: 0, itemsTotal: 940, warnings: [],
+      retailer: 'sainsburys',
+      orderId: '1200000002',
+      date: '2026-06-13',
+      channel: 'Online',
+      delivery: 150,
+      coupons: 450,
+      total: 640,
+      reportedSavings: 125,
+      computedSavings: 125,
+      points: 0,
+      itemsTotal: 940,
+      warnings: [],
     });
   });
 
@@ -166,7 +210,9 @@ describe("parseSainsburysOrder (downloader's saved orders)", () => {
   });
 
   it('flags an order whose lines do not reconcile', () => {
-    expect(parseSainsburysOrder({ ...ORDER, total: 6.9 }).warnings).toEqual([expect.stringMatching(/^Sainsbury's charged £6\.90, but the items add up to £9\.40/)]);
+    expect(parseSainsburysOrder({ ...ORDER, total: 6.9 }).warnings).toEqual([
+      expect.stringMatching(/^Sainsbury's charged £6\.90, but the items add up to £9\.40/),
+    ]);
   });
 });
 

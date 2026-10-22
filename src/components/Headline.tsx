@@ -12,7 +12,9 @@ function ChartTip({ active, payload }: { active?: boolean; payload?: { payload: 
   return (
     <div className="glass rounded-xl border border-line px-3 py-2 text-sm shadow-xl">
       <div className="text-xs text-muted">{dayYear(p.date)}</div>
-      <div className="num font-semibold">{p.index.toFixed(1)} <span className="text-muted">({signPct(p.index - 100)})</span></div>
+      <div className="num font-semibold">
+        {p.index.toFixed(1)} <span className="text-muted">({signPct(p.index - 100)})</span>
+      </div>
     </div>
   );
 }
@@ -26,12 +28,42 @@ export const Headline = memo(function Headline({ a, c }: { a: Analysis; c: Chart
   const hi = Math.max(101, ...series.map((s) => s.index));
 
   const kpis = [
-    { icon: ShoppingBasket, label: 'Weekly spend', value: o.perWeek ?? o.spend, fmt: gbp0, sub: o.perWeek ? `${gbp0(o.spend)} across ${o.receipts} shops` : 'Add receipts spanning a week' },
-    { icon: TrendingUp, label: 'Projected per year', value: o.perYear ?? 0, fmt: (n: number) => (o.perYear ? gbp0(n) : '—'), sub: 'At your current weekly rate' },
+    {
+      icon: ShoppingBasket,
+      label: 'Weekly spend',
+      value: o.perWeek ?? o.spend,
+      fmt: gbp0,
+      sub: o.perWeek ? `${gbp0(o.spend)} across ${o.receipts} shops` : 'Add receipts spanning a week',
+    },
+    {
+      icon: TrendingUp,
+      label: 'Projected per year',
+      value: o.perYear ?? 0,
+      fmt: (n: number) => (o.perYear ? gbp0(n) : '—'),
+      sub: 'At your current weekly rate',
+    },
     { icon: Coins, label: 'Average basket', value: o.avgBasket, fmt: gbp, sub: `${o.units} items · ${o.distinctProducts} products` },
-    { icon: PiggyBank, label: 'Saved on offers', value: o.savings, fmt: gbp0, sub: `${o.savingsRate.toFixed(0)}% off shelf price · ${o.onOfferShare.toFixed(0)}% of lines` },
-    { icon: CalendarClock, label: 'Shop every', value: o.daysBetweenShops ?? 0, fmt: (n: number) => (o.daysBetweenShops ? `${n.toFixed(1)} days` : '—'), sub: o.from && o.to ? dayRange(o.from, o.to, ' to ') : '' },
-    { icon: Star, label: o.retailers.length === 1 && o.retailers[0] === 'sainsburys' ? 'Nectar points' : o.retailers.length > 1 ? 'Clubcard + Nectar' : 'Clubcard points', value: o.points, fmt: (n: number) => Math.round(n).toLocaleString('en-GB'), sub: o.points || !o.retailers.includes('sainsburys') ? `≈ ${gbp(o.pointsValue)} in vouchers` : "Not in saved Sainsbury's orders, only the PDFs" },
+    {
+      icon: PiggyBank,
+      label: 'Saved on offers',
+      value: o.savings,
+      fmt: gbp0,
+      sub: `${o.savingsRate.toFixed(0)}% off shelf price · ${o.onOfferShare.toFixed(0)}% of lines`,
+    },
+    {
+      icon: CalendarClock,
+      label: 'Shop every',
+      value: o.daysBetweenShops ?? 0,
+      fmt: (n: number) => (o.daysBetweenShops ? `${n.toFixed(1)} days` : '—'),
+      sub: o.from && o.to ? dayRange(o.from, o.to, ' to ') : '',
+    },
+    {
+      icon: Star,
+      label: o.retailers.length === 1 && o.retailers[0] === 'sainsburys' ? 'Nectar points' : o.retailers.length > 1 ? 'Clubcard + Nectar' : 'Clubcard points',
+      value: o.points,
+      fmt: (n: number) => Math.round(n).toLocaleString('en-GB'),
+      sub: o.points || !o.retailers.includes('sainsburys') ? `≈ ${gbp(o.pointsValue)} in vouchers` : "Not in saved Sainsbury's orders, only the PDFs",
+    },
   ];
 
   return (
@@ -50,7 +82,11 @@ export const Headline = memo(function Headline({ a, c }: { a: Analysis; c: Chart
           {inf.products ? (
             <>
               <div className="flex flex-wrap items-end gap-x-5 gap-y-2">
-                <CountUp value={inf.pct} format={(n) => signPct(n, 1)} className={`font-display text-7xl font-extrabold leading-none tracking-tight sm:text-8xl ${tone}`} />
+                <CountUp
+                  value={inf.pct}
+                  format={(n) => signPct(n, 1)}
+                  className={`font-display text-7xl font-extrabold leading-none tracking-tight sm:text-8xl ${tone}`}
+                />
                 <p className="max-w-xs pb-2 text-sm text-muted text-pretty">
                   Shelf prices of the <b className="text-ink">{inf.products} products</b> you've bought more than once, first time vs latest.
                 </p>
@@ -71,9 +107,22 @@ export const Headline = memo(function Headline({ a, c }: { a: Analysis; c: Chart
                     </defs>
                     <XAxis dataKey="date" tickFormatter={day} tick={{ fill: c.muted, fontSize: 11 }} axisLine={false} tickLine={false} minTickGap={24} />
                     <YAxis domain={[Math.floor(lo - 0.5), Math.ceil(hi + 0.5)]} hide />
-                    <ReferenceLine y={100} stroke={c.faint} strokeDasharray="4 4" label={{ value: '100 = first shop', fill: c.faint, fontSize: 11, position: 'insideTopLeft' }} />
+                    <ReferenceLine
+                      y={100}
+                      stroke={c.faint}
+                      strokeDasharray="4 4"
+                      label={{ value: '100 = first shop', fill: c.faint, fontSize: 11, position: 'insideTopLeft' }}
+                    />
                     <Tooltip content={<ChartTip />} cursor={{ stroke: c.faint, strokeWidth: 1 }} />
-                    <Area type="monotone" dataKey="index" stroke={c.brand} strokeWidth={2.5} fill="url(#idx)" dot={{ r: 3, fill: c.brand, stroke: c.surface, strokeWidth: 2 }} activeDot={{ r: 6, stroke: c.surface, strokeWidth: 2 }} />
+                    <Area
+                      type="monotone"
+                      dataKey="index"
+                      stroke={c.brand}
+                      strokeWidth={2.5}
+                      fill="url(#idx)"
+                      dot={{ r: 3, fill: c.brand, stroke: c.surface, strokeWidth: 2 }}
+                      activeDot={{ r: 6, stroke: c.surface, strokeWidth: 2 }}
+                    />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>

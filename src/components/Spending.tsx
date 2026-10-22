@@ -14,9 +14,15 @@ export function Insights({ a }: { a: Analysis }) {
     <Section id="insights" eyebrow="At a glance" title="What your receipts are telling you">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {a.insights.map((ins, i) => (
-          <Reveal key={ins.title} delay={(i % 4) * 0.06} className={`card relative overflow-hidden bg-gradient-to-br ${tone[ins.tone]} to-transparent to-60% p-5 transition-transform hover:-translate-y-1`}>
+          <Reveal
+            key={ins.title}
+            delay={(i % 4) * 0.06}
+            className={`card relative overflow-hidden bg-gradient-to-br ${tone[ins.tone]} to-transparent to-60% p-5 transition-transform hover:-translate-y-1`}
+          >
             <div className="grid gap-2">
-              <span className="text-3xl" aria-hidden>{ins.icon}</span>
+              <span className="text-3xl" aria-hidden>
+                {ins.icon}
+              </span>
               <h3 className="font-display text-lg font-bold leading-tight text-balance">{ins.title}</h3>
               <p className="text-sm text-muted text-pretty">{ins.body}</p>
             </div>
@@ -29,14 +35,29 @@ export function Insights({ a }: { a: Analysis }) {
 
 type SpendView = 'shops' | 'months';
 
-function SpendTip({ active, payload }: { active?: boolean; payload?: { payload: { label: string; tip?: string; paid: number; saved: number; units?: number } }[] }) {
+function SpendTip({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: { payload: { label: string; tip?: string; paid: number; saved: number; units?: number } }[];
+}) {
   if (!active || !payload?.length) return null;
   const p = payload[0].payload;
   return (
     <div className="glass grid gap-1 rounded-xl border border-line px-3 py-2 text-sm shadow-xl">
-      <div className="text-xs text-muted">{p.tip ?? p.label}{p.units ? ` · ${p.units} items` : ''}</div>
-      <div className="flex items-center gap-2"><span className="size-2.5 rounded-sm bg-brand" />Paid <b className="num ml-auto pl-4">{gbp(p.paid)}</b></div>
-      <div className="flex items-center gap-2"><span className="size-2.5 rounded-sm bg-aqua" />Saved <b className="num ml-auto pl-4">{gbp(p.saved)}</b></div>
+      <div className="text-xs text-muted">
+        {p.tip ?? p.label}
+        {p.units ? ` · ${p.units} items` : ''}
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="size-2.5 rounded-sm bg-brand" />
+        Paid <b className="num ml-auto pl-4">{gbp(p.paid)}</b>
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="size-2.5 rounded-sm bg-aqua" />
+        Saved <b className="num ml-auto pl-4">{gbp(p.saved)}</b>
+      </div>
     </div>
   );
 }
@@ -63,11 +84,23 @@ export function SpendChart({ a, c }: { a: Analysis; c: ChartColours }) {
           <h3 className="font-display text-xl font-bold">Spend per {view === 'shops' ? 'shop' : 'month'}</h3>
           <p className="text-sm text-muted">What you paid, with what offers took off on top.</p>
         </div>
-        <Segmented label="Spend view" value={view} onChange={setView} options={[{ value: 'shops', label: 'Shops' }, { value: 'months', label: 'Months' }]} />
+        <Segmented
+          label="Spend view"
+          value={view}
+          onChange={setView}
+          options={[
+            { value: 'shops', label: 'Shops' },
+            { value: 'months', label: 'Months' },
+          ]}
+        />
       </div>
       <div className="flex gap-4 text-xs text-muted">
-        <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-brand" /> Paid</span>
-        <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-aqua" /> Saved by offers</span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="size-2.5 rounded-sm bg-brand" /> Paid
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="size-2.5 rounded-sm bg-aqua" /> Saved by offers
+        </span>
       </div>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
@@ -76,8 +109,26 @@ export function SpendChart({ a, c }: { a: Analysis; c: ChartColours }) {
             <XAxis dataKey="label" tick={{ fill: c.muted, fontSize: 11 }} axisLine={false} tickLine={false} interval="preserveStartEnd" minTickGap={8} />
             <YAxis tickFormatter={(v: number) => gbp0(v)} tick={{ fill: c.muted, fontSize: 11 }} axisLine={false} tickLine={false} width={48} />
             <Tooltip content={<SpendTip />} cursor={{ fill: c.grid, opacity: 0.5 }} />
-            <Bar dataKey="paid" stackId="s" fill={c.brand} stroke={c.surface} strokeWidth={dense ? 0 : 2} radius={[0, 0, 4, 4]} maxBarSize={56} animationDuration={900} />
-            <Bar dataKey="saved" stackId="s" fill={c.aqua} stroke={c.surface} strokeWidth={dense ? 0 : 2} radius={[4, 4, 0, 0]} maxBarSize={56} animationDuration={900} />
+            <Bar
+              dataKey="paid"
+              stackId="s"
+              fill={c.brand}
+              stroke={c.surface}
+              strokeWidth={dense ? 0 : 2}
+              radius={[0, 0, 4, 4]}
+              maxBarSize={56}
+              animationDuration={900}
+            />
+            <Bar
+              dataKey="saved"
+              stackId="s"
+              fill={c.aqua}
+              stroke={c.surface}
+              strokeWidth={dense ? 0 : 2}
+              radius={[4, 4, 0, 0]}
+              maxBarSize={56}
+              animationDuration={900}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -96,8 +147,14 @@ export function Categories({ a }: { a: Analysis }) {
       </div>
       <ul className="grid gap-2.5">
         {a.categories.map((cat, i) => (
-          <li key={cat.name} className="grid grid-cols-[1.75rem_minmax(6.5rem,9rem)_1fr_auto] items-center gap-3 text-sm" title={`${cat.name}: ${gbp(cat.value)} (${cat.share.toFixed(1)}%)`}>
-            <span className="text-lg leading-none" aria-hidden>{CATEGORY_EMOJI[cat.name]}</span>
+          <li
+            key={cat.name}
+            className="grid grid-cols-[1.75rem_minmax(6.5rem,9rem)_1fr_auto] items-center gap-3 text-sm"
+            title={`${cat.name}: ${gbp(cat.value)} (${cat.share.toFixed(1)}%)`}
+          >
+            <span className="text-lg leading-none" aria-hidden>
+              {CATEGORY_EMOJI[cat.name]}
+            </span>
             <span className="truncate font-medium">{cat.name}</span>
             <span className="h-3 overflow-hidden rounded-full bg-surface-2">
               <motion.span

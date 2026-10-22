@@ -10,11 +10,7 @@ describe('expandZips', () => {
     const deflated = zipSync({ 'Receipts/b.pdf': pdf('b'), '__MACOSX/Receipts/._b.pdf': pdf('junk') }, { level: 6 });
     const loose = new File([pdf('c')], 'c.pdf', { type: 'application/pdf' });
 
-    const out = await expandZips([
-      new File([stored], 'one.zip', { type: 'application/zip' }),
-      new File([deflated], 'two.zip'),
-      loose,
-    ]);
+    const out = await expandZips([new File([stored], 'one.zip', { type: 'application/zip' }), new File([deflated], 'two.zip'), loose]);
 
     expect(out.map((f) => f.name)).toEqual(['a.pdf', 'b.pdf', 'c.pdf']);
     expect(out[1].type).toBe('application/pdf');

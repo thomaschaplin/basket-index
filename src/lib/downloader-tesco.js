@@ -15,21 +15,31 @@
 
   // The page embeds its order data as JSON. Online orders date from the delivery slot, in-store ones from createdDateTime:
   // {"orderNo":"8831-8142-512",...,"createdDateTime":"2026-10-19T19:03:39Z",...,"slot":{"start":"2026-10-21T09:00:00Z"}}
-  const localDate = (iso) => { const d = new Date(iso); return isNaN(d) ? '' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
-  const datesIn = (html) => new Map(
-    html.split('"orderNo":"').slice(1).map((chunk) => {
-      const at = (key) => (chunk.match(new RegExp(`"${key}":"([^"]+)"`)) || [])[1];
-      const slot = (chunk.match(/"slot":\{"start":"([^"]+)"/) || [])[1];
-      return [chunk.slice(0, chunk.indexOf('"')), localDate(slot || at('createdDateTime'))];
-    }),
-  );
+  const localDate = (iso) => {
+    const d = new Date(iso);
+    return Number.isNaN(+d) ? '' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  };
+  const datesIn = (html) =>
+    new Map(
+      html
+        .split('"orderNo":"')
+        .slice(1)
+        .map((chunk) => {
+          const at = (key) => (chunk.match(new RegExp(`"${key}":"([^"]+)"`)) || [])[1];
+          const slot = (chunk.match(/"slot":\{"start":"([^"]+)"/) || [])[1];
+          return [chunk.slice(0, chunk.indexOf('"')), localDate(slot || at('createdDateTime'))];
+        }),
+    );
 
   // 1. Collect order IDs from every page of both receipt tabs.
   const orders = new Map(); // orderId -> { channel, date }
   for (const tab of ['online', 'in-store']) {
     for (let page = 1; page <= MAX_PAGES; page++) {
       const res = await fetch(`${base}/?tab=${tab}&page=${page}`, { credentials: 'include' });
-      if (!res.ok) { log(`${tab} page ${page} returned ${res.status}, stopping.`); break; }
+      if (!res.ok) {
+        log(`${tab} page ${page} returned ${res.status}, stopping.`);
+        break;
+      }
       const html = await res.text();
       const doc = new DOMParser().parseFromString(html, 'text/html');
       const dates = datesIn(html);
@@ -50,7 +60,11 @@
 
   const todo = [...orders].filter(([, o]) => !SINCE || !o.date || o.date >= SINCE);
   if (!todo.length) {
-    log(orders.size ? `No receipts on or after ${SINCE}.` : 'No receipts found. Check you are signed in and that the list shows orders. If it does, Tesco may have changed the page: please open an issue.');
+    log(
+      orders.size
+        ? `No receipts on or after ${SINCE}.`
+        : 'No receipts found. Check you are signed in and that the list shows orders. If it does, Tesco may have changed the page: please open an issue.',
+    );
     return;
   }
   log(`Fetching ${todo.length} receipt PDFs…`);
@@ -71,12 +85,19 @@
         await sleep(1500 * attempt);
       }
     }
-    if (!bytes) { failed.push(id); log('Failed', id); continue; }
-    files.push({ name: `Tesco_Receipt_${date ? date + '_' : ''}${id}.pdf`, bytes });
+    if (!bytes) {
+      failed.push(id);
+      log('Failed', id);
+      continue;
+    }
+    files.push({ name: `Tesco_Receipt_${date ? `${date}_` : ''}${id}.pdf`, bytes });
     log(`Fetched ${files.length}/${todo.length}`);
     await sleep(500);
   }
-  if (!files.length) { log('Could not fetch any receipts. Try again in a few minutes.'); return; }
+  if (!files.length) {
+    log('Could not fetch any receipts. Try again in a few minutes.');
+    return;
+  }
 
   // 3. Pack them into one zip (stored, no compression: PDFs are already compressed).
   // A single file avoids Chrome blocking "multiple downloads" after the first.
@@ -93,7 +114,11 @@
   const now = new Date();
   const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1);
   const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
-  const header = (size, write) => { const v = new DataView(new ArrayBuffer(size)); write(v); return new Uint8Array(v.buffer); };
+  const header = (size, write) => {
+    const v = new DataView(new ArrayBuffer(size));
+    write(v);
+    return new Uint8Array(v.buffer);
+  };
   const parts = [];
   const central = [];
   let offset = 0;
@@ -101,18 +126,42 @@
     const n = new TextEncoder().encode(name);
     const crc = crc32(bytes);
     const common = (v, at) => {
-      v.setUint16(at, 20, true); v.setUint16(at + 2, 0x0800, true); v.setUint16(at + 4, 0, true);
-      v.setUint16(at + 6, dosTime, true); v.setUint16(at + 8, dosDate, true); v.setUint32(at + 10, crc, true);
-      v.setUint32(at + 14, bytes.length, true); v.setUint32(at + 18, bytes.length, true); v.setUint16(at + 22, n.length, true);
+      v.setUint16(at, 20, true);
+      v.setUint16(at + 2, 0x0800, true);
+      v.setUint16(at + 4, 0, true);
+      v.setUint16(at + 6, dosTime, true);
+      v.setUint16(at + 8, dosDate, true);
+      v.setUint32(at + 10, crc, true);
+      v.setUint32(at + 14, bytes.length, true);
+      v.setUint32(at + 18, bytes.length, true);
+      v.setUint16(at + 22, n.length, true);
     };
-    parts.push(header(30, (v) => { v.setUint32(0, 0x04034b50, true); common(v, 4); }), n, bytes);
-    central.push(header(46, (v) => { v.setUint32(0, 0x02014b50, true); v.setUint16(4, 20, true); common(v, 6); v.setUint32(42, offset, true); }), n);
+    parts.push(
+      header(30, (v) => {
+        v.setUint32(0, 0x04034b50, true);
+        common(v, 4);
+      }),
+      n,
+      bytes,
+    );
+    central.push(
+      header(46, (v) => {
+        v.setUint32(0, 0x02014b50, true);
+        v.setUint16(4, 20, true);
+        common(v, 6);
+        v.setUint32(42, offset, true);
+      }),
+      n,
+    );
     offset += 30 + n.length + bytes.length;
   }
   const centralSize = central.reduce((t, p) => t + p.length, 0);
   const end = header(22, (v) => {
-    v.setUint32(0, 0x06054b50, true); v.setUint16(8, files.length, true); v.setUint16(10, files.length, true);
-    v.setUint32(12, centralSize, true); v.setUint32(16, offset, true);
+    v.setUint32(0, 0x06054b50, true);
+    v.setUint16(8, files.length, true);
+    v.setUint16(10, files.length, true);
+    v.setUint32(12, centralSize, true);
+    v.setUint32(16, offset, true);
   });
   const zip = new Blob([...parts, ...central, end], { type: 'application/zip' });
 
@@ -120,8 +169,12 @@
     href: URL.createObjectURL(zip),
     download: `Tesco_Receipts_${now.toISOString().slice(0, 10)}.zip`,
   });
-  document.body.appendChild(a); a.click(); a.remove();
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 60000);
 
-  log(`Done: ${a.download} with ${files.length} receipts${failed.length ? `. ${failed.length} failed (${failed.join(', ')}): run again or download those by hand` : ''}. Drop the zip onto Basket Index.`);
+  log(
+    `Done: ${a.download} with ${files.length} receipts${failed.length ? `. ${failed.length} failed (${failed.join(', ')}): run again or download those by hand` : ''}. Drop the zip onto Basket Index.`,
+  );
 })();

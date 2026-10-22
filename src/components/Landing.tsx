@@ -6,8 +6,16 @@ import { GetReceipts } from './GetReceipts';
 import { Reveal } from './ui';
 
 const FEATURES = [
-  { icon: LineChart, title: 'Your own inflation rate', body: 'A fixed basket of the things you actually buy again, priced first time vs latest. Not the national average: yours.' },
-  { icon: PackageSearch, title: 'Shrinkflation watch', body: 'Spots packs that got smaller but not cheaper, and works out which pack size is really the best value.' },
+  {
+    icon: LineChart,
+    title: 'Your own inflation rate',
+    body: 'A fixed basket of the things you actually buy again, priced first time vs latest. Not the national average: yours.',
+  },
+  {
+    icon: PackageSearch,
+    title: 'Shrinkflation watch',
+    body: 'Spots packs that got smaller but not cheaper, and works out which pack size is really the best value.',
+  },
   { icon: Tag, title: 'Offer dependence', body: 'How much of your shop hangs on Clubcard and Nectar prices, and which staples you never catch on offer.' },
 ];
 
@@ -35,11 +43,25 @@ function HeroArt() {
         </div>
         <div className="grid gap-2 font-mono text-[11px]">
           {[
-            ['Semi Skimmed Milk 4pt', '£1.55'], ['Wholemeal Bread 800g', '£0.75'], ['Chicken Thighs 500g', '£4.75'], ['Salted Butter 250g', '£2.25'],
-            ['Kiwi Fruit Loose', '£0.91'], ['Cherry Tomatoes 330g', '£1.09'], ['Extra Mature Cheddar', '£3.50'], ['Penne Pasta 500g', '£0.75'],
-            ['Gala Apples 6pk', '£1.60'], ['Orange Juice 1L', '£1.70'], ['Granola 850g', '£2.85'],
+            ['Semi Skimmed Milk 4pt', '£1.55'],
+            ['Wholemeal Bread 800g', '£0.75'],
+            ['Chicken Thighs 500g', '£4.75'],
+            ['Salted Butter 250g', '£2.25'],
+            ['Kiwi Fruit Loose', '£0.91'],
+            ['Cherry Tomatoes 330g', '£1.09'],
+            ['Extra Mature Cheddar', '£3.50'],
+            ['Penne Pasta 500g', '£0.75'],
+            ['Gala Apples 6pk', '£1.60'],
+            ['Orange Juice 1L', '£1.70'],
+            ['Granola 850g', '£2.85'],
           ].map(([n, p], i) => (
-            <motion.div key={n} initial={reduce ? false : { opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.06 }} className="flex justify-between gap-3 border-b border-dashed border-line pb-1.5 text-muted">
+            <motion.div
+              key={n}
+              initial={reduce ? false : { opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 + i * 0.06 }}
+              className="flex justify-between gap-3 border-b border-dashed border-line pb-1.5 text-muted"
+            >
               <span className="truncate">{n}</span>
               <span className="text-ink">{p}</span>
             </motion.div>
@@ -51,7 +73,11 @@ function HeroArt() {
           key={t.name}
           initial={reduce ? false : { opacity: 0, scale: 0.6 }}
           animate={reduce ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1, y: [0, -10, 0] }}
-          transition={{ opacity: { delay: 0.8 + t.d * 0.3 }, scale: { delay: 0.8 + t.d * 0.3, type: 'spring' }, y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: t.d } }}
+          transition={{
+            opacity: { delay: 0.8 + t.d * 0.3 },
+            scale: { delay: 0.8 + t.d * 0.3, type: 'spring' },
+            y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: t.d },
+          }}
           style={{ left: t.x, top: t.y, rotate: t.r }}
           className="absolute w-44 rounded-2xl border border-line bg-surface-2 p-3 shadow-2xl shadow-black/30"
         >
@@ -60,7 +86,9 @@ function HeroArt() {
             <span className="font-display text-2xl font-bold">{t.now}</span>
             <span className="font-mono text-xs text-faint line-through">{t.was}</span>
           </div>
-          <span className={`mt-1 inline-block rounded-full px-2 py-0.5 font-mono text-[10px] font-bold ${t.up ? 'bg-up-soft text-up' : 'bg-down-soft text-down'}`}>
+          <span
+            className={`mt-1 inline-block rounded-full px-2 py-0.5 font-mono text-[10px] font-bold ${t.up ? 'bg-up-soft text-up' : 'bg-down-soft text-down'}`}
+          >
             {t.name.includes('Choc') ? '▲ shrinkflation' : t.up ? '▲ price rise' : '▼ cheaper'}
           </span>
         </motion.div>
@@ -96,12 +124,22 @@ export function Landing({ onFiles, onSample, progress }: { onFiles: (f: File[]) 
             transition={{ delay: 0.16, duration: 0.7 }}
             className="max-w-xl text-lg text-muted text-pretty"
           >
-            Drop in your receipts and get your personal inflation rate, the prices that crept up, the packs that quietly shrank, and exactly where the money goes.
+            Drop in your receipts and get your personal inflation rate, the prices that crept up, the packs that quietly shrank, and exactly where the money
+            goes.
           </motion.p>
-          <motion.div initial={reduce ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.24, duration: 0.7 }} className="grid gap-4">
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.24, duration: 0.7 }}
+            className="grid gap-4"
+          >
             <Dropzone onFiles={onFiles} progress={progress} />
             <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-              <button onClick={onSample} className="group inline-flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-2.5 font-semibold shadow-card transition hover:-translate-y-0.5 hover:border-brand/50">
+              <button
+                type="button"
+                onClick={onSample}
+                className="group inline-flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-2.5 font-semibold shadow-card transition hover:-translate-y-0.5 hover:border-brand/50"
+              >
                 Try it with an example household
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
               </button>

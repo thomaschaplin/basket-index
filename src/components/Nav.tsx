@@ -19,27 +19,51 @@ export function Logo() {
   );
 }
 
-export function Nav({ theme, onTheme, hasData, onExport, onReset }: { theme: Theme; onTheme: () => void; hasData: boolean; onExport: () => void; onReset: () => void }) {
+export function Nav({
+  theme,
+  onTheme,
+  hasData,
+  onExport,
+  onReset,
+}: {
+  theme: Theme;
+  onTheme: () => void;
+  hasData: boolean;
+  onExport: () => void;
+  onReset: () => void;
+}) {
   const icon = 'grid size-10 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink';
   return (
     <nav className="glass sticky top-0 z-30 border-b border-line/70">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
-        <a href="#top" aria-label="Basket Index, back to top"><Logo /></a>
+        <a href="#top" aria-label="Basket Index, back to top">
+          <Logo />
+        </a>
         {hasData && (
           <div className="mx-auto hidden items-center gap-1 lg:flex">
             {LINKS.map(([id, label]) => (
-              <a key={id} href={`#${id}`} className="rounded-full px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:bg-surface-2 hover:text-ink">{label}</a>
+              <a
+                key={id}
+                href={`#${id}`}
+                className="rounded-full px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:bg-surface-2 hover:text-ink"
+              >
+                {label}
+              </a>
             ))}
           </div>
         )}
         <div className="ml-auto flex items-center gap-1 lg:ml-0">
           {hasData && (
             <>
-              <button onClick={onExport} className={icon} aria-label="Download all items as CSV" title="Download CSV"><Download className="size-5" /></button>
-              <button onClick={onReset} className={icon} aria-label="Start over" title="Start over"><RotateCcw className="size-5" /></button>
+              <button type="button" onClick={onExport} className={icon} aria-label="Download all items as CSV" title="Download CSV">
+                <Download className="size-5" />
+              </button>
+              <button type="button" onClick={onReset} className={icon} aria-label="Start over" title="Start over">
+                <RotateCcw className="size-5" />
+              </button>
             </>
           )}
-          <button onClick={onTheme} className={icon} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} title="Toggle theme">
+          <button type="button" onClick={onTheme} className={icon} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} title="Toggle theme">
             {theme === 'dark' ? <Sun className="size-5" /> : <Moon className="size-5" />}
           </button>
         </div>

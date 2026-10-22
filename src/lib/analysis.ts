@@ -1,5 +1,5 @@
 // Turns parsed receipts into cost-of-living insights. All money in pence.
-import { categorise, type Category } from './categories';
+import { type Category, type CategoryOverrides, categorise } from './categories';
 import type { PackSize, Receipt, ReceiptItem, Retailer } from './types';
 
 export interface Purchase extends ReceiptItem {
@@ -97,7 +97,12 @@ export interface Insight {
 
 export type Analysis = ReturnType<typeof analyse>;
 
-const key = (name: string) => name.toLowerCase().replace(/cof+ee/g, 'coffee').replace(/\s+/g, ' ').trim();
+const key = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/cof+ee/g, 'coffee')
+    .replace(/\s+/g, ' ')
+    .trim();
 // The same branded product at another shop is a different price series: switching shops isn't inflation.
 const scoped = (r: Receipt, k: string) => (r.retailer === 'tesco' ? k : `${r.retailer}:${k}`);
 const orderKey = (r: Receipt) => r.orderId || `${r.date}-${r.total}`;
@@ -120,23 +125,24 @@ export function dedupe(receipts: Receipt[]): Receipt[] {
   return [...byId.values()].filter((r) => r.date).sort((a, b) => a.date!.localeCompare(b.date!));
 }
 
-export function analyse(input: Receipt[]) {
+export function analyse(input: Receipt[], overrides: CategoryOverrides = {}) {
   const rs = dedupe(input);
 
   const purchases: Purchase[] = [];
   rs.forEach((r) =>
-    r.items.forEach((i) =>
+    r.items.forEach((i) => {
+      const k = scoped(r, key(i.name));
       purchases.push({
         ...i,
         retailer: r.retailer,
         family: scoped(r, i.family),
         date: r.date!,
         orderId: orderKey(r),
-        key: scoped(r, key(i.name)),
-        category: categorise(i.name),
+        key: k,
+        category: overrides[k] ?? categorise(i.name),
         basketDeal: !!r.basketDiscount,
-      }),
-    ),
+      });
+    }),
   );
   const shelfCost = (p: Purchase) => (p.weighed ? p.lineTotal + p.saving : p.qty * p.unitPrice);
 
@@ -204,7 +210,17 @@ export function analyse(input: Receipt[]) {
   const categories: Partial<Record<Category, number>> = {};
   purchases.forEach((p) => (categories[p.category] = (categories[p.category] ?? 0) + p.lineTotal));
   const categoryList = (Object.entries(categories) as [Category, number][])
-    .map(([name, value]) => ({ name, value, share: (value / Math.max(1, purchases.reduce((a, p) => a + p.lineTotal, 0))) * 100 }))
+    .map(([name, value]) => ({
+      name,
+      value,
+      share:
+        (value /
+          Math.max(
+            1,
+            purchases.reduce((a, p) => a + p.lineTotal, 0),
+          )) *
+        100,
+    }))
     .sort((a, b) => b.value - a.value);
 
   // ---- Per-product history (shelf price, before offers)
@@ -213,7 +229,19 @@ export function analyse(input: Receipt[]) {
   purchases.forEach((p) => {
     let h = history.get(p.key);
     if (!h) {
-      h = { key: p.key, retailer: p.retailer, name: p.name, category: p.category, weighed: p.weighed, size: p.size, points: [], spend: 0, units: 0, saved: 0, orders: 0 };
+      h = {
+        key: p.key,
+        retailer: p.retailer,
+        name: p.name,
+        category: p.category,
+        weighed: p.weighed,
+        size: p.size,
+        points: [],
+        spend: 0,
+        units: 0,
+        saved: 0,
+        orders: 0,
+      };
       history.set(p.key, h);
       orderSets.set(p.key, new Set());
     }
@@ -236,9 +264,20 @@ export function analyse(input: Receipt[]) {
     const last = h.points[h.points.length - 1];
     const shelves = h.points.map((x) => x.shelf);
     priceChanges.push({
-      key: h.key, name: h.name, category: h.category, weighed: h.weighed, times: h.points.length,
-      from: first.shelf, to: last.shelf, change: last.shelf - first.shelf, pct: pct(last.shelf, first.shelf),
-      fromDate: first.date, toDate: last.date, min: Math.min(...shelves), max: Math.max(...shelves), points: h.points,
+      key: h.key,
+      name: h.name,
+      category: h.category,
+      weighed: h.weighed,
+      times: h.points.length,
+      from: first.shelf,
+      to: last.shelf,
+      change: last.shelf - first.shelf,
+      pct: pct(last.shelf, first.shelf),
+      fromDate: first.date,
+      toDate: last.date,
+      min: Math.min(...shelves),
+      max: Math.max(...shelves),
+      points: h.points,
     });
   });
   priceChanges.sort((a, b) => Math.abs(b.pct) - Math.abs(a.pct));
@@ -248,7 +287,9 @@ export function analyse(input: Receipt[]) {
   const base = basket.reduce((a, c) => a + c.from * c.points[0].qty, 0);
   const now = basket.reduce((a, c) => a + c.to * c.points[0].qty, 0);
   const inflationDays = basket.length
-    ? (Date.parse(basket.reduce((m, c) => (c.toDate > m ? c.toDate : m), '')) - Date.parse(basket.reduce((m, c) => (c.fromDate < m ? c.fromDate : m), '9999'))) / 864e5
+    ? (Date.parse(basket.reduce((m, c) => (c.toDate > m ? c.toDate : m), '')) -
+        Date.parse(basket.reduce((m, c) => (c.fromDate < m ? c.fromDate : m), '9999'))) /
+      864e5
     : 0;
   const inflation = {
     products: basket.length,
@@ -259,7 +300,7 @@ export function analyse(input: Receipt[]) {
     down: basket.filter((c) => c.change < 0).length,
     same: basket.filter((c) => c.change === 0).length,
     // Annualised only when the window is long enough to mean something.
-    annualised: inflationDays >= 28 ? (Math.pow(now / base, 365 / inflationDays) - 1) * 100 : null,
+    annualised: inflationDays >= 28 ? ((now / base) ** (365 / inflationDays) - 1) * 100 : null,
   };
   // Basket index over time: each order's shelf prices for the fixed basket, carrying forward the last seen price.
   const indexSeries = rs.map((r) => {
@@ -302,7 +343,12 @@ export function analyse(input: Receipt[]) {
       const sizeDrop = 1 - small.size.amount / big.size.amount;
       const priceDrop = 1 - small.price / big.price;
       if (big.last < small.first && sizeDrop <= 0.25 && priceDrop <= 0.1 && small.perUnit.value > big.perUnit.value * 1.03) {
-        shrinkflation.push({ before: big, after: small, sizeChangePct: pct(small.size.amount, big.size.amount), unitChangePct: pct(small.perUnit.value, big.perUnit.value) });
+        shrinkflation.push({
+          before: big,
+          after: small,
+          sizeChangePct: pct(small.size.amount, big.size.amount),
+          unitChangePct: pct(small.perUnit.value, big.perUnit.value),
+        });
       }
     }
     // What buying the non-best sizes cost vs the same quantity at the best size's unit price.
@@ -322,7 +368,10 @@ export function analyse(input: Receipt[]) {
     .map((s) => ({ ...s, months: new Set(s.points.map((x) => month(x.date))).size, offers: s.points.filter((x) => x.onOffer).length }))
     .filter((s) => s.months >= Math.max(2, Math.ceil(stapleMonths / 2)))
     .sort((a, b) => b.orders - a.orders || b.spend - a.spend);
-  const topSavers = products.filter((t) => t.saved > 0).sort((a, b) => b.saved - a.saved).slice(0, 10);
+  const topSavers = products
+    .filter((t) => t.saved > 0)
+    .sort((a, b) => b.saved - a.saved)
+    .slice(0, 10);
 
   // ---- Receipt checks
   const warnings = rs.flatMap((r) => r.warnings.map((w) => ({ date: r.date!, text: w })));
@@ -334,20 +383,67 @@ export function analyse(input: Receipt[]) {
   const insights: Insight[] = [];
   const ups = priceChanges.filter((c) => c.change > 0 && !c.weighed).sort((a, b) => b.pct - a.pct);
   const downs = priceChanges.filter((c) => c.change < 0 && !c.weighed).sort((a, b) => a.pct - b.pct);
-  if (ups[0]) insights.push({ tone: 'bad', icon: '📈', title: `${ups[0].name} is up ${ups[0].pct.toFixed(0)}%`, body: `Shelf price went from ${gbp(ups[0].from)} to ${gbp(ups[0].to)} between your first and latest purchase.` });
-  if (downs[0]) insights.push({ tone: 'good', icon: '📉', title: `${downs[0].name} got cheaper`, body: `Down ${Math.abs(downs[0].pct).toFixed(0)}% from ${gbp(downs[0].from)} to ${gbp(downs[0].to)}.` });
+  if (ups[0])
+    insights.push({
+      tone: 'bad',
+      icon: '📈',
+      title: `${ups[0].name} is up ${ups[0].pct.toFixed(0)}%`,
+      body: `Shelf price went from ${gbp(ups[0].from)} to ${gbp(ups[0].to)} between your first and latest purchase.`,
+    });
+  if (downs[0])
+    insights.push({
+      tone: 'good',
+      icon: '📉',
+      title: `${downs[0].name} got cheaper`,
+      body: `Down ${Math.abs(downs[0].pct).toFixed(0)}% from ${gbp(downs[0].from)} to ${gbp(downs[0].to)}.`,
+    });
   if (shrinkflation[0]) {
     const s = shrinkflation[0];
-    insights.push({ tone: 'bad', icon: '🫣', title: `Shrinkflation spotted: ${s.after.name}`, body: `${Math.abs(s.sizeChangePct).toFixed(0)}% less in the pack, ${s.unitChangePct.toFixed(0)}% more ${s.after.perUnit.label}.` });
+    insights.push({
+      tone: 'bad',
+      icon: '🫣',
+      title: `Shrinkflation spotted: ${s.after.name}`,
+      body: `${Math.abs(s.sizeChangePct).toFixed(0)}% less in the pack, ${s.unitChangePct.toFixed(0)}% more ${s.after.perUnit.label}.`,
+    });
   }
-  if (categoryList[0]) insights.push({ tone: 'neutral', icon: '🛒', title: `${categoryList[0].name} is your biggest category`, body: `${categoryList[0].share.toFixed(0)}% of everything you bought, ${gbp(categoryList[0].value)} in total.` });
+  if (categoryList[0])
+    insights.push({
+      tone: 'neutral',
+      icon: '🛒',
+      title: `${categoryList[0].name} is your biggest category`,
+      body: `${categoryList[0].share.toFixed(0)}% of everything you bought, ${gbp(categoryList[0].value)} in total.`,
+    });
   const offers = retailers.length === 1 ? (retailers[0] === 'tesco' ? 'Clubcard offers' : 'Nectar Prices and offers') : 'Offers';
-  if (savings > 0) insights.push({ tone: 'good', icon: '🏷️', title: `${offers} saved you ${gbp(savings)}`, body: `That's ${overview.savingsRate.toFixed(0)}p in every £1 of shelf price${topSavers[0] ? `, led by ${topSavers[0].name} (${gbp(topSavers[0].saved)})` : ''}.` });
+  if (savings > 0)
+    insights.push({
+      tone: 'good',
+      icon: '🏷️',
+      title: `${offers} saved you ${gbp(savings)}`,
+      body: `That's ${overview.savingsRate.toFixed(0)}p in every £1 of shelf price${topSavers[0] ? `, led by ${topSavers[0].name} (${gbp(topSavers[0].saved)})` : ''}.`,
+    });
   const totalExtra = packChoices.reduce((a, p) => a + p.extra, 0);
-  if (totalExtra >= 50) insights.push({ tone: 'neutral', icon: '📦', title: `${gbp(totalExtra)} lost to pack sizes`, body: `Buying the best-value size of products you already buy in several sizes would have saved this.` });
-  if (staples[0]) insights.push({ tone: 'neutral', icon: '⭐', title: `${staples[0].name} is in ${staples[0].orders} of ${rs.length} shops`, body: `Your most loyal buy. ${staples[0].offers ? `On offer ${staples[0].offers} of ${staples[0].points.length} times.` : 'Never bought on offer.'}` });
+  if (totalExtra >= 50)
+    insights.push({
+      tone: 'neutral',
+      icon: '📦',
+      title: `${gbp(totalExtra)} lost to pack sizes`,
+      body: `Buying the best-value size of products you already buy in several sizes would have saved this.`,
+    });
+  if (staples[0])
+    insights.push({
+      tone: 'neutral',
+      icon: '⭐',
+      title: `${staples[0].name} is in ${staples[0].orders} of ${rs.length} shops`,
+      body: `Your most loyal buy. ${staples[0].offers ? `On offer ${staples[0].offers} of ${staples[0].points.length} times.` : 'Never bought on offer.'}`,
+    });
   const biggest = [...orders].sort((a, b) => b.total - a.total)[0];
-  if (biggest && rs.length > 2) insights.push({ tone: 'neutral', icon: '🧾', title: `Biggest shop: ${gbp(biggest.total)}`, body: `${biggest.units} items on ${new Date(biggest.date + 'T12:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}.` });
+  if (biggest && rs.length > 2)
+    insights.push({
+      tone: 'neutral',
+      icon: '🧾',
+      title: `Biggest shop: ${gbp(biggest.total)}`,
+      body: `${biggest.units} items on ${new Date(`${biggest.date}T12:00`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}.`,
+    });
 
   return {
     receipts: rs,

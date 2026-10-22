@@ -19,9 +19,15 @@ export function Toast({ msg, onClose }: { msg: ToastMsg | null; onClose: () => v
             exit={{ y: 20, opacity: 0 }}
             className="glass pointer-events-auto flex max-w-lg items-start gap-3 rounded-2xl border border-line px-4 py-3 shadow-2xl"
           >
-            {msg.tone === 'ok' ? <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-down" aria-hidden /> : <AlertTriangle className="mt-0.5 size-5 shrink-0 text-warn" aria-hidden />}
+            {msg.tone === 'ok' ? (
+              <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-down" aria-hidden />
+            ) : (
+              <AlertTriangle className="mt-0.5 size-5 shrink-0 text-warn" aria-hidden />
+            )}
             <span className="text-sm">{msg.text}</span>
-            <button onClick={onClose} aria-label="Dismiss" className="-mr-1 rounded-full p-1 text-muted hover:text-ink"><X className="size-4" /></button>
+            <button type="button" onClick={onClose} aria-label="Dismiss" className="-mr-1 rounded-full p-1 text-muted hover:text-ink">
+              <X className="size-4" />
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
