@@ -56,18 +56,11 @@ export default function App() {
     <>
       <div className="ambient" aria-hidden />
       <DropOverlay onFiles={onFiles} />
-      <Nav
-        theme={theme}
-        onTheme={toggle}
-        hasData={hasData}
-        onExport={() => downloadCsv(a)}
-        onReset={() => {
-          clear();
-          window.scrollTo({ top: 0 });
-        }}
-      />
+      <Nav theme={theme} onTheme={toggle} hasData={hasData} onExport={() => downloadCsv(a)} onReset={clear} />
       <main id="top" className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6 sm:pt-12">
-        <AnimatePresence mode="wait">
+        {/* Scroll up only once the old view has gone. Scrolling while the dashboard fades out brings sections into view,
+            and framer-motion crashes on in-view animations that start on elements about to unmount. */}
+        <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo({ top: 0 })}>
           {!ready ? null : hasData ? (
             <motion.div key="dash" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid gap-20 sm:gap-24">
               <div className="grid gap-8">
