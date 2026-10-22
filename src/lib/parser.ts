@@ -199,3 +199,64 @@ export function parseSainsburysText(raw: string): Receipt {
   reconcile(receipt, receipt.total - receipt.delivery + receipt.coupons);
   return receipt;
 }
+
+/** The parts of a Sainsbury's groceries API order that the downloader keeps (`/groceries-api/gol-services/order/v1/order/{id}`). */
+export interface SainsburysOrder {
+  order_uid?: string | number;
+  order_type?: string;
+  slot_start_time?: string;
+  total?: number;
+  sub_total?: number;
+  slot_price?: number;
+  carrier_bag_charge?: number;
+  vouchers_savings?: number;
+  savings?: number;
+  order_items?: {
+    quantity?: number;
+    sub_total?: number;
+    product?: { name?: string; adjustment?: { usage?: string; amount?: string | number }[] | null };
+  }[];
+}
+
+const pounds = (n: unknown) => Math.round(Math.abs(Number(n) || 0) * 100);
+
+// "2026-10-09T18:00:00Z" -> "2026-10-09", on the UK calendar (slots are UK times).
+const ukDate = (iso: string | undefined) => {
+  const d = new Date(iso ?? '');
+  return isNaN(+d) ? null : new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London' }).format(d);
+};
+
+/** Reads an order saved by the Sainsbury's downloader. Unlike the e-receipt PDF, it has per-line offer savings but no Nectar points. */
+export function parseSainsburysOrder(order: SainsburysOrder): Receipt {
+  const receipt: Receipt = {
+    retailer: 'sainsburys',
+    orderId: order.order_uid == null ? null : String(order.order_uid),
+    date: ukDate(order.slot_start_time),
+    channel: /collect/i.test(order.order_type ?? '') ? 'Click & collect' : 'Online',
+    subtotal: pounds(order.sub_total) + pounds(order.savings) + pounds(order.slot_price),
+    reportedSavings: pounds(order.savings),
+    delivery: pounds(order.slot_price),
+    coupons: pounds(order.vouchers_savings),
+    total: pounds(order.total),
+    points: 0,
+    items: [],
+    itemsTotal: 0,
+    computedSavings: 0,
+    warnings: [],
+  };
+  for (const line of order.order_items ?? []) {
+    const name = (line.product?.name ?? '').replace(/\s+/g, ' ').trim() || 'Unnamed item';
+    const quantity = Number(line.quantity) || 1;
+    const lineTotal = pounds(line.sub_total);
+    // Nectar Prices and offers on this line. Order-level vouchers are separate (vouchers_savings).
+    const saving = (line.product?.adjustment ?? []).filter((a) => /discount/i.test(a.usage ?? '')).reduce((a, x) => a + pounds(x.amount), 0);
+    // Catchweight lines come by the kg: priced like loose produce, as one line with the price per kg.
+    const weighed = !Number.isInteger(quantity);
+    const qty = weighed ? 1 : quantity;
+    const unitPrice = Math.round((lineTotal + saving) / (weighed ? quantity : qty));
+    receipt.items.push({ qty, name, unitPrice, saving, lineTotal, weighed, size: parseSize(name), family: familyKey(name) });
+  }
+  receipt.computedSavings = receipt.items.reduce((a, i) => a + i.saving, 0);
+  reconcile(receipt, receipt.total - receipt.delivery - pounds(order.carrier_bag_charge) + receipt.coupons);
+  return receipt;
+}

@@ -103,6 +103,7 @@ const scoped = (r: Receipt, k: string) => (r.retailer === 'tesco' ? k : `${r.ret
 const orderKey = (r: Receipt) => r.orderId || `${r.date}-${r.total}`;
 /** What a point is worth in vouchers, in pence: Clubcard 1p, Nectar 0.5p. */
 const POINT_VALUE: Record<Retailer, number> = { tesco: 1, sainsburys: 0.5 };
+const unitemisedSavings = (r: Receipt) => (r.retailer === 'sainsburys' ? Math.max(0, r.reportedSavings - r.computedSavings) : 0);
 const month = (iso: string) => iso.slice(0, 7);
 export const pct = (a: number, b: number) => (b ? ((a - b) / b) * 100 : 0);
 const gbp = (p: number) => `£${(p / 100).toFixed(2)}`;
@@ -141,11 +142,12 @@ export function analyse(input: Receipt[]) {
 
   // ---- Overview
   const spend = rs.reduce((a, r) => a + r.total, 0);
-  const gross = purchases.reduce((a, p) => a + shelfCost(p), 0) + rs.reduce((a, r) => a + (r.retailer === 'sainsburys' ? r.reportedSavings : 0), 0);
-  // Sainsbury's prints offers as one figure per order, not per line, so those count towards savings but no product.
-  const unitemised = rs.reduce((a, r) => a + (r.retailer === 'sainsburys' ? r.reportedSavings : 0), 0);
+  // Sainsbury's e-receipt PDFs give offers as one figure per order, not per line: what the lines don't account for
+  // counts towards savings but no product. (Orders saved by the downloader have per-line savings.)
+  const unitemised = rs.reduce((a, r) => a + unitemisedSavings(r), 0);
   const lineSavings = purchases.reduce((a, p) => a + p.saving, 0);
   const savings = lineSavings + unitemised;
+  const gross = purchases.reduce((a, p) => a + shelfCost(p), 0) + unitemised;
   const retailers = [...new Set(rs.map((r) => r.retailer))];
   const from = rs[0]?.date ?? null;
   const to = rs[rs.length - 1]?.date ?? null;
@@ -187,7 +189,7 @@ export function analyse(input: Receipt[]) {
       date: r.date!,
       total: r.total,
       gross: ps.reduce((a, p) => a + shelfCost(p), 0),
-      saved: ps.reduce((a, p) => a + p.saving, 0) + (r.retailer === 'sainsburys' ? r.reportedSavings : 0),
+      saved: ps.reduce((a, p) => a + p.saving, 0) + unitemisedSavings(r),
       items: ps.length,
       units: ps.reduce((a, p) => a + p.qty, 0),
       points: r.points,

@@ -31,7 +31,7 @@ export const Headline = memo(function Headline({ a, c }: { a: Analysis; c: Chart
     { icon: Coins, label: 'Average basket', value: o.avgBasket, fmt: gbp, sub: `${o.units} items · ${o.distinctProducts} products` },
     { icon: PiggyBank, label: 'Saved on offers', value: o.savings, fmt: gbp0, sub: `${o.savingsRate.toFixed(0)}% off shelf price · ${o.onOfferShare.toFixed(0)}% of lines` },
     { icon: CalendarClock, label: 'Shop every', value: o.daysBetweenShops ?? 0, fmt: (n: number) => (o.daysBetweenShops ? `${n.toFixed(1)} days` : '—'), sub: o.from && o.to ? dayRange(o.from, o.to, ' to ') : '' },
-    { icon: Star, label: o.retailers.length === 1 && o.retailers[0] === 'sainsburys' ? 'Nectar points' : o.retailers.length > 1 ? 'Clubcard + Nectar' : 'Clubcard points', value: o.points, fmt: (n: number) => Math.round(n).toLocaleString('en-GB'), sub: `≈ ${gbp(o.pointsValue)} in vouchers` },
+    { icon: Star, label: o.retailers.length === 1 && o.retailers[0] === 'sainsburys' ? 'Nectar points' : o.retailers.length > 1 ? 'Clubcard + Nectar' : 'Clubcard points', value: o.points, fmt: (n: number) => Math.round(n).toLocaleString('en-GB'), sub: o.points || !o.retailers.includes('sainsburys') ? `≈ ${gbp(o.pointsValue)} in vouchers` : "Not in saved Sainsbury's orders, only the PDFs" },
   ];
 
   return (

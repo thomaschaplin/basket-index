@@ -1,5 +1,5 @@
 (async () => {
-  // Basket Index: download every Sainsbury's groceries e-receipt as a PDF.
+  // Basket Index: save every Sainsbury's groceries order (items, prices, offers and totals) into one zip.
   // Run in the browser console on sainsburys.co.uk/gol-ui/my-account/orders while signed in.
   const SINCE = ''; // optional, e.g. '2026-01-01' to skip older receipts
   const PAGE_SIZE = 50;
@@ -23,8 +23,8 @@
   const localDate = (iso) => { const d = new Date(iso); return isNaN(d) ? '' : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
 
   // 1. Collect every order from the order history API:
-  // {"orders":[{"order_uid":"1355072309","status":"…","slot_start_time":"2026-10-09T19:00:00Z","receipt_url":"…"}],"controls":{"total_record_count":42,…}}
-  const orders = new Map(); // orderId -> { date, receiptUrl }
+  // {"orders":[{"order_uid":"1355072309","status":"previous","slot_start_time":"2026-10-09T18:00:00Z",…}],"controls":{"total_record_count":42,…}}
+  const orders = new Map(); // orderId -> { date }
   for (let page = 1; page <= MAX_PAGES; page++) {
     let data;
     try {
@@ -37,7 +37,7 @@
     const before = orders.size;
     for (const o of list) {
       const id = String(o.order_uid || o.order_id || '');
-      if (id && !orders.has(id)) orders.set(id, { date: localDate(o.slot_start_time), receiptUrl: o.receipt_url || '' });
+      if (id && !orders.has(id)) orders.set(id, { date: localDate(o.slot_start_time) });
     }
     const total = data.controls?.total_record_count;
     log(`Order history page ${page}${total ? ` of ${Math.ceil(total / PAGE_SIZE)}` : ''}: ${orders.size - before} orders`);
@@ -50,47 +50,61 @@
     log(orders.size ? `No orders on or after ${SINCE}.` : "No orders found. Check you are signed in and that My orders lists your shops. If it does, Sainsbury's may have changed the page: please open an issue.");
     return;
   }
-  log(`Fetching ${todo.length} e-receipt PDFs…`);
+  log(`Fetching ${todo.length} orders…`);
 
-  // 2. Fetch each PDF. The order list doesn't always carry the receipt link, so fall back to the order's own details.
-  // Orders that haven't been delivered yet (or were cancelled) have no e-receipt and are skipped.
+  // 2. Fetch each order's details. The e-receipt PDFs live on S3 without CORS, so a script can't read them; the
+  // order details carry the same lines and totals (plus per-line offers). Keep only what Basket Index needs:
+  // no address, card, delivery instructions or links.
+  const slim = (o) => ({
+    order_uid: String(o.order_uid),
+    status: o.status,
+    order_type: o.order_type,
+    slot_start_time: o.slot_start_time,
+    total: o.total,
+    sub_total: o.sub_total,
+    slot_price: o.slot_price,
+    carrier_bag_charge: o.carrier_bag_charge,
+    vouchers_savings: o.vouchers_savings,
+    savings: o.savings,
+    order_items: (o.order_items || []).map((i) => ({
+      quantity: i.quantity,
+      uom: i.uom,
+      sub_total: i.sub_total,
+      product: {
+        product_uid: i.product?.product_uid,
+        name: i.product?.name,
+        adjustment: (i.product?.adjustment || []).map(({ usage, amount, description }) => ({ usage, amount, description })),
+      },
+    })),
+    adjustment: (o.adjustment || []).map(({ usage, amount, description, display_level }) => ({ usage, amount, description, display_level })),
+  });
   const files = [];
   const failed = [];
-  let skipped = 0;
-  for (const [id, o] of todo) {
-    let { receiptUrl, date } = o;
-    if (!receiptUrl) {
+  const skipped = [];
+  for (const [id] of todo) {
+    let order = null;
+    for (let attempt = 1; attempt <= 3 && !order; attempt++) {
       try {
-        const detail = await getJson(`${api}/${encodeURIComponent(id)}`);
-        receiptUrl = detail.receipt_url || '';
-        date ||= localDate(detail.slot_start_time);
-      } catch {
-        /* treated as no receipt below */
-      }
-      await sleep(300);
-    }
-    if (!receiptUrl) { skipped++; continue; }
-    const url = new URL(receiptUrl, location.origin);
-    let bytes = null;
-    for (let attempt = 1; attempt <= 3 && !bytes; attempt++) {
-      try {
-        const res = await fetch(url, url.origin === location.origin ? { credentials: 'include', headers: wcAuth ? { WCAuthToken: wcAuth } : {} } : {});
-        const b = await res.blob();
-        if (res.ok && /pdf|octet-stream/i.test(b.type)) bytes = new Uint8Array(await b.arrayBuffer());
-        else await sleep(1500 * attempt);
+        order = await getJson(`${api}/${encodeURIComponent(id)}`);
       } catch {
         await sleep(1500 * attempt);
       }
     }
-    if (!bytes) { failed.push(id); log('Failed', id); continue; }
-    files.push({ name: `Sainsburys_Receipt_${date ? date + '_' : ''}${id}.pdf`, bytes });
-    log(`Fetched ${files.length}/${todo.length - skipped}`);
-    await sleep(500);
+    if (!order) { failed.push(id); log('Failed', id); continue; }
+    // Upcoming and cancelled orders aren't shops yet.
+    if (/cancel/i.test(order.status || '') || !order.order_items?.length || Date.parse(order.slot_end_time) > Date.now()) {
+      skipped.push(`${id} (${order.status || 'no items'})`);
+      continue;
+    }
+    const date = localDate(order.slot_start_time);
+    files.push({ name: `Sainsburys_Order_${date ? date + '_' : ''}${id}.json`, bytes: new TextEncoder().encode(JSON.stringify(slim(order), null, 1)) });
+    log(`Fetched ${files.length}/${todo.length}`);
+    await sleep(400);
   }
-  if (skipped) log(`${skipped} orders have no e-receipt yet (not delivered, or cancelled).`);
-  if (!files.length) { log("Could not fetch any receipts. Try again in a few minutes, or download them one by one from each order's page."); return; }
+  if (skipped.length) log(`Skipped ${skipped.length} not yet delivered or cancelled: ${skipped.join(', ')}`);
+  if (!files.length) { log(failed.length ? 'Could not fetch any orders. Try again in a few minutes.' : 'No delivered orders to save.'); return; }
 
-  // 3. Pack them into one zip (stored, no compression: PDFs are already compressed).
+  // 3. Pack them into one zip (stored, no compression: the files are small).
   // A single file avoids Chrome blocking "multiple downloads" after the first.
   const crcTable = Array.from({ length: 256 }, (_, n) => {
     let c = n;
@@ -135,5 +149,5 @@
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 60000);
 
-  log(`Done: ${a.download} with ${files.length} receipts${failed.length ? `. ${failed.length} failed (${failed.join(', ')}): run again or download those from each order's page` : ''}. Drop the zip onto Basket Index.`);
+  log(`Done: ${a.download} with ${files.length} orders${failed.length ? `. ${failed.length} failed (${failed.join(', ')}): run again to retry` : ''}. Drop the zip onto Basket Index.`);
 })();

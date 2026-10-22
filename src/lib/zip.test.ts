@@ -21,6 +21,12 @@ describe('expandZips', () => {
     expect(await out[1].text()).toBe('%PDF-1.4 b');
   });
 
+  it("keeps Sainsbury's saved orders (.json) from the downloader", async () => {
+    const z = zipSync({ 'Sainsburys_Order_2026-01-03_1200000001.json': strToU8('{"order_uid":"1"}'), 'notes.txt': strToU8('x') });
+    const out = await expandZips([new File([z], 'Sainsburys_Receipts.zip')]);
+    expect(out.map((f) => [f.name, f.type])).toEqual([['Sainsburys_Order_2026-01-03_1200000001.json', 'application/json']]);
+  });
+
   it('passes an unreadable zip through so it is reported as failed', async () => {
     const bad = new File([strToU8('not a zip')], 'bad.zip');
     expect(await expandZips([bad])).toEqual([bad]);

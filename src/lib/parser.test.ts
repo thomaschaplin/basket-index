@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { familyKey, joinLigatures, parseReceiptText, parseSize } from './parser';
+import { familyKey, joinLigatures, parseReceiptText, parseSainsburysOrder, parseSize, type SainsburysOrder } from './parser';
 
 const dir = path.join(__dirname, '__fixtures__');
 const fixture = (name: string) => parseReceiptText(fs.readFileSync(path.join(dir, `sample-${name}.txt`), 'utf8'));
@@ -132,6 +132,41 @@ describe('parseReceiptText (Sainsbury\'s)', () => {
   it("flags Sainsbury's receipts whose lines do not reconcile", () => {
     const r = parseReceiptText(sainsburys(SAINSBURYS_ITEMS, 'Delivery cost   £1.50 \nCoupons   -£5.00 \nTotal paid   £6.20'));
     expect(r.warnings).toEqual([expect.stringMatching(/^Sainsbury's charged £6\.20, but the items add up to £9\.40 \(£0\.30 more/)]);
+  });
+});
+
+// A made-up order as the Sainsbury's downloader saves it (a trimmed groceries API order). No real order data.
+const ORDER: SainsburysOrder = {
+  order_uid: '1200000002', order_type: 'delivery', slot_start_time: '2026-06-12T23:30:00Z',
+  total: 6.4, sub_total: 9.4, slot_price: 1.5, carrier_bag_charge: 0, vouchers_savings: -4.5, savings: -1.25,
+  order_items: [
+    { quantity: 1, sub_total: 1.65, product: { name: " Sainsbury's British Semi Skimmed Milk 2.27L", adjustment: null } },
+    { quantity: 2, sub_total: 2.5, product: { name: "Sainsbury's Wholemeal Bread 800g", adjustment: [{ usage: 'Discount', amount: '-0.50' }] } },
+    { quantity: 1, sub_total: 3.25, product: { name: 'Comfort Fabric Conditioner 52 Washes 1.56L', adjustment: [{ usage: 'Discount', amount: '-0.75' }] } },
+    { quantity: 0.5, sub_total: 2.0, product: { name: "Sainsbury's Mature Cheddar Cheese", adjustment: null } },
+  ],
+};
+
+describe("parseSainsburysOrder (downloader's saved orders)", () => {
+  it('reads totals, the UK slot date and coupons', () => {
+    // 23:30 UTC on 12 June is 00:30 on the 13th in the UK (BST).
+    expect(parseSainsburysOrder(ORDER)).toMatchObject({
+      retailer: 'sainsburys', orderId: '1200000002', date: '2026-06-13', channel: 'Online',
+      delivery: 150, coupons: 450, total: 640, reportedSavings: 125, computedSavings: 125, points: 0, itemsTotal: 940, warnings: [],
+    });
+  });
+
+  it('reads each line with its own offer saving, and catchweight lines as weighed', () => {
+    expect(parseSainsburysOrder(ORDER).items.map((i) => [i.qty, i.name, i.unitPrice, i.saving, i.lineTotal, i.weighed])).toEqual([
+      [1, "Sainsbury's British Semi Skimmed Milk 2.27L", 165, 0, 165, false],
+      [2, "Sainsbury's Wholemeal Bread 800g", 150, 50, 250, false],
+      [1, 'Comfort Fabric Conditioner 52 Washes 1.56L', 400, 75, 325, false],
+      [1, "Sainsbury's Mature Cheddar Cheese", 400, 0, 200, true], // £4.00/kg, 0.5 kg
+    ]);
+  });
+
+  it('flags an order whose lines do not reconcile', () => {
+    expect(parseSainsburysOrder({ ...ORDER, total: 6.9 }).warnings).toEqual([expect.stringMatching(/^Sainsbury's charged £6\.90, but the items add up to £9\.40/)]);
   });
 });
 

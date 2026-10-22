@@ -41,7 +41,7 @@ export function Receipts({ a }: { a: Analysis }) {
                     {mixed && <Pill>{RETAILER_NAME[o.retailer]}</Pill>}
                     {o.warnings.length > 0 && <Pill tone="warn"><AlertTriangle className="size-3" aria-hidden /> Check</Pill>}
                   </span>
-                  <span className="text-xs text-muted">{plural(o.units, 'item')} · saved {gbp(o.saved)} · {o.points} points</span>
+                  <span className="text-xs text-muted">{plural(o.units, 'item')} · saved {gbp(o.saved)}{o.points ? ` · ${o.points} points` : ''}</span>
                   <span className="h-1.5 overflow-hidden rounded-full bg-surface-2" aria-hidden>
                     <span className="block h-full rounded-full bg-gradient-brand" style={{ width: `${(o.total / max) * 100}%` }} />
                   </span>

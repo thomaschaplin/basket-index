@@ -20,7 +20,7 @@ const SOURCES: Record<Retailer, { name: string; script: string; file: string; ur
     file: 'basket-index-sainsburys.js',
     url: 'https://www.sainsburys.co.uk/gol-ui/my-account/orders',
     label: 'sainsburys.co.uk/gol-ui/my-account/orders',
-    note: 'Groceries delivery and click & collect orders.',
+    note: 'Delivery and click & collect orders: each order\'s items, prices, offers and totals. No address or card details.',
   },
 };
 
