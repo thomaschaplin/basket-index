@@ -18,6 +18,18 @@ describe('analyse', () => {
     expect(a.orders.map((o) => o.date)).toEqual([...a.orders.map((o) => o.date)].sort());
   });
 
+  it('puts a product in the category you picked, everywhere it shows up', () => {
+    const milk = a.products.find((p) => p.name === 'Tesco Semi Skimmed Milk 2.272L, 4 Pints')!;
+    expect(milk.category).toBe('Dairy & eggs');
+    const b = analyse(receipts, { [milk.key]: 'Drinks' });
+    expect(b.products.find((p) => p.key === milk.key)!.category).toBe('Drinks');
+    expect(b.purchases.filter((p) => p.key === milk.key).every((p) => p.category === 'Drinks')).toBe(true);
+    const drinks = (x: typeof a) => x.categories.find((c) => c.name === 'Drinks')?.value ?? 0;
+    expect(drinks(b) - drinks(a)).toBe(milk.spend);
+    // Other products are untouched.
+    expect(b.products.filter((p) => p.key !== milk.key).map((p) => p.category)).toEqual(a.products.filter((p) => p.key !== milk.key).map((p) => p.category));
+  });
+
   it('de-duplicates the same order loaded twice', () => {
     expect(analyse([...receipts, ...receipts]).overview.receipts).toBe(88);
   });

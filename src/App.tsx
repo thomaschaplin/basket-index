@@ -19,8 +19,8 @@ import { dayRange, plural } from './lib/format';
 
 export default function App() {
   const { theme, toggle } = useTheme();
-  const { source, receipts, progress, addFiles, showSample, clear } = useReceipts();
-  const a = useMemo(() => analyse(receipts), [receipts]);
+  const { source, receipts, ready, overrides, progress, addFiles, showSample, clear, setCategory } = useReceipts();
+  const a = useMemo(() => analyse(receipts, overrides), [receipts, overrides]);
   const c = useMemo(() => chartColours(theme), [theme]);
   const [productKey, setProductKey] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastMsg | null>(null);
@@ -68,7 +68,7 @@ export default function App() {
       />
       <main id="top" className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6 sm:pt-12">
         <AnimatePresence mode="wait">
-          {hasData ? (
+          {!ready ? null : hasData ? (
             <motion.div key="dash" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid gap-20 sm:gap-24">
               <div className="grid gap-8">
                 <div className="flex flex-wrap items-end justify-between gap-6">
@@ -111,7 +111,14 @@ export default function App() {
           <span>Not affiliated with Tesco or Sainsbury's.</span>
         </div>
       </footer>
-      <ProductModal product={product} a={a} c={c} onClose={() => setProductKey(null)} />
+      <ProductModal
+        product={product}
+        a={a}
+        c={c}
+        overridden={!!productKey && productKey in overrides}
+        onCategory={(category) => productKey && setCategory(productKey, category)}
+        onClose={() => setProductKey(null)}
+      />
       <Toast msg={toast} onClose={() => setToast(null)} />
     </>
   );

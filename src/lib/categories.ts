@@ -61,6 +61,12 @@ export const CATEGORIES = [
 /** Anything no keyword matches, including in-store lines Tesco prints without a name. */
 export type Category = (typeof CATEGORIES)[number][0] | 'Other';
 
+/** Every category, in keyword order, with Other last. */
+export const CATEGORY_NAMES: Category[] = [...CATEGORIES.map(([name]) => name), 'Other'];
+
+/** Categories you've picked yourself, by product key. They win over the keywords. */
+export type CategoryOverrides = Record<string, Category>;
+
 export const categorise = (name: string): Category => (CATEGORIES.find(([, re]) => re.test(name))?.[0] as Category | undefined) ?? 'Other';
 
 /** Unit for weighed prices: fuel is sold by the litre, loose produce by the kg. */

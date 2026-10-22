@@ -1,5 +1,5 @@
 // Turns parsed receipts into cost-of-living insights. All money in pence.
-import { type Category, categorise } from './categories';
+import { type Category, type CategoryOverrides, categorise } from './categories';
 import type { PackSize, Receipt, ReceiptItem, Retailer } from './types';
 
 export interface Purchase extends ReceiptItem {
@@ -125,23 +125,24 @@ export function dedupe(receipts: Receipt[]): Receipt[] {
   return [...byId.values()].filter((r) => r.date).sort((a, b) => a.date!.localeCompare(b.date!));
 }
 
-export function analyse(input: Receipt[]) {
+export function analyse(input: Receipt[], overrides: CategoryOverrides = {}) {
   const rs = dedupe(input);
 
   const purchases: Purchase[] = [];
   rs.forEach((r) =>
-    r.items.forEach((i) =>
+    r.items.forEach((i) => {
+      const k = scoped(r, key(i.name));
       purchases.push({
         ...i,
         retailer: r.retailer,
         family: scoped(r, i.family),
         date: r.date!,
         orderId: orderKey(r),
-        key: scoped(r, key(i.name)),
-        category: categorise(i.name),
+        key: k,
+        category: overrides[k] ?? categorise(i.name),
         basketDeal: !!r.basketDiscount,
-      }),
-    ),
+      });
+    }),
   );
   const shelfCost = (p: Purchase) => (p.weighed ? p.lineTotal + p.saving : p.qty * p.unitPrice);
 

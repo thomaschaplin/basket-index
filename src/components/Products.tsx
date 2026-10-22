@@ -1,10 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Search, X } from 'lucide-react';
+import { ChevronDown, Search, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { ChartColours } from '../hooks/useTheme';
 import type { Analysis, ProductHistory } from '../lib/analysis';
-import { CATEGORY_EMOJI, weighedUnit } from '../lib/categories';
+import { CATEGORY_EMOJI, CATEGORY_NAMES, type Category, categorise, weighedUnit } from '../lib/categories';
 import { day, dayLong, dayYear, gbp, plural } from '../lib/format';
 import { RETAILER_NAME } from '../lib/parser';
 import { Sparkline } from './Prices';
@@ -221,7 +221,23 @@ function HistoryTip({
   );
 }
 
-export function ProductModal({ product, a, c, onClose }: { product: ProductHistory | null; a: Analysis; c: ChartColours; onClose: () => void }) {
+export function ProductModal({
+  product,
+  a,
+  c,
+  overridden,
+  onCategory,
+  onClose,
+}: {
+  product: ProductHistory | null;
+  a: Analysis;
+  c: ChartColours;
+  /** The category was picked by hand rather than from the product's name. */
+  overridden: boolean;
+  /** Recategorise this product; null goes back to the automatic category. */
+  onCategory: (category: Category | null) => void;
+  onClose: () => void;
+}) {
   useEffect(() => {
     if (!product) return;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
@@ -263,9 +279,36 @@ export function ProductModal({ product, a, c, onClose }: { product: ProductHisto
                 {CATEGORY_EMOJI[product.category]}
               </span>
               <div className="grid min-w-0 flex-1 gap-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-muted">
-                  {product.category}
-                  {a.overview.retailers.length > 1 && ` · ${RETAILER_NAME[product.retailer]}`}
+                <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold uppercase tracking-wider text-muted">
+                  <label
+                    className="relative inline-flex items-center gap-0.5 rounded hover:text-ink focus-within:text-ink focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand"
+                    title="Wrong category? Pick another. It's remembered on this device."
+                  >
+                    {product.category}
+                    <ChevronDown className="size-3.5" aria-hidden />
+                    {/* The native picker sits invisibly over the label, so it's only as wide as the category shown. */}
+                    <select
+                      value={product.category}
+                      onChange={(e) => {
+                        const picked = e.target.value as Category;
+                        onCategory(picked === categorise(product.name) ? null : picked);
+                      }}
+                      aria-label="Category"
+                      className="absolute inset-0 cursor-pointer opacity-0"
+                    >
+                      {CATEGORY_NAMES.map((name) => (
+                        <option key={name} value={name}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  {overridden && (
+                    <button type="button" onClick={() => onCategory(null)} className="font-medium normal-case tracking-normal text-brand hover:underline">
+                      Reset to automatic
+                    </button>
+                  )}
+                  {a.overview.retailers.length > 1 && <span>· {RETAILER_NAME[product.retailer]}</span>}
                 </span>
                 <h3 id="product-title" className="font-display text-2xl font-bold leading-tight text-balance">
                   {product.name}
