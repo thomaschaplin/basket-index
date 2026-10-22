@@ -1,6 +1,6 @@
-import { defineConfig, type Plugin } from 'vitest/config';
-import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import { defineConfig, type Plugin } from 'vitest/config';
 
 // Absolute origin for canonical, Open Graph and sitemap URLs. Override with SITE_URL to build for another host.
 const siteUrl = (process.env.SITE_URL || 'https://basketindex.thomaschaplin.me').replace(/\/+$/, '');

@@ -9,8 +9,12 @@ export function Dropzone({ onFiles, progress, compact = false }: { onFiles: (f: 
   const busy = !!progress;
 
   return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: drag feedback only; the label inside is the keyboard and click target
     <div
-      onDragOver={(e) => { e.preventDefault(); setOver(true); }}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setOver(true);
+      }}
       onDragLeave={() => setOver(false)}
       // The drop itself bubbles to <DropOverlay>'s window listener, which reads the files.
       onDrop={() => setOver(false)}
@@ -22,7 +26,9 @@ export function Dropzone({ onFiles, progress, compact = false }: { onFiles: (f: 
         onClick={() => input.current?.click()}
         className={`group flex w-full items-center gap-4 rounded-3xl text-left ${compact ? 'p-4' : 'flex-col justify-center p-8 text-center sm:p-12'} ${over ? 'bg-brand/10' : ''}`}
       >
-        <span className={`grid shrink-0 place-items-center rounded-2xl bg-gradient-brand text-white shadow-lg shadow-brand/30 transition-transform group-hover:-translate-y-0.5 group-hover:rotate-[-4deg] ${compact ? 'size-11' : 'size-16'}`}>
+        <span
+          className={`grid shrink-0 place-items-center rounded-2xl bg-gradient-brand text-white shadow-lg shadow-brand/30 transition-transform group-hover:-translate-y-0.5 group-hover:rotate-[-4deg] ${compact ? 'size-11' : 'size-16'}`}
+        >
           {busy ? <Loader2 className="size-7 animate-spin" aria-hidden /> : <FileUp className={compact ? 'size-5' : 'size-7'} aria-hidden />}
         </span>
         <span className="grid gap-1 min-w-0">
@@ -38,9 +44,13 @@ export function Dropzone({ onFiles, progress, compact = false }: { onFiles: (f: 
               </motion.span>
             ) : (
               <motion.span key="idle" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="grid gap-1">
-                <strong className={`font-display ${compact ? 'text-base' : 'text-2xl sm:text-3xl'}`}>{compact ? 'Add more receipts' : 'Drop your Tesco or Sainsbury\'s receipt PDFs or zip here'}</strong>
+                <strong className={`font-display ${compact ? 'text-base' : 'text-2xl sm:text-3xl'}`}>
+                  {compact ? 'Add more receipts' : "Drop your Tesco or Sainsbury's receipt PDFs or zip here"}
+                </strong>
                 <span className="text-sm text-muted">
-                  {compact ? 'Drop PDFs, saved orders or a zip anywhere on the page, or tap to choose.' : 'Or tap to choose files. Select as many as you like: they are read on your device and never uploaded.'}
+                  {compact
+                    ? 'Drop PDFs, saved orders or a zip anywhere on the page, or tap to choose.'
+                    : 'Or tap to choose files. Select as many as you like: they are read on your device and never uploaded.'}
                 </span>
               </motion.span>
             )}
@@ -53,7 +63,10 @@ export function Dropzone({ onFiles, progress, compact = false }: { onFiles: (f: 
         accept="application/pdf,.pdf,application/zip,.zip,application/json,.json"
         multiple
         className="sr-only"
-        onChange={(e) => { onFiles([...(e.target.files ?? [])]); e.target.value = ''; }}
+        onChange={(e) => {
+          onFiles([...(e.target.files ?? [])]);
+          e.target.value = '';
+        }}
       />
     </div>
   );
@@ -65,8 +78,16 @@ export function DropOverlay({ onFiles }: { onFiles: (f: File[]) => void }) {
   useEffect(() => {
     let depth = 0;
     const hasFiles = (e: DragEvent) => e.dataTransfer?.types.includes('Files');
-    const enter = (e: DragEvent) => { if (hasFiles(e)) { depth++; setActive(true); } };
-    const leave = () => { depth = Math.max(0, depth - 1); if (!depth) setActive(false); };
+    const enter = (e: DragEvent) => {
+      if (hasFiles(e)) {
+        depth++;
+        setActive(true);
+      }
+    };
+    const leave = () => {
+      depth = Math.max(0, depth - 1);
+      if (!depth) setActive(false);
+    };
     const over = (e: DragEvent) => e.preventDefault();
     const drop = (e: DragEvent) => {
       e.preventDefault();
@@ -95,7 +116,11 @@ export function DropOverlay({ onFiles }: { onFiles: (f: File[]) => void }) {
           exit={{ opacity: 0 }}
           className="pointer-events-none fixed inset-0 z-50 grid place-items-center bg-bg/80 backdrop-blur-md p-6"
         >
-          <motion.div initial={{ scale: 0.92 }} animate={{ scale: 1 }} className="ring-glow grid place-items-center gap-4 rounded-[2rem] bg-surface px-12 py-14 text-center">
+          <motion.div
+            initial={{ scale: 0.92 }}
+            animate={{ scale: 1 }}
+            className="ring-glow grid place-items-center gap-4 rounded-[2rem] bg-surface px-12 py-14 text-center"
+          >
             <span className="grid size-20 place-items-center rounded-3xl bg-gradient-brand text-white shadow-xl shadow-brand/40">
               <FileUp className="size-9" aria-hidden />
             </span>

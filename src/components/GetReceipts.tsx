@@ -20,13 +20,26 @@ const SOURCES: Record<Retailer, { name: string; script: string; file: string; ur
     file: 'basket-index-sainsburys.js',
     url: 'https://www.sainsburys.co.uk/gol-ui/my-account/orders',
     label: 'sainsburys.co.uk/gol-ui/my-account/orders',
-    note: 'Delivery and click & collect orders: each order\'s items, prices, offers and totals. No address or card details.',
+    note: "Delivery and click & collect orders: each order's items, prices, offers and totals. No address or card details.",
   },
 };
 
 const steps = (s: (typeof SOURCES)[Retailer]) => [
-  <>On a computer, sign in at <a className="font-semibold text-brand-ink underline decoration-brand/40 underline-offset-4 hover:decoration-brand" href={s.url} target="_blank" rel="noopener noreferrer">{s.label} <ExternalLink className="inline size-3.5" aria-hidden /></a></>,
-  <>Open the browser console: <kbd className="rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-xs">⌘ ⌥ J</kbd> on Mac, <kbd className="rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-xs">Ctrl ⇧ J</kbd> on Windows.</>,
+  <>
+    On a computer, sign in at{' '}
+    <a
+      className="font-semibold text-brand-ink underline decoration-brand/40 underline-offset-4 hover:decoration-brand"
+      href={s.url}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {s.label} <ExternalLink className="inline size-3.5" aria-hidden />
+    </a>
+  </>,
+  <>
+    Open the browser console: <kbd className="rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-xs">⌘ ⌥ J</kbd> on Mac,{' '}
+    <kbd className="rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-xs">Ctrl ⇧ J</kbd> on Windows.
+  </>,
   <>Paste the script and press Enter. It saves every receipt in one zip file.</>,
   <>Drop the zip onto this page. Done.</>,
 ];
@@ -49,10 +62,17 @@ export function GetReceipts() {
   };
 
   return (
-    <Section id="get-receipts" eyebrow="One-minute setup" title="Grab every receipt at once" subtitle="Tesco and Sainsbury's let you download receipts one by one. This script fetches them all into one zip using your own signed-in session. It only talks to the shop's own website.">
+    <Section
+      id="get-receipts"
+      eyebrow="One-minute setup"
+      title="Grab every receipt at once"
+      subtitle="Tesco and Sainsbury's let you download receipts one by one. This script fetches them all into one zip using your own signed-in session. It only talks to the shop's own website."
+    >
       <div role="radiogroup" aria-label="Shop" className="flex flex-wrap items-center gap-2">
         {(Object.keys(SOURCES) as Retailer[]).map((r) => (
+          // biome-ignore lint/a11y/useSemanticElements: a pill toggle styled as a button, with radio semantics for screen readers
           <button
+            type="button"
             key={r}
             role="radio"
             aria-checked={retailer === r}
@@ -79,17 +99,29 @@ export function GetReceipts() {
               <Terminal className="size-4" aria-hidden /> {source.file}
             </span>
             <div className="flex gap-2">
-              <button onClick={() => setOpen((o) => !o)} className="rounded-full px-3 py-1.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-ink">
+              <button
+                type="button"
+                onClick={() => setOpen((o) => !o)}
+                className="rounded-full px-3 py-1.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-ink"
+              >
                 {open ? 'Hide' : 'View'}
               </button>
-              <button onClick={copy} className="inline-flex items-center gap-1.5 rounded-full bg-gradient-brand px-4 py-1.5 text-sm font-semibold text-white shadow-md shadow-brand/30 transition-transform hover:-translate-y-0.5">
+              <button
+                type="button"
+                onClick={copy}
+                className="inline-flex items-center gap-1.5 rounded-full bg-gradient-brand px-4 py-1.5 text-sm font-semibold text-white shadow-md shadow-brand/30 transition-transform hover:-translate-y-0.5"
+              >
                 {copied === 'ok' ? <Check className="size-4" aria-hidden /> : <Copy className="size-4" aria-hidden />}
                 {copied === 'ok' ? 'Copied' : 'Copy script'}
               </button>
             </div>
           </div>
-          <span className="sr-only" aria-live="polite">{copied === 'ok' ? 'Script copied' : copied === 'manual' ? 'Copy the script from the box below' : ''}</span>
-          <pre className={`overflow-auto bg-surface-2 p-4 font-mono text-xs leading-relaxed text-muted transition-[max-height] ${open ? 'max-h-96' : 'max-h-40'}`}>
+          <span className="sr-only" aria-live="polite">
+            {copied === 'ok' ? 'Script copied' : copied === 'manual' ? 'Copy the script from the box below' : ''}
+          </span>
+          <pre
+            className={`overflow-auto bg-surface-2 p-4 font-mono text-xs leading-relaxed text-muted transition-[max-height] ${open ? 'max-h-96' : 'max-h-40'}`}
+          >
             {source.script}
           </pre>
         </div>

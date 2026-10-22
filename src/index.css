@@ -108,8 +108,7 @@ body {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(60rem 40rem at 10% -10%, var(--glow-a), transparent 60%),
-    radial-gradient(50rem 36rem at 95% 5%, var(--glow-c), transparent 60%),
+    radial-gradient(60rem 40rem at 10% -10%, var(--glow-a), transparent 60%), radial-gradient(50rem 36rem at 95% 5%, var(--glow-c), transparent 60%),
     radial-gradient(40rem 30rem at 50% 110%, var(--glow-b), transparent 60%);
 }
 .ambient::after {
@@ -152,7 +151,9 @@ body {
   border-radius: inherit;
   padding: 1px;
   background: conic-gradient(from var(--angle, 0deg), #3b82f6, #22d3ee, #a78bfa, #3b82f6);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: spin-angle 8s linear infinite;

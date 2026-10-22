@@ -17,7 +17,13 @@ function isoDate(dmy: string | null): string | null {
 }
 
 const UNIT: Record<string, ['g' | 'ml', number]> = {
-  g: ['g', 1], kg: ['g', 1000], ml: ['ml', 1], cl: ['ml', 10], l: ['ml', 1000], ltr: ['ml', 1000], litre: ['ml', 1000],
+  g: ['g', 1],
+  kg: ['g', 1000],
+  ml: ['ml', 1],
+  cl: ['ml', 10],
+  l: ['ml', 1000],
+  ltr: ['ml', 1000],
+  litre: ['ml', 1000],
 };
 const COUNT_WORDS = 'pack|washes|wash|roll|rolls|nappies|wipes|slices|capsules|tablets|pods';
 
@@ -152,8 +158,9 @@ function isoLongDate(text: string): string | null {
  * as "Di ff user". A single joining space means the pieces touched; a real space shows up as two or more.
  */
 export const joinLigatures = (raw: string) =>
-  raw.replace(/([^\s])?( +)(ffi|ffl|ff|fi|fl)( +)(?=[^\s])/g, (_, before = '', l: string, lig: string, r: string) =>
-    before + (before && l === ' ' ? '' : l) + lig + (r === ' ' ? '' : r),
+  raw.replace(
+    /([^\s])?( +)(ffi|ffl|ff|fi|fl)( +)(?=[^\s])/g,
+    (_, before = '', l: string, lig: string, r: string) => before + (before && l === ' ' ? '' : l) + lig + (r === ' ' ? '' : r),
   );
 
 export function parseSainsburysText(raw: string): Receipt {
@@ -190,7 +197,16 @@ export function parseSainsburysText(raw: string): Receipt {
     const qty = +m[1];
     const name = m[2].trim();
     const lineTotal = money(m[3]);
-    receipt.items.push({ qty, name, unitPrice: Math.round(lineTotal / qty), saving: 0, lineTotal, weighed: false, size: parseSize(name), family: familyKey(name) });
+    receipt.items.push({
+      qty,
+      name,
+      unitPrice: Math.round(lineTotal / qty),
+      saving: 0,
+      lineTotal,
+      weighed: false,
+      size: parseSize(name),
+      family: familyKey(name),
+    });
   }
 
   const units = receipt.items.reduce((a, i) => a + i.qty, 0);
@@ -223,7 +239,7 @@ const pounds = (n: unknown) => Math.round(Math.abs(Number(n) || 0) * 100);
 // "2026-10-09T18:00:00Z" -> "2026-10-09", on the UK calendar (slots are UK times).
 const ukDate = (iso: string | undefined) => {
   const d = new Date(iso ?? '');
-  return isNaN(+d) ? null : new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London' }).format(d);
+  return Number.isNaN(+d) ? null : new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London' }).format(d);
 };
 
 /** Reads an order saved by the Sainsbury's downloader. Unlike the e-receipt PDF, it has per-line offer savings but no Nectar points. */
