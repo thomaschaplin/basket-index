@@ -1,5 +1,6 @@
 import { Download, Moon, RotateCcw, Sun } from 'lucide-react';
 import type { Theme } from '../hooks/useTheme';
+import { GitHubIcon, REPO_URL } from './ui';
 
 const LINKS = [
   ['overview', 'Overview'],
@@ -52,7 +53,7 @@ export function Nav({
             ))}
           </div>
         )}
-        <div className="ml-auto flex items-center gap-1 lg:ml-0">
+        <div className={`ml-auto flex items-center gap-1 ${hasData ? 'lg:ml-0' : ''}`}>
           {hasData && (
             <>
               <button type="button" onClick={onExport} className={icon} aria-label="Download all items as CSV" title="Download CSV">
@@ -63,6 +64,9 @@ export function Nav({
               </button>
             </>
           )}
+          <a href={REPO_URL} target="_blank" rel="noopener noreferrer" className={icon} aria-label="View the source on GitHub" title="View on GitHub">
+            <GitHubIcon className="size-5" />
+          </a>
           <button type="button" onClick={onTheme} className={icon} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} title="Toggle theme">
             {theme === 'dark' ? <Sun className="size-5" /> : <Moon className="size-5" />}
           </button>
