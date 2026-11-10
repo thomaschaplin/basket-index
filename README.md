@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/thomaschaplin/basket-index/actions/workflows/ci.yml/badge.svg)](https://github.com/thomaschaplin/basket-index/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+[![Basket Index: your Tesco and Sainsbury's receipts, decoded. A basket inflation card showing +4.7% and a shrinkflation price tag.](public/og.png)](https://basketindex.thomaschaplin.me)
+
 Cost-of-living insights from your own Tesco and Sainsbury's receipts. Drop in the PDFs (or the zip) and get your personal inflation rate, price movers, shrinkflation checks, pack-size value, staples, and every shop line by line.
 
 **Try it:** [basketindex.thomaschaplin.me](https://basketindex.thomaschaplin.me). There's a built-in example if you don't have receipts to hand.

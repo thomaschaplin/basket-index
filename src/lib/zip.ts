@@ -3,9 +3,12 @@ import { unzip } from 'fflate';
 
 const isZip = (f: File) => /zip/i.test(f.type) || /\.zip$/i.test(f.name);
 
+// fflate always hands back ArrayBuffer-backed arrays, which is what File/Blob require.
 function unzipAsync(data: Uint8Array) {
-  return new Promise<Record<string, Uint8Array>>((resolve, reject) =>
-    unzip(data, { filter: (e) => /\.(pdf|json)$/i.test(e.name) && !/(^|\/)(__MACOSX|\.)/.test(e.name) }, (err, out) => (err ? reject(err) : resolve(out))),
+  return new Promise<Record<string, Uint8Array<ArrayBuffer>>>((resolve, reject) =>
+    unzip(data, { filter: (e) => /\.(pdf|json)$/i.test(e.name) && !/(^|\/)(__MACOSX|\.)/.test(e.name) }, (err, out) =>
+      err ? reject(err) : resolve(out as Record<string, Uint8Array<ArrayBuffer>>),
+    ),
   );
 }
 

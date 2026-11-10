@@ -13,10 +13,10 @@ function load() {
 
 export async function fileToText(file: File): Promise<string> {
   const pdfjs = await load();
-  const doc = await pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false }).promise;
+  const task = pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) });
   try {
-    return await pdfToText(doc);
+    return await pdfToText(await task.promise);
   } finally {
-    void doc.destroy();
+    void task.destroy();
   }
 }
