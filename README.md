@@ -8,7 +8,7 @@ Cost-of-living insights from your own Tesco and Sainsbury's receipts. Drop in th
 
 **Try it:** [basketindex.thomaschaplin.me](https://basketindex.thomaschaplin.me). There's a built-in example if you don't have receipts to hand.
 
-**Private by design.** Receipts are parsed in the browser with pdf.js and never uploaded. Names, addresses and card details are ignored. Your parsed receipts are kept in IndexedDB on your device only, so they're there next time; "Start over" clears them. A Content-Security-Policy stops the page from connecting to any other site, so the browser itself enforces this.
+**Private by design.** Receipts are parsed in the browser with pdf.js and never uploaded. Names, addresses and card details are ignored. Your parsed receipts are kept in IndexedDB on your device only, so they're there next time; "Start over" clears them. A Content-Security-Policy stops the page from connecting to any other site, so the browser itself enforces this. The site uses Vercel Web Analytics and Speed Insights, which are cookieless, served from the site's own origin, and only see page views and load-time metrics, never receipt data.
 
 ## What it shows
 
@@ -25,7 +25,7 @@ Cost-of-living insights from your own Tesco and Sainsbury's receipts. Drop in th
 
 ## Stack
 
-Vite, React 19, TypeScript, Tailwind CSS v4, Framer Motion, Recharts, pdf.js (lazy-loaded). Fonts are self-hosted, so the page makes no third-party requests.
+Vite, React 19, TypeScript, Tailwind CSS v4, Framer Motion, Recharts, pdf.js (lazy-loaded). Fonts are self-hosted, so the page makes no third-party requests. Vercel Web Analytics and Speed Insights run through same-origin `/_vercel/*` endpoints.
 
 ```
 src/lib/parser.ts        Receipt text -> { retailer, orderId, date, totals, items[] }. Detects Tesco or Sainsbury's
@@ -61,7 +61,7 @@ CI (`.github/workflows/ci.yml`) runs lint, type-check, tests and a build on ever
 
 ### Content-Security-Policy
 
-`connect-src 'self'` means the page can't send anything to another origin, and scripts load only from this site. That's why the set-the-theme-before-paint snippet is `public/theme.js` rather than an inline script. Styles allow `'unsafe-inline'` for the style attributes React and the charts set. If you add a script, font or request from another origin, the policy in `vercel.json` has to allow it.
+`connect-src 'self'` means the page can't send anything to another origin, and scripts load only from this site. That's why the set-the-theme-before-paint snippet is `public/theme.js` rather than an inline script. Styles allow `'unsafe-inline'` for the style attributes React and the charts set. Vercel Web Analytics and Speed Insights load from `/_vercel/*` on the same origin, so `'self'` already covers them. If you add a script, font or request from another origin, the policy in `vercel.json` has to allow it.
 
 ### SEO and share cards
 
