@@ -3,7 +3,7 @@ import { ArrowRight, LineChart, PackageSearch, ShieldCheck, Sparkles, Tag } from
 import type { LoadProgress } from '../hooks/useReceipts';
 import { Dropzone } from './Dropzone';
 import { GetReceipts } from './GetReceipts';
-import { Reveal } from './ui';
+import { GitHubIcon, REPO_URL, Reveal } from './ui';
 
 const FEATURES = [
   {
@@ -146,6 +146,14 @@ export function Landing({ onFiles, onSample, progress }: { onFiles: (f: File[]) 
               <span className="inline-flex items-center gap-1.5 text-sm text-muted">
                 <ShieldCheck className="size-4 text-down" aria-hidden /> 100% in your browser. No uploads, no account.
               </span>
+              <a
+                href={REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm text-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
+              >
+                <GitHubIcon className="size-4" /> Open source: read the code
+              </a>
             </div>
           </motion.div>
         </div>

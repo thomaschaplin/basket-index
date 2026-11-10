@@ -11,6 +11,7 @@ import { ProductExplorer, ProductModal, Staples, TopLists } from './components/P
 import { ReceiptChecks, Receipts } from './components/Receipts';
 import { Categories, Insights, SpendChart } from './components/Spending';
 import { Toast, type ToastMsg } from './components/Toast';
+import { GitHubIcon, REPO_URL } from './components/ui';
 import { useReceipts } from './hooks/useReceipts';
 import { type ChartColours, chartColours, useTheme } from './hooks/useTheme';
 import { type Analysis, analyse } from './lib/analysis';
@@ -101,7 +102,20 @@ export default function App() {
             <ShieldCheck className="size-4 text-down" aria-hidden /> Receipts are read in your browser and saved only on this device. Names, addresses and card
             details are ignored.
           </span>
-          <span>Not affiliated with Tesco or Sainsbury's.</span>
+          <span className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <a
+              href={REPO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 font-medium transition-colors hover:text-ink"
+            >
+              <GitHubIcon className="size-4" /> Open source on GitHub
+            </a>
+            <a href={`${REPO_URL}/issues`} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-ink">
+              Report an issue
+            </a>
+            <span>Not affiliated with Tesco or Sainsbury's.</span>
+          </span>
         </div>
       </footer>
       <ProductModal
