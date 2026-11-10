@@ -26,9 +26,19 @@ function seo(): Plugin {
 export default defineConfig({
   plugins: [react(), tailwindcss(), seo()],
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        manualChunks: { charts: ['recharts'], pdf: ['pdfjs-dist'], motion: ['framer-motion'] },
+        // Heavy libraries get their own long-cacheable chunks, along with the packages they pull in.
+        codeSplitting: {
+          groups: [
+            {
+              name: 'charts',
+              test: /[\\/]node_modules[\\/](recharts|victory-vendor|d3-[^\\/]+|internmap|@reduxjs|redux|redux-thunk|react-redux|reselect|immer|es-toolkit|decimal\.js-light|eventemitter3|tiny-invariant|use-sync-external-store|clsx)[\\/]/,
+            },
+            { name: 'pdf', test: /[\\/]node_modules[\\/]pdfjs-dist[\\/]/ },
+            { name: 'motion', test: /[\\/]node_modules[\\/](framer-motion|motion-dom|motion-utils)[\\/]/ },
+          ],
+        },
       },
     },
   },
