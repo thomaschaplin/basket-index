@@ -1,6 +1,10 @@
 # Basket Index
 
+[![CI](https://github.com/thomaschaplin/basket-index/actions/workflows/ci.yml/badge.svg)](https://github.com/thomaschaplin/basket-index/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Cost-of-living insights from your own Tesco and Sainsbury's receipts. Drop in the PDFs (or the zip) and get your personal inflation rate, price movers, shrinkflation checks, pack-size value, staples, and every shop line by line.
+
+**Try it:** [basketindex.thomaschaplin.me](https://basketindex.thomaschaplin.me). There's a built-in example if you don't have receipts to hand.
 
 **Private by design.** Receipts are parsed in the browser with pdf.js and never uploaded. Names, addresses and card details are ignored. Your parsed receipts are kept in IndexedDB on your device only, so they're there next time; "Start over" clears them. A Content-Security-Policy stops the page from connecting to any other site, so the browser itself enforces this.
 
@@ -71,7 +75,7 @@ The share card (`public/og.png`, 1200×630) and the PNG app icons are rendered f
 2. **Picks up your sign-in.** The groceries API expects a `WCAuthToken` header, whose value is the `WC_AUTHENTICATION_<id>` cookie set at sign-in. The script sends that cookie as the header, as Sainsbury's own app does, and the browser sends the usual session cookies.
 3. **Lists your orders** from the order history endpoint the website itself uses, `GET /groceries-api/gol-services/order/v1/order?page_number=…&page_size=50`, page by page. It stops when a page brings nothing new, when the reported total is reached, or after 40 pages. Set `SINCE = '2026-01-01'` at the top to skip older orders.
 4. **Fetches each order's details** from `GET /groceries-api/gol-services/order/v1/order/{orderId}`: items, quantities, line prices, per-item offers (`adjustment`), coupons (`vouchers_savings`), delivery (`slot_price`) and totals. Each order gets up to 3 tries, waiting longer each time, with a short pause between orders. Cancelled orders, orders with no items and orders whose slot hasn't ended yet are skipped and logged.
-5. **Trims each order down** to the order ID, status, type, slot time, totals, delivery, bag charge, coupons and savings, plus each item's quantity, unit, line total, product ID, name and offer amounts. The delivery address, payment card, Nectar details, receipt link, image links and everything else are dropped. Each order becomes one small file, e.g. `Sainsburys_Order_2026-10-09_1355072309.json`.
+5. **Trims each order down** to the order ID, status, type, slot time, totals, delivery, bag charge, coupons and savings, plus each item's quantity, unit, line total, product ID, name and offer amounts. The delivery address, payment card, Nectar details, receipt link, image links and everything else are dropped. Each order becomes one small file, e.g. `Sainsburys_Order_2026-10-09_1200000001.json`.
 6. **Zips and downloads** them as `Sainsburys_Receipts_<today>.zip`, built uncompressed in the browser. One file avoids the browser's "multiple downloads" block.
 
 ### Why JSON and not the e-receipt PDFs
@@ -108,3 +112,13 @@ It unzips in the browser and reads each `.json` with `parseSainsburysOrder`. She
 - pdf.js returns the ff/fi/fl ligatures as separate text pieces ("Di ff user"), which the parser joins back up.
 - Nectar points are valued at 0.5p each (Clubcard points at 1p). Card digits and the Nectar card number are ignored.
 - The same product bought at both shops is tracked as two products, so switching shops doesn't show up as inflation.
+
+## Contributing
+
+Bug reports and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Please never attach real receipts. To report a security or privacy problem, see [SECURITY.md](SECURITY.md).
+
+Basket Index is an independent project and isn't affiliated with or endorsed by Tesco or Sainsbury's. The downloader scripts use your own signed-in session on each shop's website; the shops can change their sites at any time, which may break them.
+
+## License
+
+[MIT](LICENSE)

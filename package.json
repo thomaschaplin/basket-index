@@ -4,6 +4,16 @@
   "version": "2.0.0",
   "type": "module",
   "description": "Cost-of-living insights from your own Tesco and Sainsbury's receipts. Parsed in the browser, never uploaded.",
+  "license": "MIT",
+  "author": "Thomas Chaplin",
+  "homepage": "https://basketindex.thomaschaplin.me",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomaschaplin/basket-index.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thomaschaplin/basket-index/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
