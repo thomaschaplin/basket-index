@@ -18,8 +18,8 @@ describe('parseReceiptText', () => {
   it('reads in-store order IDs and channel', () => {
     const head = (id: string) =>
       `Receipt Order information Order ID: ${id} Purchase date: 19/10/2026 Channel: In-store VAT number: GB 220 4302 31 Your items Total cost 1 Tesco Bread 800g £0.75 - £0.75 Payment summary Total: £0.75`;
-    expect(parseReceiptText(head('57E8-15KT-Q05F-XBNQ'))).toMatchObject({ orderId: '57E8-15KT-Q05F-XBNQ', channel: 'In-store', date: '2026-10-19' });
-    expect(parseReceiptText(head('97401041200926145342850800037025')).orderId).toBe('97401041200926145342850800037025');
+    expect(parseReceiptText(head('ABCD-1234-EFGH-5678'))).toMatchObject({ orderId: 'ABCD-1234-EFGH-5678', channel: 'In-store', date: '2026-10-19' });
+    expect(parseReceiptText(head('90000000000000000000000000000001')).orderId).toBe('90000000000000000000000000000001');
   });
 
   it('keeps in-store lines that have no product name', () => {

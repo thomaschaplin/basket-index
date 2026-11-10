@@ -26,7 +26,7 @@
   };
 
   // 1. Collect every order from the order history API:
-  // {"orders":[{"order_uid":"1355072309","status":"previous","slot_start_time":"2026-10-09T18:00:00Z",…}],"controls":{"total_record_count":42,…}}
+  // {"orders":[{"order_uid":"1200000001","status":"previous","slot_start_time":"2026-10-09T18:00:00Z",…}],"controls":{"total_record_count":42,…}}
   const orders = new Map(); // orderId -> { date }
   for (let page = 1; page <= MAX_PAGES; page++) {
     let data;

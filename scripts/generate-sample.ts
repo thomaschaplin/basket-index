@@ -474,7 +474,7 @@ function lineText(l: Line): string {
   return `${l.qty}   ${l.name.slice(0, cut)} \n${l.name.slice(cut + 1)} \n${prices} `;
 }
 
-// In-store order IDs look like "57E8-15KT-Q05F-XBNQ"; fuel receipts use a long number.
+// In-store order IDs look like "ABCD-1234-EFGH-5678"; fuel receipts use a long number.
 const ALNUM = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
 const storeId = () => Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => pick([...ALNUM])).join('')).join('-');
 const fuelId = (date: string) => `974010412${date.slice(8, 10)}${date.slice(5, 7)}${date.slice(2, 4)}${String(Math.floor(rand() * 1e15)).padStart(17, '0')}`;
