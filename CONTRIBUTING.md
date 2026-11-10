@@ -26,7 +26,7 @@ If the parser gets a receipt wrong, describe the layout or paste a few lines wit
 
 ## Keep it private by design
 
-- Nothing leaves the browser. No analytics, no third-party scripts, fonts or requests. The CSP in `vercel.json` enforces this, so a change that needs to loosen it needs a very good reason.
+- Receipt data never leaves the browser. The only analytics are Vercel Web Analytics and Speed Insights (cookieless, same-origin, page views and Web Vitals only); don't send receipt data to them, including in custom events. No third-party scripts, fonts or requests. The CSP in `vercel.json` enforces this, so a change that needs to loosen it needs a very good reason.
 - The downloader scripts only talk to the shop's own site and only keep the fields the README lists.
 
 ## Style
